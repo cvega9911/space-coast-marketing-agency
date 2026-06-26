@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="font-extrabold text-xl tracking-tight mb-2">
               <span className="text-[#FF4500]">Space Coast</span>
-              <span className="text-white"> Marketing Agency</span>
+              <span className="text-white"> Marketing</span>
             </div>
             <p className="text-white/50 text-sm font-mono tracking-[0.14em] uppercase mb-4">
               Amplify Your Presence.
@@ -51,9 +51,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:info@spacecoastmarketingagency.com"
+                <a href="mailto:info@spacecoastmarketing.co"
                   className="text-white/60 hover:text-white transition-colors break-all">
-                  info@spacecoastmarketingagency.com
+                  info@spacecoastmarketing.co
                 </a>
               </li>
               <li className="text-white/45 text-xs leading-relaxed pt-1">
@@ -90,7 +90,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/35">
-          <p>© {new Date().getFullYear()} Space Coast Marketing Agency. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Space Coast Marketing. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-white/70 transition-colors">Privacy Policy</Link>
           </div>

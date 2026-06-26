@@ -5,7 +5,6 @@ import { motion, AnimatePresence, useReducedMotion, useInView } from 'motion/rea
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
-import { CALENDLY } from '../lib/calendly'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 
@@ -98,27 +97,73 @@ function Check() {
 }
 
 // ─── CTA Button ───────────────────────────────────────────────────────────────
-function CTAButton({ label = 'Get My Website Now', href = CALENDLY.ONBOARDING, large = true, glow = false, external = true }: {
+function CTAButton({ label = 'Get My Free Visibility Audit', href = '#audit', large = true, glow = false, external = false }: {
   label?: string; href?: string; large?: boolean; glow?: boolean; external?: boolean
 }) {
   const reduced = useReducedMotion()
+  const [phase, setPhase] = useState<'idle' | 'flying' | 'bobbing'>('idle')
+  const [endX, setEndX] = useState(120)
+  const [mounted, setMounted] = useState(false)
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
+  const wrapRef = useRef<HTMLSpanElement>(null)
+  const inView = useInView(wrapRef, { once: false, amount: 0.9 })
   const hasGlow = glow && !reduced
 
+  useEffect(() => { setMounted(true) }, [])
+  useEffect(() => {
+    if (mounted) setIsTouchDevice(window.matchMedia('(hover: none)').matches)
+  }, [mounted])
+
+  useEffect(() => {
+    if (!mounted || !isTouchDevice || !inView || reduced || phase !== 'idle') return
+    if (wrapRef.current) setEndX(wrapRef.current.offsetWidth - 36)
+    setPhase('flying')
+  }, [mounted, isTouchDevice, inView, reduced, phase])
+
+  function handleEnter() {
+    if (reduced || isTouchDevice || phase !== 'idle') return
+    if (wrapRef.current) setEndX(wrapRef.current.offsetWidth - 36)
+    setPhase('flying')
+  }
+
   return (
-    <motion.a
-      href={href}
-      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      whileTap={reduced ? undefined : { scale: 0.97 }}
-      animate={hasGlow ? {
-        boxShadow: ['0 0 14px rgba(255,69,0,0.22)', '0 0 32px rgba(255,69,0,0.52)', '0 0 14px rgba(255,69,0,0.22)'],
-      } : undefined}
-      transition={{ duration: 0.15, ...(hasGlow ? { boxShadow: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' } } : {}) }}
-      className={`inline-flex items-center gap-2 bg-[#FF4500] text-white font-bold rounded-xl
-        hover:bg-[#FF5500] transition-colors duration-150 min-h-[44px]
-        ${large ? 'text-base sm:text-lg px-7 sm:px-9 py-4' : 'text-sm px-5 py-2.5'}`}
-    >
-      {label} 🚀
-    </motion.a>
+    <span ref={wrapRef} className="relative inline-flex"
+      onMouseEnter={handleEnter}
+      onMouseLeave={() => { if (!isTouchDevice) setPhase('idle') }}>
+      <motion.a
+        href={href}
+        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        whileTap={reduced ? undefined : { scale: 0.97 }}
+        animate={hasGlow ? {
+          boxShadow: ['0 0 14px rgba(255,69,0,0.22)', '0 0 32px rgba(255,69,0,0.52)', '0 0 14px rgba(255,69,0,0.22)'],
+        } : undefined}
+        transition={{ duration: 0.15, ...(hasGlow ? { boxShadow: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' } } : {}) }}
+        className={`inline-flex items-center gap-2 bg-[#FF4500] text-white font-bold rounded-xl
+          hover:bg-[#FF5500] transition-colors duration-150 min-h-[44px]
+          ${large ? 'text-base sm:text-lg px-7 sm:px-9 py-4' : 'text-sm px-5 py-2.5'}`}
+      >
+        <motion.span animate={{ x: phase !== 'idle' ? 8 : 0 }} transition={{ duration: 0.2, ease: 'easeOut' }}>
+          {label}
+        </motion.span>
+      </motion.a>
+      <AnimatePresence>
+        {mounted && phase !== 'idle' && (
+          <motion.span key="rocket" aria-hidden
+            className="pointer-events-none absolute z-50 select-none"
+            style={{ fontSize: large ? '20px' : '16px', lineHeight: 1, top: '50%', marginTop: large ? '-10px' : '-8px', left: large ? 10 : 8 }}
+            initial={{ x: 0, opacity: 0, y: 0 }}
+            animate={phase === 'flying'
+              ? { x: endX, opacity: [0, 1, 1, 1], y: [0, -8, 0] }
+              : { x: endX, opacity: 1, y: [0, -3, 0, 3, 0] }}
+            exit={{ opacity: 0, transition: { duration: 0.12 } }}
+            transition={phase === 'flying'
+              ? { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
+              : { duration: 1.8, repeat: Infinity, ease: 'easeInOut', x: { duration: 0 } }}
+            onAnimationComplete={() => { if (phase === 'flying') setPhase('bobbing') }}
+          >🚀</motion.span>
+        )}
+      </AnimatePresence>
+    </span>
   )
 }
 
@@ -188,10 +233,10 @@ function MilitaryDiscount() {
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 const STATS = [
-  { value: 72,  suffix: 'hrs', label: 'Average delivery' },
-  { value: 599, suffix: '',    label: 'Starting price ($)' },
-  { value: 0,   suffix: '',    label: 'Contracts required' },
-  { value: 100, suffix: '%',   label: 'Client ownership'   },
+  { value: 72,  suffix: 'hrs', label: 'Guaranteed delivery' },
+  { value: 0,   suffix: '',    label: 'Hidden fees'          },
+  { value: 0,   suffix: '',    label: 'Contracts required'   },
+  { value: 100, suffix: '%',   label: 'Client ownership'     },
 ]
 
 const PROCESS_STEPS = [
@@ -228,7 +273,7 @@ const PAIN_POINTS = [
   "You don't have a website — or you do, and you'd rather people didn't see it.",
   "People are Googling you and landing on a competitor's site instead.",
   "You're losing jobs to competitors with better-looking sites. You can feel it.",
-  "An agency quoted you $3,000–$8,000. You're still thinking about it.",
+  "Someone quoted you $3,000–$8,000 for a website. You're still thinking about it.",
 ]
 
 const WEBSITE_FEATURES = [
@@ -276,7 +321,7 @@ const CHARITIES = [
 const FAQ_ITEMS = [
   {
     q: 'How much does a website cost?',
-    a: 'Our Website tier is $599 one-time. The Growth plan is $599 one-time + $149/month for ongoing marketing. The Fractional CMO is $1,500/month. No hidden fees, no surprise invoices.',
+    a: 'We have simple, transparent plans with no hidden fees and no surprise invoices. Head to our pricing page to see the full breakdown — or just get your free audit first and we\'ll point you to the right fit.',
   },
   {
     q: 'How fast can you actually build a website?',
@@ -309,7 +354,7 @@ function FAQSection() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeIn className="text-center mb-12 sm:mb-14">
           <div className="flex items-center justify-center gap-3 mb-5">
-            <span className="font-mono text-[#FF4500] text-sm tracking-[0.18em] uppercase">// FAQ</span>
+            <span className="font-mono text-[#FF4500] text-base tracking-[0.16em] uppercase">// FAQ</span>
             <span className="h-px bg-[#FF4500]/25 w-10 flex-shrink-0" aria-hidden />
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">Questions? We&apos;ve got you.</h2>
@@ -383,7 +428,7 @@ export default function Home() {
       <section aria-label="Hero" className="relative min-h-screen flex items-center overflow-hidden">
         <Image
           src="/hero/artemis-i-launch.jpg"
-          alt="Rocket launch at Kennedy Space Center — Space Coast Marketing Agency"
+          alt="Rocket launch at Kennedy Space Center — Space Coast Marketing"
           fill priority className="object-cover"
           style={{ objectPosition: '65% 50%' }}
         />
@@ -489,7 +534,7 @@ export default function Home() {
             <div>
               <FadeIn className="mb-10">
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="font-mono text-[#FF4500] text-sm tracking-[0.18em] uppercase">// 01 — GUARANTEES</span>
+                  <span className="font-mono text-[#FF4500] text-base tracking-[0.16em] uppercase">// 01 — GUARANTEES</span>
                   <span className="h-px bg-[#FF4500]/25 w-12 flex-shrink-0" aria-hidden />
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">
@@ -527,7 +572,7 @@ export default function Home() {
                   {[
                     { title: 'No Contracts. Ever.', body: 'Month-to-month only. Stop anytime, no penalties, no exit fees, no fine print.' },
                     { title: 'You Own Your Site.',  body: 'Your domain, your code, your property. We never hold your website hostage.' },
-                    { title: 'Price Is Price.',     body: 'No setup surprises. No hidden invoices. The number on the page is what you pay.' },
+                    { title: 'Price Is Price.',     body: 'No setup surprises. No hidden invoices. The number on the page is what you pay.', badge: { num: '0', unit: 'hidden fees' } },
                   ].map(item => (
                     <StaggerChild key={item.title}>
                       <motion.div
@@ -535,6 +580,12 @@ export default function Home() {
                         transition={{ duration: 0.2 }}
                         className="bg-[#13131f] border border-white/7 rounded-2xl p-5 sm:p-6 h-full text-center"
                       >
+                        {'badge' in item && item.badge && (
+                          <div className="mb-3">
+                            <div className="font-mono text-[2.75rem] font-extrabold text-[#FF4500] leading-none">{item.badge.num}</div>
+                            <div className="font-mono text-[10px] text-white/55 tracking-[0.18em] uppercase mt-1">{item.badge.unit}</div>
+                          </div>
+                        )}
                         <h3 className="font-bold text-white text-sm mb-1.5 leading-snug">{item.title}</h3>
                         <p className="text-white/65 text-xs leading-relaxed">{item.body}</p>
                       </motion.div>
@@ -553,7 +604,7 @@ export default function Home() {
                       <div className="font-mono text-3xl sm:text-4xl font-extrabold text-[#FF4500] mb-1">
                         {s.value === 0 ? 'Zero' : <Counter to={s.value} suffix={s.suffix} />}
                       </div>
-                      <p className="text-white/50 text-xs sm:text-sm">{s.label}</p>
+                      <p className="text-white/50 text-sm sm:text-base">{s.label}</p>
                     </div>
                   ))}
                 </div>
@@ -570,7 +621,7 @@ export default function Home() {
           <FadeIn className="text-center mb-14 sm:mb-16">
             <div className="flex items-center justify-center gap-4 mb-5">
               <span className="h-px bg-white/15 w-14 flex-shrink-0" aria-hidden />
-              <span className="text-white/55 text-xs font-mono tracking-[0.22em] uppercase">THE PROCESS</span>
+              <span className="text-white/55 text-sm font-mono tracking-[0.20em] uppercase">THE PROCESS</span>
               <span className="h-px bg-white/15 w-14 flex-shrink-0" aria-hidden />
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">Three steps. Less than a week. Done.</h2>
@@ -608,6 +659,10 @@ export default function Home() {
         aria-label="Pain points">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn className="text-center mb-12 sm:mb-14">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <span className="font-mono text-[#FF4500] text-base tracking-[0.16em] uppercase">// 02 — Sound Familiar?</span>
+              <span className="h-px bg-[#FF4500]/25 w-12 flex-shrink-0" aria-hidden />
+            </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">This is exactly who we built this for.</h2>
             <p className="text-white/65 text-base sm:text-lg max-w-xl mx-auto">
               If any of these hit too close to home, you&apos;re in the right place.
@@ -633,9 +688,9 @@ export default function Home() {
 
           <FadeIn delay={0.12} className="text-center mt-8 sm:mt-10">
             <p className="text-white/60 text-sm max-w-md mx-auto mb-6">
-              Yep. We fix all of this. 72-hour preview. $599 flat.
+              Yep. We fix all of this. 72-hour preview, guaranteed.
             </p>
-            <CTAButton label="Book a Free Call" href={CALENDLY.DISCOVERY} />
+            <CTAButton label="Get My Free Visibility Audit" href="#audit" external={false} />
           </FadeIn>
         </div>
       </section>
@@ -643,130 +698,27 @@ export default function Home() {
       {/* ══ PRICING ═══════════════════════════════════════════════════════════ */}
       <section className="py-20 sm:py-28 bg-[rgba(13,13,28,0.88)]" aria-label="Pricing" id="pricing">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn className="text-center mb-12 sm:mb-14">
+          <FadeIn className="text-center mb-10">
             <div className="flex items-center justify-center gap-3 mb-5">
-              <span className="font-mono text-[#FF4500] text-sm tracking-[0.18em] uppercase">// PRICING</span>
+              <span className="font-mono text-[#FF4500] text-base tracking-[0.16em] uppercase">// PRICING</span>
               <span className="h-px bg-[#FF4500]/25 w-12 flex-shrink-0" aria-hidden />
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">
               No contracts. No surprises.{' '}
               <span className="text-[#FF4500]">Just honest pricing.</span>
             </h2>
-            <p className="text-white/65 text-base sm:text-lg max-w-lg mx-auto">
-              You own your site from day one. Preview in 72 hours. Pick your starting point.
+            <p className="text-white/65 text-base sm:text-lg max-w-lg mx-auto mb-8">
+              Simple, transparent plans. You own everything from day one.
             </p>
+            <Link href="/pricing"
+              className="inline-flex items-center gap-2 bg-[#FF4500] text-white font-bold rounded-xl
+                hover:bg-[#FF5500] transition-colors duration-150 min-h-[44px] text-base px-7 py-4">
+              See All Plans 🚀
+            </Link>
           </FadeIn>
 
-          <MilitaryDiscount />
-
-          {/* 3-tier grid */}
-          <StaggerParent className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-5xl mx-auto mt-4">
-
-            {/* Tier 1: Website */}
-            <StaggerChild>
-              <div className="bg-[#13131f] border border-white/8 rounded-2xl p-6 flex flex-col h-full">
-                <p className="text-xs font-mono text-white/55 uppercase tracking-widest mb-3">Website</p>
-                <div className="flex items-baseline gap-1.5 mb-1">
-                  <span className="font-mono text-4xl font-extrabold text-white">$599</span>
-                  <span className="text-white/60 text-sm">one-time</span>
-                </div>
-                <p className="text-white/45 text-xs mb-6">Professional website, built to convert.</p>
-                <ul className="space-y-2.5 flex-1 mb-7">
-                  {WEBSITE_FEATURES.map(f => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-white/70">
-                      <Check />{f}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex justify-center">
-                  <CTAButton label="Get My Website" href="#contact" large={false} external={false} />
-                </div>
-              </div>
-            </StaggerChild>
-
-            {/* Tier 2: Growth */}
-            <StaggerChild>
-              <div className="bg-[#13131f] border-2 border-[#FF4500]/45 rounded-2xl p-6 flex flex-col h-full relative">
-                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#FF4500] text-white text-[10px] font-extrabold px-4 py-1 rounded-full tracking-widest uppercase shadow-lg shadow-[#FF4500]/30 whitespace-nowrap">
-                  ⭐ Most Popular
-                </span>
-                <p className="text-xs font-mono text-white/55 uppercase tracking-widest mb-3 mt-2">Growth</p>
-                <div className="flex items-baseline gap-1.5 mb-1">
-                  <span className="font-mono text-4xl font-extrabold text-white">$599</span>
-                  <span className="text-white/60 text-sm">one-time</span>
-                </div>
-                <p className="text-white/45 text-xs mb-6">+ $149/mo after launch</p>
-                <ul className="space-y-2.5 flex-1 mb-7">
-                  {GROWTH_FEATURES.map(f => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-white/70">
-                      <Check />{f}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex justify-center">
-                  <CTAButton label="Start with Growth" large={false} />
-                </div>
-              </div>
-            </StaggerChild>
-
-            {/* Tier 3: Fractional CMO */}
-            <StaggerChild>
-              <div className="bg-[#13131f] border border-white/8 rounded-2xl p-6 flex flex-col h-full">
-                <p className="text-xs font-mono text-white/55 uppercase tracking-widest mb-3">Fractional CMO</p>
-                <div className="flex items-baseline gap-1.5 mb-1">
-                  <span className="font-mono text-4xl font-extrabold text-white">$1,500</span>
-                  <span className="text-white/60 text-sm">/mo</span>
-                </div>
-                <p className="text-white/60 text-xs italic mb-1.5">Your marketing department, on retainer.</p>
-                <p className="text-white/45 text-xs mb-6 leading-relaxed">
-                  End-to-end execution with weekly white-glove strategy calls.
-                </p>
-                <ul className="space-y-2.5 flex-1 mb-7">
-                  {CMO_FEATURES.map(f => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-white/70">
-                      <Check />{f}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex justify-center">
-                  <CTAButton label="Let's Talk" href="#contact" large={false} external={false} />
-                </div>
-              </div>
-            </StaggerChild>
-          </StaggerParent>
-
-          {/* Site Care Plan — standalone add-on */}
-          <FadeIn delay={0.1} className="mt-5 max-w-5xl mx-auto">
-            <div className="bg-[#0f0f1e] border border-white/7 rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-              <div className="flex-1">
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-2">
-                  <span className="font-mono text-[#FF4500] text-xs tracking-[0.18em] uppercase font-bold">Site Care Plan</span>
-                  <span className="font-mono text-white font-extrabold text-lg">$49<span className="text-white/50 font-normal text-xs">/mo</span></span>
-                  <span className="text-white/45 text-xs">For businesses that already have a website.</span>
-                </div>
-                <div className="flex flex-wrap gap-x-5 gap-y-1.5">
-                  {[
-                    'Hosting + SSL + security updates',
-                    'Up to 2 content changes/month',
-                    'Monthly analytics reporting and recommendations',
-                  ].map(f => (
-                    <span key={f} className="flex items-center gap-1.5 text-xs text-white/55">
-                      <Check />{f}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <a href="#contact"
-                className="flex-shrink-0 inline-flex items-center gap-1.5 border border-[#FF4500]/35 text-[#FF4500]
-                  hover:bg-[#FF4500] hover:text-white hover:border-[#FF4500]
-                  transition-all duration-150 font-bold px-5 py-2.5 rounded-xl text-sm min-h-[44px]">
-                Add Site Care 🚀
-              </a>
-            </div>
-          </FadeIn>
-
-          {/* Guarantee — one line */}
-          <FadeIn delay={0.14} className="mt-8 max-w-5xl mx-auto">
+          {/* Guarantee */}
+          <FadeIn delay={0.1} className="mt-10 max-w-5xl mx-auto">
             <div className="bg-[#13131f] border border-[#FF4500]/22 rounded-2xl p-7 sm:p-9 text-center">
               <p className="text-white/85 text-base sm:text-lg font-semibold leading-relaxed">
                 72-hour preview. Full delivery within 14 days. Or you don&apos;t pay.
@@ -775,7 +727,7 @@ export default function Home() {
           </FadeIn>
 
           {/* We Give Back */}
-          <FadeIn delay={0.16} className="mt-6 max-w-5xl mx-auto">
+          <FadeIn delay={0.12} className="mt-6 max-w-5xl mx-auto">
             <div className="bg-[#1B2B4B]/40 border border-white/8 rounded-2xl p-6 sm:p-7">
               <div className="flex items-center gap-3 mb-3">
                 <span className="font-mono text-[#FF4500] text-sm tracking-[0.18em] uppercase">// WE GIVE BACK</span>
@@ -793,12 +745,6 @@ export default function Home() {
                 ))}
               </div>
             </div>
-          </FadeIn>
-
-          <FadeIn delay={0.12} className="text-center mt-6">
-            <Link href="/pricing" className="text-sm text-[#FF4500] hover:text-white transition-colors font-medium">
-              See full plan details 🚀
-            </Link>
           </FadeIn>
         </div>
       </section>
@@ -869,10 +815,10 @@ export default function Home() {
                           onChange={handleChange} required
                           className={`${inputCls} appearance-none pr-10 cursor-pointer`}>
                           <option value="">Pick an option…</option>
-                          <option>Website ($599 one-time)</option>
-                          <option>Growth ($599 one-time + $149/mo)</option>
-                          <option>Fractional CMO ($1,500/mo)</option>
-                          <option>Site Care Plan ($49/mo — existing site)</option>
+                          <option>Website</option>
+                          <option>Growth Plan</option>
+                          <option>Fractional CMO</option>
+                          <option>Site Care Plan</option>
                           <option>Military / First Responder Discount</option>
                           <option>Just have questions</option>
                         </select>

@@ -3,16 +3,11 @@
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
-import RocketButton from './RocketButton'
-import { CALENDLY } from '../../lib/calendly'
+import { motion, AnimatePresence } from 'motion/react'
 
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const pathname        = usePathname()
-  const reduced         = useReducedMotion()
-
-  const auditHref = pathname === '/' ? '#audit' : '/#audit'
 
   const links = [
     { label: 'Services', href: '/services' },
@@ -30,7 +25,7 @@ export default function Nav() {
           <div className="flex-shrink-0 pr-6">
             <Link href="/"
               className="font-extrabold tracking-tight text-base sm:text-lg leading-tight"
-              aria-label="Space Coast Marketing Agency">
+              aria-label="Space Coast Marketing">
               <span className="text-[#FF4500]">Space Coast</span>
               <span className="text-[#F5F5F0]"> Marketing</span>
             </Link>
@@ -53,29 +48,6 @@ export default function Nav() {
               (321) 328-5307
             </a>
 
-            <Link href={auditHref} aria-label="Get a free website audit"
-              className="relative inline-flex items-center overflow-hidden rounded-full
-                border border-[#FF4500]/50 hover:border-[#FF4500]
-                transition-all duration-200 group cursor-pointer
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4500]/70"
-              style={{ textDecoration: 'none' }}>
-              <span aria-hidden="true" className={reduced ? '' : 'audit-shimmer'}
-                style={{
-                  position: 'absolute', inset: 0,
-                  background: 'linear-gradient(90deg, transparent 0%, rgba(255,100,0,0.4) 50%, transparent 100%)',
-                  width: '60%', pointerEvents: 'none',
-                }} />
-              <span className="relative z-10 text-sm font-semibold text-[#FF4500] group-hover:text-white transition-colors duration-200"
-                style={{ padding: '6px 16px' }}>
-                Free Audit
-              </span>
-            </Link>
-
-            <RocketButton href={CALENDLY.MAIN}
-              className="text-sm bg-[#FF4500] text-white font-bold px-5 py-2.5 rounded-xl
-                hover:bg-[#FF5500] transition-colors min-h-[44px] flex items-center">
-              Get Started →
-            </RocketButton>
           </div>
 
           <button onClick={() => setOpen(!open)}
@@ -105,18 +77,6 @@ export default function Nav() {
                     {l.label}
                   </Link>
                 ))}
-                <Link href={auditHref} onClick={() => setOpen(false)}
-                  className="block px-4 py-3 text-sm font-semibold text-[#FF4500]
-                    hover:text-white hover:bg-white/5 rounded-xl transition-colors">
-                  Free Audit ✦
-                </Link>
-                <div className="mt-3 pt-3 border-t border-white/5">
-                  <RocketButton href={CALENDLY.MAIN} onClick={() => setOpen(false)}
-                    className="w-full bg-[#FF4500] text-white font-bold px-4 py-3 rounded-xl
-                      hover:bg-[#FF5500] transition-colors text-sm min-h-[44px] flex items-center justify-center">
-                    Get Started →
-                  </RocketButton>
-                </div>
               </div>
             </motion.div>
           )}

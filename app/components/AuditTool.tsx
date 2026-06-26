@@ -443,18 +443,18 @@ export default function AuditTool() {
                   {' '}revenue is going directly to competitors who show up on Google.
                   {result.hasWebsite
                     ? ' Your site has real quick wins available — most take us less than an hour to fix.'
-                    : ' The good news: getting in front of local customers starts at $599 and we can have you live within 72 hours.'}
+                    : ' The good news: getting in front of local customers is faster than you think — we can have you live within 72 hours.'}
                 </p>
               </div>
 
               {/* CTA */}
               <div className="bg-[#FF4500]/6 border border-[#FF4500]/25 rounded-2xl p-7 flex flex-col sm:flex-row items-center justify-between gap-5">
                 <div>
-                  <p className="font-bold text-white mb-1">Ready to stop leaving money on the table?</p>
-                  <p className="text-white/65 text-sm">15-minute call. We&apos;ll show you exactly what&apos;s holding you back.</p>
+                  <p className="font-bold text-white mb-1">Ready to fix this?</p>
+                  <p className="text-white/65 text-sm">15-minute call. We&apos;ll walk you through exactly what&apos;s holding you back.</p>
                 </div>
                 <motion.a
-                  href={CALENDLY.DISCOVERY}
+                  href={CALENDLY.MAIN}
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={!reduced ? { scale: 1.03, boxShadow: '0 0 22px rgba(255,69,0,0.45)' } : undefined}
@@ -464,7 +464,7 @@ export default function AuditTool() {
                     hover:bg-[#cc3700] transition-colors duration-150 text-sm whitespace-nowrap min-h-[44px]
                     flex items-center gap-2"
                 >
-                  Book a Free Call 🚀
+                  Want to fix this? →
                 </motion.a>
               </div>
 
