@@ -1,9 +1,16 @@
 'use client'
 
 /**
- * Enhancement 1 — Scroll-parallax hero with aerial Space Coast image.
- * The background image (130vh tall) drifts upward at ~0.4× scroll speed,
- * creating depth. Includes a bouncing scroll indicator that fades after 200px.
+ * Enhancement 1 — Scroll-parallax hero, Artemis I launch photo.
+ *
+ * Desktop: 130vh image drifts upward at ~0.4× scroll speed (parallax depth).
+ * Mobile:  Static crop, object-position: center 30% to keep rocket + plume visible.
+ *
+ * Overlay composition (layered gradients, one element):
+ *   • Warm #E8481C tint at ~10% opacity from top — ties launch fire to site accent
+ *   • Dark vignette + full fade to #0a0a14 at bottom — seamless section transition
+ *
+ * objectPosition: 50% 35% — frames rocket center-left so headline reads over dark sky
  */
 
 import { useRef } from 'react'
@@ -20,10 +27,10 @@ export default function ParallaxHero() {
     offset: ['start start', 'end start'],
   })
 
-  // Image drifts -30vh over the hero scroll distance (slower than content → parallax)
+  // Image drifts upward at ~0.4× scroll rate → parallax depth
   const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%'])
 
-  // Scroll indicator fades out as user scrolls
+  // Scroll indicator fades out as user scrolls down
   const { scrollY } = useScroll()
   const indicatorOpacity = useTransform(scrollY, [0, 200], [1, 0])
 
@@ -33,10 +40,10 @@ export default function ParallaxHero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background — 130vh image drifts upward */}
+      {/* ── Desktop: parallax image (hidden on mobile) ─── */}
       <motion.div
         style={{ y: imageY, willChange: 'transform' }}
-        className="absolute inset-0"
+        className="absolute inset-0 hidden sm:block"
         aria-hidden
       >
         <div className="relative w-full h-[130vh]" style={{ top: '-15vh' }}>
@@ -46,22 +53,48 @@ export default function ParallaxHero() {
             fill
             priority
             sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: '65% 40%' }}
+            style={{
+              objectFit: 'cover',
+              // 50% horizontal frames rocket center-left; sky dominates right → headline legible
+              // 35% vertical locks on rocket body + upper plume, not exhaust ground level
+              objectPosition: '50% 35%',
+            }}
           />
         </div>
       </motion.div>
 
-      {/* Gradient overlay */}
+      {/* ── Mobile: static crop — no parallax, keep rocket + plume in frame ─── */}
+      <div className="absolute inset-0 sm:hidden" aria-hidden>
+        <Image
+          src="/hero/artemis-i-launch.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center 30%',
+          }}
+        />
+      </div>
+
+      {/* ── Overlay: warm fire tint + dark vignette + seamless bottom fade ─── */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            'linear-gradient(to bottom, rgba(10,10,20,0.45) 0%, rgba(10,10,20,0.65) 50%, rgba(10,10,20,0.92) 100%)',
+          background: [
+            // Layer 1 — warm #E8481C tint near the launch plume (top ~40%)
+            // Ties the Artemis fire tones to the site's orange accent at 10% opacity
+            'linear-gradient(175deg, rgba(232,72,28,0.10) 0%, rgba(232,72,28,0.05) 30%, transparent 50%)',
+            // Layer 2 — dark hero vignette fading to full #0a0a14 at the bottom
+            // Bottom 50% fades fully so transition into next section is seamless
+            'linear-gradient(to bottom, rgba(10,10,20,0.38) 0%, rgba(10,10,20,0.42) 35%, rgba(10,10,20,0.80) 58%, #0a0a14 100%)',
+          ].join(', '),
         }}
         aria-hidden
       />
 
-      {/* Hero content */}
+      {/* ── Hero content ────────────────────────────────── */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
@@ -107,7 +140,7 @@ export default function ParallaxHero() {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* ── Scroll indicator ────────────────────────────── */}
       <motion.div
         style={{ opacity: indicatorOpacity }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none z-10"
