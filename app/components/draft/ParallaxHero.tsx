@@ -120,15 +120,8 @@ export default function ParallaxHero() {
             <span className="text-white font-semibold">We fix that in 72 hours.</span>
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex justify-center">
             <CTAButton label="Get My Free Visibility Audit" href="#audit" large glow />
-            <a href="tel:+13213285307"
-              className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-lg font-semibold min-h-[44px]">
-              <svg className="w-5 h-5 text-[#FF4500]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-              </svg>
-              (321) 328-5307
-            </a>
           </div>
         </motion.div>
       </div>

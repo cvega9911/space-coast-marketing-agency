@@ -4,7 +4,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 
 export const metadata: Metadata = {
-  title:       'Blog — Space Coast Marketing Agency',
+  title:       'Blog — Space Coast Marketing',
   description: 'Marketing tips, web design guides, and local SEO advice for Brevard County businesses.',
   alternates:  { canonical: 'https://spacecoastmarketingagency.com/blog' },
 }

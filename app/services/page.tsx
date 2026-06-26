@@ -4,71 +4,50 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 
 export const metadata: Metadata = {
-  title:       'Services — Space Coast Marketing Agency',
-  description: 'Web design, local SEO, social media marketing, and fractional CMO services for Brevard County businesses. Space Coast based.',
+  title:       'Web Design Services for Florida Small Businesses | Space Coast Marketing',
+  description: 'Web design for Florida trades and service businesses. Plumbers, HVAC, roofers, restaurants, dentists, and contractors. Brevard County based.',
   alternates:  { canonical: 'https://spacecoastmarketingagency.com/services' },
 }
 
-const SERVICES = [
+const FEATURED = {
+  emoji: '🔧',
+  badge: 'HIGHEST SEARCH VOLUME',
+  title: 'Plumbers',
+  body: 'Emergency calls don\'t wait — your website can\'t either. We build mobile-first plumbing sites with click-to-call above the fold, service area pages for every city you cover, and the local SEO that wins "plumber near me" searches at 2am.',
+  bullets: ['Click-to-call CTA', 'Service area pages', 'Emergency messaging', '24/7 lead capture'],
+}
+
+const INDUSTRIES = [
   {
-    tag: '01',
-    title: 'Web Design & Development',
-    body: "We build fast, mobile-first websites that actually rank on Google. Every site we ship comes with on-page SEO, SSL, Google Business Profile setup, and a 72-hour preview guarantee. You own everything from day one.",
-    bullets: [
-      'Professional 5–10 page websites',
-      'On-page SEO foundations baked in',
-      'Google Business Profile optimization',
-      'Schema markup for local search',
-      '72-hour preview delivery',
-      'Unlimited revisions',
-    ],
-    cta: { label: 'Get My Website — $599', href: '/#contact' },
+    emoji: '❄️',
+    title: 'HVAC',
+    body: 'Emergency availability messaging, seasonal service pages, and fast mobile load times — built for the moment a homeowner\'s AC fails at midnight in August.',
   },
   {
-    tag: '02',
-    title: 'Growth Marketing',
-    body: "Already have a site? We handle your ongoing visibility — social media, blog content, review management, and Google ranking. You focus on running your business. We keep the phone ringing.",
-    bullets: [
-      'Social media management',
-      'Monthly blog posts (SEO + AEO)',
-      'Review management strategy',
-      'Google Business Profile management',
-      'Monthly analytics reporting',
-    ],
-    cta: { label: 'See Growth Plan — $149/mo', href: '/pricing' },
+    emoji: '🏠',
+    title: 'Roofers',
+    body: 'Storm damage pages, free inspection CTAs, and license display — built to capture high-ticket jobs before the next contractor calls them back.',
   },
   {
-    tag: '03',
-    title: 'Fractional CMO',
-    body: "You don't need a full-time marketing director. You need one that shows up every week with a plan and executes it. We act as your marketing department — strategy, content, ads, automations — for a fraction of the cost.",
-    bullets: [
-      'Weekly 1-on-1 strategy calls',
-      'Paid ad management (Google & Meta)',
-      'AI integrations & automations',
-      'Full SEO + AEO (AI search visibility)',
-      '5 blog posts per month',
-      'End-to-end execution — no managing us',
-    ],
-    cta: { label: "Let's Talk — $1,500/mo", href: '/#contact' },
+    emoji: '🍽️',
+    title: 'Restaurants',
+    body: 'HTML menus Google can index, reservation links above the fold, and food photo optimization that fills seats.',
   },
   {
-    tag: '04',
-    title: 'Site Care Plan',
-    body: "Already have a website built somewhere else? We'll keep it fast, secure, and up to date. Two content changes a month, hosting, SSL, security patches, and a monthly analytics report with actual recommendations.",
-    bullets: [
-      'Managed hosting + SSL',
-      'Security updates and patches',
-      'Up to 2 content changes/month',
-      'Monthly analytics reporting',
-    ],
-    cta: { label: 'Add Site Care — $49/mo', href: '/#contact' },
+    emoji: '🦷',
+    title: 'Dentists',
+    body: 'Appointment request forms, insurance acceptance display, and new-patient conversion pages.',
+  },
+  {
+    emoji: '🏗️',
+    title: 'Contractors',
+    body: 'Project gallery, CGC license display, free estimate CTA — everything a homeowner needs before calling.',
   },
 ]
 
 function Check() {
   return (
-    <svg className="w-4 h-4 text-[#FF4500] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24"
-      stroke="currentColor" strokeWidth={2.5} aria-hidden>
+    <svg className="w-4 h-4 text-[#FF4500] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
     </svg>
   )
@@ -79,7 +58,6 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-[#0a0a14] text-[#F5F5F0]">
       <Nav />
 
-      {/* Header */}
       <header className="relative pt-28 pb-14 sm:pt-36 sm:pb-16 text-center px-4 overflow-hidden">
         <Image
           src="/hero/artemis-i-launch.jpg"
@@ -96,60 +74,101 @@ export default function ServicesPage() {
             <span className="h-px bg-[#FF4500]/25 w-12 flex-shrink-0" aria-hidden />
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4 tracking-tight">
-            Everything your business needs to{' '}
-            <span className="text-[#FF4500]">get found online.</span>
+            Web Design for Florida Trades{' '}
+            <span className="text-[#FF4500]">&amp; Service Businesses</span>
           </h1>
           <p className="text-white/65 text-lg max-w-xl mx-auto">
-            From a first website to full marketing execution — we meet you where you are.
+            We specialize in the industries that keep Brevard County running. Pick your trade below — or book a free 15-minute call and we&apos;ll handle the rest.
           </p>
         </div>
       </header>
 
-      {/* Service cards */}
-      <section className="pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8" aria-label="Our services">
-        <div className="max-w-5xl mx-auto space-y-8">
-          {SERVICES.map(s => (
-            <div key={s.tag} className="bg-[#13131f] border border-white/8 rounded-2xl p-6 sm:p-10">
-              <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-                {/* Left */}
-                <div className="flex-1">
-                  <span className="font-mono text-[#FF4500] text-xs tracking-[0.2em] uppercase mb-3 block">{s.tag}</span>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4 leading-tight">{s.title}</h2>
-                  <p className="text-white/65 text-base leading-relaxed mb-6">{s.body}</p>
-                  <a href={s.cta.href}
-                    className="inline-flex items-center gap-2 bg-[#FF4500] text-white font-bold px-6 py-3 rounded-xl
-                      hover:bg-[#FF5500] transition-colors text-sm min-h-[44px]">
-                    {s.cta.label} →
-                  </a>
+      <section className="pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8" aria-label="Industries we serve">
+        <div className="max-w-4xl mx-auto space-y-5">
+
+          {/* Featured — Plumbers */}
+          <div className="bg-[#13131f] border border-white/8 rounded-2xl p-7 sm:p-10">
+            <div className="flex flex-col lg:flex-row gap-8">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-2xl" role="img" aria-label="Plumber">{FEATURED.emoji}</span>
+                  <span className="font-mono text-[#FF4500] text-[10px] font-bold tracking-[0.22em] uppercase
+                    bg-[#FF4500]/10 border border-[#FF4500]/25 px-2.5 py-1 rounded-full">
+                    {FEATURED.badge}
+                  </span>
                 </div>
-                {/* Right */}
-                <div className="lg:w-64 flex-shrink-0">
-                  <p className="text-xs font-mono text-white/35 uppercase tracking-widest mb-4">What&apos;s included</p>
-                  <ul className="space-y-3">
-                    {s.bullets.map(b => (
-                      <li key={b} className="flex items-start gap-2.5 text-sm text-white/70">
-                        <Check />{b}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4">{FEATURED.title}</h2>
+                <p className="text-white/65 text-base leading-relaxed mb-6">{FEATURED.body}</p>
+                <a href="/#contact"
+                  className="inline-flex items-center gap-1.5 text-[#FF4500] font-semibold text-sm hover:text-[#FF6500] transition-colors">
+                  See plumber examples →
+                </a>
+              </div>
+              <div className="lg:w-56 flex-shrink-0">
+                <p className="text-xs font-mono text-white/30 uppercase tracking-widest mb-4">What&apos;s included</p>
+                <ul className="space-y-3">
+                  {FEATURED.bullets.map(b => (
+                    <li key={b} className="flex items-center gap-2.5 text-sm text-white/70">
+                      <Check />{b}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      {/* Guarantee */}
-      <section className="pb-24 px-4 sm:px-6 lg:px-8" aria-label="Guarantee">
-        <div className="max-w-3xl mx-auto bg-[#13131f] border border-[#FF4500]/22 rounded-2xl p-7 sm:p-10 text-center">
-          <p className="text-white/85 text-lg font-semibold leading-relaxed mb-4">
-            72-hour preview. Full delivery within 14 days. Or you don&apos;t pay.
-          </p>
-          <a href="/#contact"
-            className="inline-flex items-center gap-2 bg-[#FF4500] text-white font-bold px-8 py-3 rounded-xl
-              hover:bg-[#FF5500] transition-colors text-sm min-h-[44px]">
-            Let&apos;s build something →
-          </a>
+          {/* 2-column: HVAC + Roofers */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {INDUSTRIES.slice(0, 2).map(ind => (
+              <div key={ind.title} className="bg-[#13131f] border border-white/8 rounded-2xl p-6 sm:p-8">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-xl" role="img" aria-label={ind.title}>{ind.emoji}</span>
+                  <h2 className="text-lg font-extrabold text-white">{ind.title}</h2>
+                </div>
+                <p className="text-white/60 text-sm leading-relaxed mb-4">{ind.body}</p>
+                <a href="/#contact" className="text-[#FF4500] text-sm font-semibold hover:text-[#FF6500] transition-colors">
+                  See examples →
+                </a>
+              </div>
+            ))}
+          </div>
+
+          {/* 3-column: Restaurants + Dentists + Contractors */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {INDUSTRIES.slice(2).map(ind => (
+              <div key={ind.title} className="bg-[#13131f] border border-white/8 rounded-2xl p-6">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <span className="text-lg" role="img" aria-label={ind.title}>{ind.emoji}</span>
+                  <h2 className="text-base font-extrabold text-white">{ind.title}</h2>
+                </div>
+                <p className="text-white/60 text-sm leading-relaxed mb-4">{ind.body}</p>
+                <a href="/#contact" className="text-[#FF4500] text-xs font-semibold hover:text-[#FF6500] transition-colors">
+                  See examples →
+                </a>
+              </div>
+            ))}
+          </div>
+
+          {/* Not on the list */}
+          <div className="bg-[#13131f] border border-[#FF4500]/22 rounded-2xl p-8 sm:p-10 text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <span className="h-px bg-[#FF4500]/25 w-10" aria-hidden />
+              <span className="font-mono text-[#FF4500] text-xs tracking-[0.18em] uppercase">// NOT ON THE LIST?</span>
+              <span className="h-px bg-[#FF4500]/25 w-10" aria-hidden />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-white mb-3">
+              Don&apos;t see your industry? We still build for you.
+            </h2>
+            <p className="text-white/55 text-sm leading-relaxed max-w-lg mx-auto mb-7">
+              These are our most common verticals. If you run a service business in Brevard County and need a professional website that actually gets you found on Google — we can help.
+            </p>
+            <a href="https://calendly.com/spacecoastmarketing" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#FF4500] text-white font-bold px-8 py-4 rounded-xl
+                hover:bg-[#FF5500] transition-colors text-base min-h-[52px]">
+              Book a Free Call
+            </a>
+          </div>
+
         </div>
       </section>
 

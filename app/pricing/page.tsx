@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 
 export const metadata: Metadata = {
-  title:       'Pricing — Space Coast Marketing Agency',
+  title:       'Web Design Pricing for Florida Small Businesses | Space Coast Marketing',
   description: 'Transparent pricing for websites and marketing. Website $599 one-time, Growth $599 + $149/mo, Fractional CMO $1,500/mo. No contracts, no surprises.',
   alternates:  { canonical: 'https://spacecoastmarketingagency.com/pricing' },
 }
@@ -22,11 +21,12 @@ const WEBSITE_FEATURES = [
 
 const GROWTH_FEATURES = [
   'Everything in Website tier',
-  '10-page website, fully optimized',
+  '10 Page Website, Fully Optimized',
   'Social Media Management',
   'Google Business Profile Optimization',
   '2 blog posts per month',
   'Review Management',
+  'Monthly Analytics',
   'Unlimited revisions',
   'Do-What-We-Said Guarantee',
 ]
@@ -38,14 +38,24 @@ const CMO_FEATURES = [
   'Paid ad management',
   'AI integrations',
   'Marketing automations',
+  'Email Marketing',
   'Weekly 1-on-1 strategy calls',
-  'Monthly reporting',
 ]
 
 const SITE_CARE_FEATURES = [
   'Hosting + SSL + security updates',
-  'Up to 2 content changes/month',
-  'Monthly analytics reporting and recommendations',
+  'Unlimited Revisions',
+  'Monthly Analytics Reporting',
+]
+
+const CHARITIES = [
+  'Brevard Veterans Memorial Center',
+  'Space Coast Honor Flight',
+  'Feeding the Space Coast',
+  'Brevard Humane Society',
+  "Children's Hunger Project",
+  'World Central Kitchen',
+  'Direct Relief',
 ]
 
 function Check() {
@@ -62,6 +72,7 @@ export default function PricingPage() {
     <div className="min-h-screen bg-[#0a0a14] text-[#F5F5F0]">
       <Nav />
 
+      {/* Hero header */}
       <header className="relative pt-28 pb-14 sm:pt-36 sm:pb-16 text-center px-4 overflow-hidden">
         <Image
           src="/hero/artemis-i-launch.jpg"
@@ -82,30 +93,42 @@ export default function PricingPage() {
             <span className="text-[#FF4500]">Just honest pricing.</span>
           </h1>
           <p className="text-white/65 text-lg max-w-xl mx-auto">
-            You own your site from day one. See a preview in 72 hours. Pick the plan that fits where you are right now.
+            What you see is what you pay. You own your site from day one.
           </p>
         </div>
       </header>
 
+      {/* Plans section */}
       <section className="pb-16 px-4 sm:px-6 lg:px-8" aria-label="Pricing tiers">
         <div className="max-w-5xl mx-auto">
 
+          {/* Section label */}
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <span className="h-px bg-[#FF4500]/25 w-12" aria-hidden />
+            <span className="font-mono text-[#FF4500] text-xs tracking-[0.18em] uppercase">// PLANS</span>
+            <span className="h-px bg-[#FF4500]/25 w-12" aria-hidden />
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white text-center mb-10">
+            Three plans. One goal — get you found.
+          </h2>
+
           {/* Military discount */}
-          <div className="max-w-5xl mx-auto mb-6">
-            <div className="bg-[#13131f] border border-white/7 rounded-2xl px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <svg className="w-5 h-5 text-[#FF4500] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-              </svg>
-              <div className="flex-1">
-                <p className="text-white font-semibold text-sm">
-                  Military &amp; First Responder: <span className="text-[#FF4500]">$50 off any site build.</span>
-                </p>
-                <p className="text-white/50 text-xs mt-0.5">Active duty, veterans, police, fire, and EMS. Your word is enough — no verification required.</p>
-              </div>
+          <div className="mb-6 bg-[#13131f] border border-white/7 rounded-2xl px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <svg className="w-5 h-5 text-[#FF4500] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+            </svg>
+            <div className="flex-1">
+              <p className="text-white font-semibold text-sm">
+                Military, Veterans &amp; First Responders —{' '}
+                <span className="text-[#FF4500]">20% off any site build.</span>
+              </p>
+              <p className="text-white/50 text-xs mt-0.5">
+                Active duty, veterans, police, fire, and EMS. Mention your service in the contact form — no verification required.
+              </p>
             </div>
           </div>
 
-          {/* 3 tiers */}
+          {/* 3 tier cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
 
             {/* Website */}
@@ -115,7 +138,7 @@ export default function PricingPage() {
                 <span className="font-mono text-4xl font-extrabold text-white">$599</span>
                 <span className="text-white/60 text-sm">one-time</span>
               </div>
-              <p className="text-white/45 text-xs mb-7">Professional site, built to rank and convert.</p>
+              <p className="text-white/45 text-xs mb-7">A professional website built to convert — mobile-first, fast-loading, everything Google needs to start indexing you.</p>
               <ul className="space-y-3 flex-1 mb-8">
                 {WEBSITE_FEATURES.map(f => (
                   <li key={f} className="flex items-start gap-2.5 text-sm text-white/70"><Check />{f}</li>
@@ -159,7 +182,7 @@ export default function PricingPage() {
                 <span className="text-white/60 text-sm">/mo</span>
               </div>
               <p className="text-white/65 text-xs italic mb-7 leading-relaxed">
-                Your marketing department, on retainer. Website included free.
+                Your marketing department, on retainer. End-to-end execution with weekly white-glove strategy calls.
               </p>
               <ul className="space-y-3 flex-1 mb-8">
                 {CMO_FEATURES.map(f => (
@@ -203,75 +226,58 @@ export default function PricingPage() {
             </p>
           </div>
 
-          {/* Nonprofit */}
-          <div className="mt-5 bg-[#1B2B4B]/40 border border-white/8 rounded-2xl p-6 text-center">
-            <p className="text-white/70 text-sm leading-relaxed">
-              Own a 501(c)(3)?{' '}
-              <span className="text-white font-semibold">We build websites for nonprofits free of charge.</span>
-              {' '}Reach out — we&apos;d love to help.
+          {/* We Give Back */}
+          <div className="mt-5 bg-[#1B2B4B]/40 border border-white/8 rounded-2xl p-6 sm:p-7">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="font-mono text-[#FF4500] text-xs tracking-[0.18em] uppercase font-bold">// WE GIVE BACK</span>
+              <span className="h-px bg-[#FF4500]/25 w-8 flex-shrink-0" aria-hidden />
+            </div>
+            <p className="text-white font-semibold text-sm mb-1">
+              $20 of every purchase goes to charity — you choose where.
             </p>
+            <p className="text-white/50 text-xs mb-4 leading-relaxed">
+              Own a 501(c)(3)? We build websites for nonprofits free of charge. Reach out — we&apos;d love to help.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {CHARITIES.map(c => (
+                <span key={c} className="text-xs bg-[#1B2B4B] border border-white/10 text-white/60 px-3 py-1.5 rounded-full">
+                  {c}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Compare table */}
-      <section className="pb-20 sm:pb-24 px-4 sm:px-6 lg:px-8" aria-label="Plan comparison">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6 text-center">Plan comparison</h2>
-          <div className="overflow-x-auto rounded-2xl border border-white/7">
-            <table className="w-full text-sm text-left bg-[#13131f]">
-              <thead>
-                <tr className="border-b border-white/7">
-                  <th className="px-5 py-4 text-white/45 font-mono text-xs uppercase tracking-widest w-1/2">Feature</th>
-                  <th className="px-5 py-4 text-white font-bold text-center">Website</th>
-                  <th className="px-5 py-4 text-[#FF4500] font-bold text-center">Growth</th>
-                  <th className="px-5 py-4 text-white font-bold text-center">CMO</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { f: '5-page website',          w: true,  g: true,  c: true  },
-                  { f: '10-page website',          w: false, g: true,  c: true  },
-                  { f: 'Google Business Profile',  w: true,  g: true,  c: true  },
-                  { f: 'Social Media Management',  w: false, g: true,  c: true  },
-                  { f: 'Blog posts (2/mo)',         w: false, g: true,  c: false },
-                  { f: 'Blog posts (5/mo)',         w: false, g: false, c: true  },
-                  { f: 'Review Management',         w: false, g: true,  c: true  },
-                  { f: 'SEO + AEO',                w: false, g: false, c: true  },
-                  { f: 'Paid ad management',        w: false, g: false, c: true  },
-                  { f: 'AI integrations',           w: false, g: false, c: true  },
-                  { f: 'Marketing automations',     w: false, g: false, c: true  },
-                  { f: 'Weekly strategy calls',     w: false, g: false, c: true  },
-                  { f: 'Monthly reporting',         w: false, g: false, c: true  },
-                  { f: '72-hour preview',           w: true,  g: true,  c: true  },
-                  { f: 'Unlimited revisions',       w: true,  g: true,  c: true  },
-                  { f: 'No contracts',              w: true,  g: true,  c: true  },
-                ].map((row, i) => (
-                  <tr key={row.f} className={i % 2 === 0 ? 'border-b border-white/5' : 'bg-white/[0.018] border-b border-white/5'}>
-                    <td className="px-5 py-3.5 text-white/70">{row.f}</td>
-                    {[row.w, row.g, row.c].map((has, j) => (
-                      <td key={j} className="px-5 py-3.5 text-center">
-                        {has
-                          ? <svg className="w-4 h-4 text-[#FF4500] mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-label="Included"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                          : <span className="text-white/20 text-base leading-none" aria-label="Not included">—</span>
-                        }
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* FAQ / Call CTA */}
+          <div className="mt-10 text-center">
+            <p className="text-white/60 text-base mb-5">Have questions about which plan is right for you?</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a href="/#contact"
+                className="inline-flex items-center gap-2 border border-white/15 text-white/80 font-semibold px-7 py-3 rounded-xl
+                  hover:bg-white/5 transition-colors text-sm min-h-[44px]">
+                See FAQ →
+              </a>
+              <a href="https://calendly.com/spacecoastmarketing/discovery" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#FF4500] text-white font-bold px-7 py-3 rounded-xl
+                  hover:bg-[#FF5500] transition-colors text-sm min-h-[44px]">
+                Book a free 15-min call →
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
 
-      <section className="pb-24 text-center px-4">
-        <p className="text-white/65 text-base mb-6">Not sure which plan is right for you?</p>
-        <a href="/#contact"
-          className="inline-flex items-center gap-2 bg-[#FF4500] text-white font-bold px-8 py-4 rounded-xl
-            hover:bg-[#FF5500] transition-colors text-base sm:text-lg min-h-[52px]">
-          Talk to us — it&apos;s free →
-        </a>
+          {/* Referral */}
+          <div className="mt-8 bg-[#13131f] border border-white/8 rounded-2xl p-7 sm:p-9 text-center">
+            <h3 className="text-lg font-extrabold text-white mb-2">Know someone who needs a website?</h3>
+            <p className="text-white/55 text-sm leading-relaxed max-w-md mx-auto mb-6">
+              Send them our way — get $100 off your next month when they sign up. No cap. No fine print. Credit hits your account after their first payment clears.
+            </p>
+            <a href="/#contact"
+              className="inline-flex items-center gap-2 border border-[#FF4500]/35 text-[#FF4500]
+                hover:bg-[#FF4500] hover:text-white transition-all duration-150 font-bold px-7 py-3 rounded-xl text-sm min-h-[44px]">
+              Tell Me More →
+            </a>
+          </div>
+
+        </div>
       </section>
 
       <Footer />

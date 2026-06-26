@@ -37,15 +37,17 @@ export default function StatsSection() {
           </h2>
         </AnimateOnScroll>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-14">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {STATS.map((s, i) => (
-            <AnimateOnScroll key={s.label} delay={i * 0.08}>
-              <AnimatedCounter
-                to={s.value}
-                suffix={s.suffix}
-                label={s.label}
-                isZero={s.isZero}
-              />
+            <AnimateOnScroll key={s.label} delay={i * 0.1}>
+              <div className="bg-[#13131f] border border-white/8 rounded-2xl px-6 py-8 sm:px-8 sm:py-10 text-center">
+                <AnimatedCounter
+                  to={s.value}
+                  suffix={s.suffix}
+                  label={s.label}
+                  isZero={s.isZero}
+                />
+              </div>
             </AnimateOnScroll>
           ))}
         </div>

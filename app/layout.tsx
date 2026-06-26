@@ -17,21 +17,21 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title:       'Space Coast Marketing Agency — Websites & Marketing for Brevard',
+  title:       'Space Coast Marketing — Websites & Marketing for Brevard',
   description: 'Professional websites and full-service marketing for Brevard County businesses. 72-hour preview, $599 flat, no contracts. Serving Melbourne, Cocoa Beach, Titusville, Palm Bay, Merritt Island, and the Space Coast.',
   alternates:  { canonical: 'https://spacecoastmarketingagency.com' },
   icons:       { icon: '/brand/icon.svg' },
   openGraph: {
-    title:       'Space Coast Marketing Agency — Amplify Your Presence.',
+    title:       'Space Coast Marketing — Amplify Your Presence.',
     description: 'Professional websites and full-service marketing for Brevard County businesses. 72-hour preview, $599 flat, no contracts.',
     url:         'https://spacecoastmarketingagency.com',
-    siteName:    'Space Coast Marketing Agency',
+    siteName:    'Space Coast Marketing',
     locale:      'en_US',
     type:        'website',
   },
   twitter: {
     card:        'summary_large_image',
-    title:       'Space Coast Marketing Agency — Websites & Marketing for Brevard',
+    title:       'Space Coast Marketing — Websites & Marketing for Brevard',
     description: '72-hour preview. $599 flat. No contracts. Space Coast based.',
   },
 }
@@ -39,9 +39,9 @@ export const metadata: Metadata = {
 const LOCAL_BUSINESS_SCHEMA = {
   '@context': 'https://schema.org',
   '@type':    'LocalBusiness',
-  name:       'Space Coast Marketing Agency',
+  name:       'Space Coast Marketing',
   url:        'https://spacecoastmarketingagency.com',
-  email:      'info@spacecoastmarketingagency.com',
+  email:      'info@spacecoastmarketing.co',
   telephone:  '+1-321-328-5307',
   description: 'Professional websites and full-service marketing for Brevard County businesses. 72-hour preview, $599 flat, no contracts.',
   sameAs: ['https://g.page/spacecoastmarketingagency'],
@@ -75,7 +75,7 @@ const LOCAL_BUSINESS_SCHEMA = {
 const WEBSITE_SCHEMA = {
   '@context': 'https://schema.org',
   '@type':    'WebSite',
-  name:       'Space Coast Marketing Agency',
+  name:       'Space Coast Marketing',
   url:        'https://spacecoastmarketingagency.com',
   potentialAction: {
     '@type':       'SearchAction',

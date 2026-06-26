@@ -3,7 +3,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Space Coast Marketing Agency',
+  title: 'Privacy Policy — Space Coast Marketing',
   alternates: { canonical: 'https://spacecoastmarketingagency.com/privacy' },
 }
 
