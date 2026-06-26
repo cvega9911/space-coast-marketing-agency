@@ -3,11 +3,12 @@
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const pathname        = usePathname()
+  const reduced         = useReducedMotion()
 
   const links = [
     { label: 'Services', href: '/services' },
