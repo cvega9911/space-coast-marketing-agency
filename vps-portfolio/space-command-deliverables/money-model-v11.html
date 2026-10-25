@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space Coast Marketing Agency — v11 Money Model</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #FF4500;
+  --navy: #1B2B4B;
+  --black: #0A0A14;
+  --white: #F5F5F0;
+  --sage: #5E6F5D;
+  --navy-light: #243456;
+  --card-bg: #111122;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* Hero */
+.brand-bar {
+  display: flex; align-items: center; gap: 16px;
+  padding-bottom: 24px; border-bottom: 2px solid var(--navy-light);
+  margin-bottom: 48px;
+}
+.brand-icon {
+  width: 48px; height: 56px; flex-shrink: 0;
+}
+.brand-text h1 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 800; font-size: 28px; color: var(--white);
+  letter-spacing: -0.5px;
+}
+.brand-text h1 span { color: var(--orange); }
+.brand-text .tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--sage); letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700; font-size: 36px;
+  margin-bottom: 12px; letter-spacing: -0.5px;
+}
+.hero-sub {
+  font-size: 18px; color: rgba(245,245,240,0.7);
+  margin-bottom: 32px; max-width: 640px;
+}
+.badges {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px;
+}
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; padding: 6px 14px; border-radius: 4px;
+  background: var(--navy-light); color: var(--sage);
+  letter-spacing: 1px; text-transform: uppercase;
+}
+
+/* Tiers */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+@media (max-width: 768px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+}
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--navy-light);
+  border-radius: 12px; padding: 32px 24px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.card.featured {
+  border-color: var(--orange);
+  border-width: 2px;
+  transform: scale(1.02);
+}
+@media (max-width: 768px) {
+  .card.featured { transform: none; }
+}
+.popular-badge {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--orange); color: var(--white);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  padding: 5px 16px; border-radius: 4px;
+  text-transform: uppercase; white-space: nowrap;
+}
+.tier-name {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700; font-size: 20px; margin-bottom: 8px;
+}
+.price {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 800; font-size: 40px; margin-bottom: 4px;
+  letter-spacing: -1px;
+}
+.price-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; color: var(--sage); margin-bottom: 24px;
+}
+.features { list-style: none; }
+.features li {
+  padding: 8px 0; font-size: 14px; color: rgba(245,245,240,0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.features li:last-child { border-bottom: none; }
+.features li::before {
+  content: '✓ '; color: var(--orange); font-weight: 700;
+}
+
+/* Site Care add-on */
+.addon-card {
+  background: var(--card-bg);
+  border: 1px solid var(--navy-light);
+  border-radius: 12px; padding: 24px 28px;
+  max-width: 380px; margin: 0 auto 48px;
+}
+.addon-card .tier-name { font-size: 18px; }
+.addon-card .price { font-size: 32px; }
+
+/* Section header */
+.section-header {
+  text-align: center; margin: 56px 0 32px;
+}
+.section-header h3 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700; font-size: 24px;
+}
+
+/* Guarantee */
+.guarantee-box {
+  background: var(--navy);
+  border-radius: 12px; padding: 40px 32px;
+  text-align: center; margin-bottom: 48px;
+}
+.guarantee-box p {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700; font-size: 28px; letter-spacing: -0.5px;
+}
+
+/* Perks */
+.perk-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px; margin-bottom: 48px;
+}
+@media (max-width: 600px) {
+  .perk-grid { grid-template-columns: 1fr; }
+}
+.perk {
+  background: var(--card-bg);
+  border: 1px solid var(--navy-light);
+  border-radius: 8px; padding: 20px;
+  font-size: 14px; text-align: center;
+}
+.perk strong { color: var(--orange); }
+
+/* GBP */
+.gbp-box {
+  background: var(--card-bg);
+  border: 1px solid var(--navy-light);
+  border-radius: 12px; padding: 24px 28px;
+  margin-bottom: 48px;
+}
+.gbp-box h4 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px; margin-bottom: 12px;
+  color: var(--sage);
+}
+.gbp-box .gbp-text {
+  font-size: 13px; color: rgba(245,245,240,0.75);
+  line-height: 1.8;
+}
+
+/* Footer */
+.footer-bar {
+  text-align: center; padding: 32px 0;
+  border-top: 1px solid var(--navy-light);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--sage);
+  letter-spacing: 1px;
+}
+.footer-bar .divider { color: var(--orange); margin: 0 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Brand Bar -->
+  <div class="brand-bar">
+    <svg class="brand-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <rect x="38" y="25" width="24" height="70" rx="2" fill="#1B2B4B"/>
+      <polygon points="30,25 70,25 62,12 38,12" fill="#1B2B4B"/>
+      <rect x="42" y="28" width="16" height="4" fill="#F5F5F0" opacity="0.8"/>
+      <rect x="42" y="38" width="16" height="20" fill="#F5F5F0" opacity="0.7"/>
+      <rect x="42" y="62" width="16" height="4" fill="#F5F5F0" opacity="0.8"/>
+      <rect x="42" y="70" width="16" height="4" fill="#F5F5F0" opacity="0.8"/>
+      <rect x="38" y="90" width="24" height="6" rx="1" fill="#1B2B4B"/>
+      <polygon points="70,22 90,18 90,26" fill="#FF4500" opacity="0.9"/>
+      <polygon points="70,28 88,24 88,32" fill="#FF4500" opacity="0.7"/>
+      <polygon points="30,22 10,18 10,26" fill="#FF4500" opacity="0.9"/>
+      <polygon points="30,28 12,24 12,32" fill="#FF4500" opacity="0.7"/>
+    </svg>
+    <div class="brand-text">
+      <h1>SPACE COAST <span>MARKETING AGENCY</span></h1>
+      <div class="tagline">Amplify Your Presence.</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <h2>Your next customer is searching right now.</h2>
+  <p class="hero-sub">Someone's Googling your service right now. They're finding your competitor. We fix that in 72 hours.</p>
+  <div class="badges">
+    <span class="badge">No Contracts</span>
+    <span class="badge">72-Hour Preview</span>
+    <span class="badge">Space Coast Based</span>
+    <span class="badge">You Own Your Site</span>
+  </div>
+
+  <!-- Pricing -->
+  <div class="pricing-grid">
+    <!-- Tier 1 -->
+    <div class="card">
+      <div class="tier-name">Website</div>
+      <div class="price">$599</div>
+      <div class="price-sub">one-time</div>
+      <ul class="features">
+        <li>5-page professional website</li>
+        <li>On-page SEO foundations</li>
+        <li>SSL included</li>
+        <li>Google Business Profile setup</li>
+        <li>Free hosting for life</li>
+        <li>72-hour preview delivery</li>
+        <li>Unlimited revisions</li>
+      </ul>
+    </div>
+
+    <!-- Tier 2: Growth -->
+    <div class="card featured">
+      <div class="popular-badge">★ MOST POPULAR</div>
+      <div class="tier-name">Growth</div>
+      <div class="price">$599</div>
+      <div class="price-sub">+ $149/month</div>
+      <ul class="features">
+        <li>10-page website, fully optimized</li>
+        <li>Social Media Management</li>
+        <li>Google Business Profile Optimization</li>
+        <li>2 blog posts per month</li>
+        <li>Review Management</li>
+        <li>Unlimited revisions</li>
+        <li>Do-What-We-Said Guarantee</li>
+      </ul>
+    </div>
+
+    <!-- Tier 3: CMO -->
+    <div class="card">
+      <div class="tier-name">Fractional CMO</div>
+      <div class="price">$1,500</div>
+      <div class="price-sub">/month</div>
+      <ul class="features">
+        <li>Website included (Tiers 1+2 free)</li>
+        <li>5 custom blog posts per month</li>
+        <li>SEO + AEO (ChatGPT, Gemini, Perplexity)</li>
+        <li>Paid ad management</li>
+        <li>AI integrations</li>
+        <li>Marketing automations</li>
+        <li>Weekly white-glove consultations</li>
+        <li>Monthly reporting</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Site Care Add-on -->
+  <div class="addon-card">
+    <div class="tier-name">Site Care Plan</div>
+    <div class="price">$49<span style="font-size:18px;opacity:0.7">/mo</span></div>
+    <div class="price-sub">For businesses that already have a site</div>
+    <ul class="features">
+      <li>Hosting + SSL + security updates</li>
+      <li>Up to 2 content changes per month</li>
+      <li>Monthly analytics & recommendations</li>
+    </ul>
+  </div>
+
+  <!-- Guarantee -->
+  <div class="guarantee-box">
+    <p>72-hour preview. Full delivery within 14 days. Or you don't pay.</p>
+  </div>
+
+  <!-- Perks -->
+  <h3 style="text-align:center;margin-bottom:20px;font-family:'IBM Plex Sans',sans-serif;">Always Included</h3>
+  <div class="perk-grid">
+    <div class="perk"><strong>🎖️ Military & First Responders</strong><br>$50 off any site build</div>
+    <div class="perk"><strong>💚 501(c)(3) Nonprofits</strong><br>Free website — reach out</div>
+    <div class="perk"><strong>🎗️ $20 to Charity</strong><br>Every purchase — client chooses</div>
+    <div class="perk"><strong>📞 (321) 328-5307</strong><br>Call or book a free consult</div>
+  </div>
+
+  <!-- GBP Description -->
+  <div class="gbp-box">
+    <h4>Google Business Profile Description (750 char limit)</h4>
+    <p class="gbp-text">
+Space Coast Marketing Agency builds professional websites for Brevard County service businesses — plumbers, roofers, HVAC, dentists and contractors. 72-hour preview, 14-day delivery guaranteed — or you don't pay. $599 flat for a 5-page website, SEO-optimized, hosted free for life. No contracts, you own your site day one. Growth plans include social media management, GBP optimization, review management, and Answer Engine Optimization — so you show up in ChatGPT and Gemini, not just Google. Full Fractional CMO retainer available with AI integrations. $20 of every purchase to charity of your choice. Serving Melbourne, Cocoa Beach, Titusville, Palm Bay, Merritt Island, Cape Canaveral, and Brevard County. Merritt Island based, Florida proud.
+    </p>
+    <p style="font-size:11px;color:var(--sage);margin-top:12px;font-family:'JetBrains Mono',monospace;">
+      Char count: ~720 — fits under 750 with room
+    </p>
+  </div>
+
+  <!-- Back link -->
+  <div style="text-align:center;margin:24px 0">
+    <a href="index.html" style="color:var(--sage);font-family:'JetBrains Mono',monospace;font-size:12px;text-decoration:none;">← Back to Space Command Center</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-bar">
+    Space Coast Marketing Agency<span class="divider">|</span>Merritt Island, FL<span class="divider">|</span>(321) 328-5307<span class="divider">|</span>spacecoastmarketingagency.com
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hormozi Frameworks Applied · $100M Offers, Leads & Money Models for Space Coast Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+    --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+    --border: #1E293B; --border-accent: #2D3A5C;
+    --radius: 10px; --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-deep); color: var(--text); font-family: var(--font); line-height: 1.6; padding-bottom: 120px; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+  nav .inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  nav a { color: var(--text-muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+  nav a:hover { color: var(--orange); text-decoration: none; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  .hero { padding: 80px 0 60px; text-align: center; background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%); }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .hero h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 720px; margin: 0 auto 40px; }
+  .stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+  .stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .stat-pill .value.accent { color: var(--orange); }
+  .stat-pill .value.green { color: var(--green); }
+  .stat-pill .value.gold { color: var(--gold); }
+  .stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* Sections */
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+  h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+  .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+  h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  li { margin-bottom: 4px; }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* Cards */
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .card.accent-left { border-left: 3px solid var(--orange); }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.amber-left { border-left: 3px solid var(--amber); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+  /* Callouts */
+  .callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+  .callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+  .callout.info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); }
+  .callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+  .callout .icon { font-size: 20px; flex-shrink: 0; }
+  .callout h4 { font-size: 15px; margin-bottom: 4px; }
+  .callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+
+  /* Insight box */
+  .insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+  .insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+  .insight-box p { margin-bottom: 0; }
+
+  /* Quote block */
+  .quote-block { background: var(--bg-surface); border-left: 3px solid var(--gold); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 20px 24px; margin: 20px 0; }
+  .quote-block p { font-style: italic; font-size: 15px; color: var(--text); margin-bottom: 8px; }
+  .quote-block .attrib { font-size: 12px; color: var(--text-dim); font-style: normal; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0 24px; }
+  thead { background: var(--bg-surface); }
+  th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover { background: rgba(255,255,255,0.02); }
+
+  /* Tags */
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .tag.green { background: var(--green-bg); color: var(--green); }
+  .tag.red { background: var(--red-bg); color: var(--red); }
+  .tag.amber { background: var(--amber-bg); color: var(--amber); }
+  .tag.blue { background: rgba(59,130,246,0.12); color: #3B82F6; }
+
+  /* Score bars */
+  .score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .score-label { font-size: 12px; font-weight: 600; color: var(--text-muted); width: 130px; flex-shrink: 0; text-align: right; }
+  .score-bar-wrap { flex: 1; display: flex; align-items: center; gap: 8px; }
+  .score-bar { height: 8px; border-radius: 4px; background: var(--border); flex: 1; overflow: hidden; }
+  .score-bar .fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .score-bar .fill.orange { background: var(--orange); }
+  .score-bar .fill.green { background: var(--green); }
+  .score-bar .fill.gold { background: var(--gold); }
+  .score-val { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--text); width: 24px; text-align: center; }
+
+  /* Score comparison */
+  .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+  .score-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  .score-card h5 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--text); text-align: center; }
+  .score-card.before h5 { color: var(--text-dim); }
+  .score-card.after h5 { color: var(--green); }
+
+  /* Process steps */
+  .step-list { list-style: none; margin-left: 0; }
+  .step-list li { display: flex; gap: 12px; margin-bottom: 16px; padding: 16px; background: var(--bg-surface); border-radius: var(--radius-sm); border: 1px solid var(--border); }
+  .step-list li .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,69,0,0.15); color: var(--orange); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+  .step-list li .step-content { flex: 1; }
+  .step-list li .step-content strong { display: block; margin-bottom: 2px; }
+  .step-list li .step-content span { font-size: 13px; color: var(--text-muted); }
+  .step-list li .check { color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  /* Big number cards */
+  .big-num { font-size: 48px; font-weight: 800; color: var(--orange); line-height: 1; margin-bottom: 4px; }
+  .big-num-context { font-size: 14px; color: var(--text-muted); }
+
+  /* Formula display */
+  .formula-box { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; text-align: center; margin: 20px 0; }
+  .formula-box .formula { font-family: var(--font-mono); font-size: 16px; color: var(--text); margin-bottom: 8px; }
+  .formula-box .formula em { color: var(--orange); font-style: normal; }
+  .formula-box .formula-desc { font-size: 13px; color: var(--text-dim); }
+
+  /* Guarantee box */
+  .guarantee-box { background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(34,197,94,0.02)); border: 1px solid rgba(34,197,94,0.25); border-radius: var(--radius); padding: 32px; text-align: center; margin: 24px 0; }
+  .guarantee-box .icon-lg { font-size: 36px; margin-bottom: 12px; }
+  .guarantee-box h4 { font-size: 20px; color: var(--green); margin-bottom: 8px; }
+  .guarantee-box p { font-size: 14px; color: var(--text-muted); max-width: 640px; margin: 0 auto; }
+
+  /* Grand slam banner */
+  .grandslam { background: linear-gradient(135deg, rgba(240,160,48,0.1), rgba(255,69,0,0.05)); border: 2px solid rgba(240,160,48,0.3); border-radius: var(--radius); padding: 32px; margin: 24px 0; position: relative; overflow: hidden; }
+  .grandslam::before { content: '⚾'; position: absolute; top: 16px; right: 24px; font-size: 48px; opacity: 0.15; }
+  .grandslam h4 { font-size: 18px; color: var(--gold); margin-bottom: 12px; }
+  .grandslam .offer-text { font-family: var(--font); font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.8; margin-bottom: 16px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); }
+  .grandslam .checks { font-size: 13px; color: var(--text-muted); line-height: 2; }
+
+  /* Priority list */
+  .priority-list { list-style: none; margin-left: 0; }
+  .priority-list li { display: flex; gap: 16px; padding: 18px 20px; margin-bottom: 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); align-items: center; }
+  .priority-list li .pri-num { width: 36px; height: 36px; border-radius: 50%; background: var(--orange); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
+  .priority-list li .pri-content { flex: 1; }
+  .priority-list li .pri-content strong { display: block; font-size: 15px; margin-bottom: 2px; }
+  .priority-list li .pri-content span { font-size: 13px; color: var(--text-muted); }
+  .priority-list li .bolt { font-size: 18px; flex-shrink: 0; }
+
+  /* Comparison grid */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .two-col .col h5 { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+  .two-col .col.before h5 { color: var(--text-dim); }
+  .two-col .col.after h5 { color: var(--green); }
+
+  /* Footer */
+  footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; line-height: 1.8; }
+  footer .divider { color: var(--orange); margin: 0 8px; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .score-grid, .two-col { grid-template-columns: 1fr; }
+    .stat-row { gap: 10px; }
+    .stat-pill { min-width: 130px; padding: 14px 16px; }
+    .stat-pill .value { font-size: 22px; }
+    .hero h1 { font-size: 26px; }
+    table { font-size: 12px; }
+    th, td { padding: 8px 10px; }
+    .score-label { width: 100px; font-size: 11px; }
+  }
+  @media (max-width: 480px) {
+    .hero { padding: 48px 0 32px; }
+    section { padding: 40px 0; }
+    h2 { font-size: 22px; }
+    .formula-box .formula { font-size: 13px; }
+    .grandslam .offer-text { font-size: 14px; }
+  }
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    nav { display: none; }
+    section { break-inside: avoid; border-color: #ddd; }
+    .card, .callout, .insight-box, .quote-block, .score-card, .grandslam, .guarantee-box, .formula-box { border-color: #ddd; background: #fafafa; }
+    .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+    h2, h3, h4, h5 { color: #111; }
+    .stat-pill { border-color: #ddd; }
+    .stat-pill .value { color: #111; }
+    .section-label { color: #FF4500; }
+    .score-bar { border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> Space Command Center · Strategic Intelligence</div>
+    <div><a href="index.html">← Back to Command Center</a></div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Strategic Intelligence</div>
+    <h1>Hormozi Frameworks Applied · $100M Offers, Leads &amp; Money Models for Space Coast Marketing</h1>
+    <p class="subtitle">A complete synthesis and direct application of Alex Hormozi's three foundational books — every principle mapped to SCM's specific offers, outreach, and money model.</p>
+    <div class="stat-row">
+      <div class="stat-pill"><div class="value accent">3</div><div class="label">Books Synthesized</div></div>
+      <div class="stat-pill"><div class="value green">12</div><div class="label">Direct Applications</div></div>
+      <div class="stat-pill"><div class="value gold">5</div><div class="label">Offer Levers</div></div>
+      <div class="stat-pill"><div class="value">1</div><div class="label">Core Four Engine</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 01: $100M OFFERS — APPLIED -->
+<!-- ============================================================ -->
+<section>
+  <div class="container">
+    <div class="section-label">01 · $100M Offers — Applied</div>
+    <h2>Hormozi's Offer Architecture Mapped to Space Coast Marketing</h2>
+    <p class="section-desc">Every principle from &quot;how to charge premium prices and get people to say yes&quot; mapped directly to SCM's three-tier pricing architecture.</p>
+
+    <!-- 01A: The Value Equation -->
+    <h3>01A. The Value Equation</h3>
+    <p>Hormozi's master formula — the mathematical equation that determines whether someone buys:</p>
+
+    <div class="formula-box">
+      <div class="formula"><em>Value</em> = (<em>Dream Outcome</em> × <em>Perceived Likelihood</em>) ÷ (<em>Time Delay</em> × <em>Effort &amp; Sacrifice</em>)</div>
+      <div class="formula-desc">↑ Maximize the numerator. ↓ Drive the denominator to zero. That's how you create irresistible offers.</div>
+    </div>
+
+    <div class="card accent-left" style="margin-bottom: 24px;">
+      <h4>Applied to Space Coast Marketing</h4>
+      <table>
+        <thead>
+          <tr><th style="width:140px">Lever</th><th>Direction</th><th>SCM Application</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--green)">Dream Outcome</strong></td>
+            <td><span class="tag green">MAXIMIZE ↑</span></td>
+            <td>&quot;More calls. More customers. More revenue.&quot; — <em>not</em> &quot;better SEO&quot; or &quot;a nicer website.&quot; We sell business results, not marketing deliverables.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--green)">Perceived Likelihood</strong></td>
+            <td><span class="tag green">MAXIMIZE ↑</span></td>
+            <td>72-hour preview guarantee — they see the site before paying. Free audit shows them the data before any commitment. Client owns everything — no hostage-holding.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--red)">Time Delay</strong></td>
+            <td><span class="tag red">MINIMIZE ↓</span></td>
+            <td>72 hours for website preview. 48 hours for audit delivery. Immediate ChatGPT visibility demo on discovery calls — instant &quot;aha&quot; moment.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--red)">Effort &amp; Sacrifice</strong></td>
+            <td><span class="tag red">MINIMIZE ↓</span></td>
+            <td>&quot;Done-for-you&quot; — client does <strong>nothing</strong>. No learning software, no writing content, no managing ads. We handle everything.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Score Comparison -->
+    <h4 style="margin-top: 8px;">Current Offer Score vs. Optimized Offer Score</h4>
+    <p style="font-size:13px; color:var(--text-dim);">Rated 1–10 per lever. Hormozi says most businesses operate at 3–5 across all levers. The goal is 8+ on every lever simultaneously.</p>
+
+    <div class="score-grid">
+      <div class="score-card before">
+        <h5>📋 Typical Agency Offer (Before Hormozi)</h5>
+        <div class="score-row"><span class="score-label">Dream Outcome</span><div class="score-bar-wrap"><div class="score-bar"><div class="fill orange" style="width:40%"></div></div><span class="score-val">4</span></div></div>
+        <div class="score-row"><span class="score-label">Perceived Likelihood</span><div class="score-bar-wrap"><div class="score-bar"><div class="fill orange" style="width:30%"></div></div><span class="score-val">3</span></div></div>
+        <div class="score-row"><span class="score-label">Time Delay</span><div class="score-bar-wrap"><div class="score-bar"><div class="fill orange" style="width:20%"></div></div><span class="score-val">2</span></div></div>
+        <div class="score-row"><span class="score-label">Effort &amp; Sacrifice</span><div class="score-bar-wrap"><div class="score-bar"><div class="fill orange" style="width:30%"></div></div><span class="score-val">3</span></div></div>
+        <div style="text-align:center; margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
+          <span style="font-family:var(--font-mono); font-size:13px; color:var(--text-dim);">Value ≈ (4×3)÷(2×3) = <strong style="color:var(--red)">2.0</strong></span>
+        </div>
+      </div>
+      <div class="score-card after">
+        <h5>🚀 SCM Hormozi-Optimized Offer</h5>
+        <div class="score-row"><span class="score-label">Dream Outcome</span><div class="score-bar-wrap"><div class="score-bar"><div class="fill green" style="width:90%"></div></div><span class="score-val">9</span></div></div>
+        <div class="score-row"><span class="score-label">Perceived Likelihood</span><div class="score-bar-wrap"><div class="score-bar"><div class="fill green" style="width:90%"></div></div><span class="score-val">9</span></div></div>
+        <div class="score-row"><span class="score-label">Time Delay</span><div class="score-bar-wrap"><div class="score-bar"><div class="fill green" style="width:10%"></div></div><span class="score-val">1</span></div></div>
+        <div class="score-row"><span class="score-label">Effort &amp; Sacrifice</span><div class="score-bar-wrap"><div class="score-bar"><div class="fill green" style="width:10%"></div></div><span class="score-val">1</span></div></div>
+        <div style="text-align:center; margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
+          <span style="font-family:var(--font-mono); font-size:13px; color:var(--text-dim);">Value ≈ (9×9)÷(1×1) = <strong style="color:var(--green)">81.0</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="icon">💡</span>
+      <div><h4>40× Value Increase</h4><p>SCM's optimized offer delivers <strong>40× more perceived value</strong> than a typical agency. This is why premium pricing works — and why &quot;we do websites&quot; is a losing offer while &quot;we deliver more revenue, preview in 72 hours, you do nothing, cancel anytime&quot; wins every time.</p></div>
+    </div>
+
+    <!-- 01B: The Grand Slam Offer -->
+    <h3>01B. The Grand Slam Offer Construction</h3>
+
+    <div class="quote-block">
+      <p>&quot;An offer you present that cannot be compared to any other product or service available, combining an attractive promotion, an unmatchable value proposition, a premium price, and an unbeatable guarantee.&quot;</p>
+      <div class="attrib">— Alex Hormozi, $100M Offers</div>
+    </div>
+
+    <div class="grandslam">
+      <h4>🏆 SCM's Grand Slam Offer — Growth Tier</h4>
+      <div class="offer-text">
+        &quot;Pay $599 once for a complete 10-page website delivered in 72 hours. Then $149/month for ongoing social media, blog content, and review management. No contracts. We deliver a preview within 72 hours — if you don't love it, you don't pay. You own everything. Cancel anytime.&quot;
+      </div>
+      <h4 style="color:var(--text); margin-bottom:12px;">Why This Works — Hormozi's Criteria Check</h4>
+      <div class="checks">
+        <div style="margin-bottom:12px;"><strong style="color:var(--green);">✓ Cannot Be Compared</strong> — No Brevard agency offers 72-hour AI-powered preview with no contracts. You can't comparison-shop something that doesn't exist anywhere else.</div>
+        <div style="margin-bottom:12px;"><strong style="color:var(--green);">✓ Premium Price</strong> — $149/mo positions above freelancers (who charge $15–50/hr with no strategy) and below enterprise agencies ($3K–10K/mo). It's the &quot;sweet spot&quot; Hormozi describes.</div>
+        <div><strong style="color:var(--green);">✓ Unbeatable Guarantee</strong> — &quot;72-hour preview or you don't pay.&quot; Specific. Measurable. Meaningful. Not &quot;satisfaction guaranteed&quot; — that's vague and worthless. This removes all risk from the buyer's side while being easy to deliver on the seller's side.</div>
+      </div>
+    </div>
+
+    <!-- 01C: Niching = Higher Prices -->
+    <h3>01C. Niching = Higher Prices</h3>
+    <p>Hormozi's price ladder proves that specificity multiplies price. The narrower the niche, the higher the perceived expertise — and the more you can charge.</p>
+
+    <div class="card accent-left">
+      <h4>Hormozi's Price Ladder (Generic → Specific)</h4>
+      <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-surface); border-radius:4px; font-size:13px;"><span>&quot;Time management&quot;</span> <span style="color:var(--text-dim);">$19</span></div>
+        <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-surface); border-radius:4px; font-size:13px;"><span>→ &quot;Time management for sales pros&quot;</span> <span style="color:var(--text-dim);">$99</span></div>
+        <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-surface); border-radius:4px; font-size:13px;"><span>→ &quot;Time management for outbound B2B power tools sales&quot;</span> <span style="color:var(--green); font-weight:700;">$1,997</span></div>
+      </div>
+
+      <h4>Applied to Space Coast Marketing</h4>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-surface); border-radius:4px; font-size:13px;"><span>&quot;Marketing agency&quot;</span> <span style="color:var(--text-dim);">Commodity pricing</span></div>
+        <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-surface); border-radius:4px; font-size:13px;"><span>→ &quot;Local marketing agency&quot;</span> <span style="color:var(--text-dim);">Slightly better</span></div>
+        <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-surface); border-radius:4px; font-size:13px;"><span>→ &quot;Brevard service business marketing&quot;</span> <span style="color:var(--gold);">$149–$599</span></div>
+        <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-surface); border-radius:4px; font-size:13px;"><span>→ &quot;AI visibility for Brevard dental practices&quot;</span> <span style="color:var(--green); font-weight:700;">2–3× premium</span></div>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top:16px;">
+      <span class="icon">🎯</span>
+      <div><h4>The Dental Niche Multiplier</h4><p>The dental practice version of SCM's service is worth <strong>2–3× the generic version</strong> because you speak their language, understand their problems (patient acquisition, Google Maps ranking, insurance vs. cash-pay visibility), and have <strong>Hayes Handpiece credibility</strong> — you've already sold to them. They trust you. That trust + niche expertise = premium pricing power.</p></div>
+    </div>
+
+    <!-- 01D: The 5 Enhancements -->
+    <h3>01D. The 5 Enhancements Applied</h3>
+    <p>Hormozi's five levers for transforming any offer into an irresistible one — mapped directly to SCM:</p>
+
+    <table>
+      <thead>
+        <tr><th style="width:30px">#</th><th>Enhancement</th><th>Hormozi's Definition</th><th>SCM Application</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--orange)">1</strong></td>
+          <td><strong>Scarcity</strong></td>
+          <td>Limit supply to increase perceived value</td>
+          <td>&quot;We only take <strong>X clients per month</strong> to ensure quality.&quot; Must be genuine — if you're a solo operator with AI assistance, capacity is legitimately limited. Never fabricate scarcity.</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--orange)">2</strong></td>
+          <td><strong>Urgency</strong></td>
+          <td>Give a reason to act now, not later</td>
+          <td>&quot;<strong>72-hour preview delivery</strong>&quot; creates natural urgency. &quot;If you sign up today, you'll see your site by Friday.&quot; No manufactured deadlines — the speed itself is the urgency driver.</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--orange)">3</strong></td>
+          <td><strong>Bonuses</strong></td>
+          <td>Add items that increase value without proportionally increasing cost</td>
+          <td><strong>Free GBP optimization</strong> with every website. <strong>Free visibility audit</strong> with every consultation. These are AI-generated, near-zero marginal cost, but high perceived value.</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--orange)">4</strong></td>
+          <td><strong>Guarantees</strong></td>
+          <td>Reverse the risk — make it safer for them to buy than to walk away</td>
+          <td>&quot;<strong>72-hour preview or you don't pay.</strong>&quot; Specific (72 hours). Measurable (preview delivered or not). Meaningful (they keep their money). Far superior to vague &quot;satisfaction guaranteed.&quot;</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--orange)">5</strong></td>
+          <td><strong>Naming</strong></td>
+          <td>Use the [Result] + [Time Period] formula</td>
+          <td>&quot;<strong>5-Page Website in 72 Hours — Guaranteed</strong>&quot; follows Hormozi's exact naming convention. &quot;Free Visibility Audit — Delivered in 48 Hours&quot; also fits the formula.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 01E: The Pricing Principle -->
+    <h3>01E. The Pricing Principle</h3>
+
+    <div class="quote-block">
+      <p>&quot;The goal is to get more people to say yes at a higher price by widening the gap between value and price. 99% of businesses need to raise prices to grow, not lower them.&quot;</p>
+      <div class="attrib">— Alex Hormozi, $100M Offers</div>
+    </div>
+
+    <div class="card green-left">
+      <h4>SCM Pricing Audit — Hormozi Test</h4>
+      <p>Hormozi says: &quot;If more than 20% of prospects say yes, your price is too low.&quot; If SCM ever hits 30%+ close rate, prices must go up.</p>
+      <div style="margin-top:12px;">
+        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;"><span><strong>Growth Tier — $149/mo</strong></span> <span style="color:var(--amber);">Already cheap. Do not discount.</span></div>
+        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px;"><span><strong>CMO Tier — $1,500/mo</strong></span> <span style="color:var(--green);">Appropriate for value delivered. Never discount.</span></div>
+        <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:14px;"><span><strong>Website Tier — $599</strong></span> <span style="color:var(--amber);">Floor price. Raise to $799 after 10 clients.</span></div>
+      </div>
+    </div>
+
+    <div class="callout warn" style="margin-top:16px;">
+      <span class="icon">⚠️</span>
+      <div><h4>Hormozi's Warning</h4><p>&quot;If you discount, you're telling the market your value wasn't real.&quot; Never offer &quot;first month free&quot; or &quot;50% off.&quot; The CMO tier especially — $1,500 is already a fraction of a real CMO salary ($8K–15K/mo). The value gap is so wide that discounting would actively <em>reduce</em> credibility.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 02: $100M LEADS — APPLIED -->
+<!-- ============================================================ -->
+<section>
+  <div class="container">
+    <div class="section-label">02 · $100M Leads — Applied</div>
+    <h2>Hormozi's Lead Generation Playbook Mapped to Space Coast Marketing</h2>
+    <p class="section-desc">Every principle from &quot;how to get strangers to want to buy your stuff&quot; applied to SCM's client acquisition strategy.</p>
+
+    <!-- 02A: The Core Four -->
+    <h3>02A. The Core Four Framework</h3>
+    <p>Hormozi's foundational framework: all lead generation falls into a 2×2 grid. The critical rule: <strong>Master ONE channel before adding another.</strong></p>
+
+    <div class="card accent-left" style="margin-bottom: 20px;">
+      <h4>The Core Four Grid — All Channels</h4>
+      <table>
+        <thead>
+          <tr><th></th><th style="text-align:center">1-to-1</th><th style="text-align:center">1-to-Many</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--gold)">Warm Audience</strong><br><span style="font-size:11px; color:var(--text-dim);">People who know you</span></td>
+            <td style="text-align:center; background:rgba(34,197,94,0.06);"><strong style="color:var(--green);">Warm Outreach</strong><br><span style="font-size:12px; color:var(--text-muted);">DMs, texts, calls, emails to known contacts</span></td>
+            <td style="text-align:center; background:rgba(59,130,246,0.06);"><strong style="color:#3B82F6;">Content</strong><br><span style="font-size:12px; color:var(--text-muted);">Social posts, YouTube, podcast, newsletter</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--text-dim)">Cold Audience</strong><br><span style="font-size:11px; color:var(--text-dim);">Strangers</span></td>
+            <td style="text-align:center; background:rgba(245,158,11,0.06);"><strong style="color:var(--amber);">Cold Outreach</strong><br><span style="font-size:12px; color:var(--text-muted);">Cold calls, cold emails, cold DMs</span></td>
+            <td style="text-align:center; background:rgba(239,68,68,0.06);"><strong style="color:var(--red);">Paid Ads</strong><br><span style="font-size:12px; color:var(--text-muted);">Facebook, Google, YouTube ads</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>SCM Priority Order (Hormozi's Recommended Sequence)</h4>
+    <ol class="step-list">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong style="color:var(--green);">WARM OUTREACH — START HERE (0–10 Clients)</strong>
+          <span>Dental contacts from Hayes Handpiece. Facebook group members. Former Thryv prospects you already know. ADP contacts. Allstate clients who own businesses. Use the <strong>ACA Framework</strong>: <em>Acknowledge</em> (reference shared context), <em>Compliment</em> (genuine, specific), <em>Ask</em> (low-pressure, value-first).</span>
+        </div>
+        <span class="tag green">PHASE 1</span>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong style="color:var(--amber);">COLD OUTREACH — ADD NEXT</strong>
+          <span>35 emails/day + 20 calls/day to scraped Brevard business leads. Personalization (mention their business by name, reference something specific) + big fast value (free visibility audit). Automate with n8n + AI.</span>
+        </div>
+        <span class="tag amber">PHASE 2</span>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong style="color:#3B82F6;">CONTENT — BUILD SIMULTANEOUSLY</strong>
+          <span>Facebook group posts (Brevard business groups). YouTube shorts (website teardowns, AI marketing tips). LinkedIn articles. <strong>Give-Give-Give-Ask</strong> — don't pitch until they reach out to you. Build authority over time.</span>
+        </div>
+        <span class="tag blue">PHASE 2–3</span>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong style="color:var(--red);">PAID ADS — LAST (Once Profitable)</strong>
+          <span>Facebook/Google ads only after you have case studies, testimonials, and a proven close rate. Hormozi: &quot;Paid ads amplify what's already working. If nothing is working, ads make you lose money faster.&quot;</span>
+        </div>
+        <span class="tag red">PHASE 4</span>
+      </li>
+    </ol>
+
+    <!-- 02B: The Decision Tree -->
+    <h3>02B. The Decision Tree</h3>
+    <p>Hormozi's exact decision framework for which lead channel to pursue:</p>
+
+    <div class="card accent-left">
+      <h4>The Lead Generation Decision Tree</h4>
+      <div style="font-family:var(--font-mono); font-size:13px; line-height:2.2; padding:16px 0;">
+        <div style="color:var(--text);"><strong>Q:</strong> Do you have 10 paying customers?</div>
+        <div style="margin-left:24px; color:var(--green);"><strong>NO → Warm Outreach until you do</strong> <span style="color:var(--text-dim);">← SCM IS HERE</span></div>
+        <div style="margin-left:24px; color:var(--text-dim);">YES → Pick based on resources:</div>
+        <div style="margin-left:48px; color:var(--text-dim);">├─ Have time, no money → Cold Outreach <strong>or</strong> Content</div>
+        <div style="margin-left:48px; color:var(--text-dim);">├─ Have money, no time → Paid Ads</div>
+        <div style="margin-left:48px; color:var(--text-dim);">└─ Have both → Cold Outreach <strong>+</strong> Content</div>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="icon">📍</span>
+      <div><h4>SCM's Current Position</h4><p><strong>0 paying customers → Warm Outreach only.</strong> No exceptions. Hormozi is unequivocal: do not add cold outreach until you have 10 clients. Your existing relationships (Hayes dental contacts, Allstate business owners, former Thryv prospects, Facebook group members) are your fastest path to $1,490+/month in recurring revenue.</p></div>
+    </div>
+
+    <!-- 02C: The Lead Magnet Engine -->
+    <h3>02C. The Lead Magnet Engine</h3>
+
+    <div class="quote-block">
+      <p>&quot;A complete solution to a narrow problem. It's free or low-cost, reveals a bigger problem your core offer solves.&quot;</p>
+      <div class="attrib">— Alex Hormozi, $100M Leads</div>
+    </div>
+
+    <div class="card green-left">
+      <h4>SCM's Lead Magnet: The Free Visibility Audit</h4>
+      <p style="margin-bottom:16px;">Hormozi defines 3 types of lead magnets. SCM's audit is <strong>Type 1 — &quot;Reveal Problems&quot;</strong> (a diagnosis that reveals a hidden problem the prospect didn't know they had).</p>
+
+      <table>
+        <thead><tr><th style="width:30px">#</th><th>Hormozi's Step</th><th>SCM's Execution</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Pick the problem</td><td>Visibility gaps — prospects don't know they're invisible to AI search</td><td><span class="tag green">✓</span></td></tr>
+          <tr><td>2</td><td>Figure out the solution</td><td>Comprehensive audit report with competitor benchmarking</td><td><span class="tag green">✓</span></td></tr>
+          <tr><td>3</td><td>Choose delivery method</td><td>PDF report + Loom video walkthrough (personal, high-trust)</td><td><span class="tag green">✓</span></td></tr>
+          <tr><td>4</td><td>Test the name</td><td>&quot;Free Visibility Audit&quot; beats &quot;Free SEO Audit&quot; — broader, more intriguing</td><td><span class="tag green">✓</span></td></tr>
+          <tr><td>5</td><td>Make it easy to consume</td><td>Under 10-minute Loom video. PDF is scannable with clear sections</td><td><span class="tag green">✓</span></td></tr>
+          <tr><td>6</td><td>Make it darn good</td><td>Competitor benchmarking + specific, actionable fixes — not generic advice</td><td><span class="tag green">✓</span></td></tr>
+          <tr><td>7</td><td>Make it easy to ask for more</td><td>Clear next step: &quot;Want us to fix these 7 gaps? Book a 15-minute call.&quot;</td><td><span class="tag green">✓</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight-box">
+      <h4>Why This Lead Magnet Converts</h4>
+      <p>It solves a narrow problem (&quot;Where am I visible online?&quot;) and then reveals a much bigger one (&quot;Your competitor ranks above you on Google AND ChatGPT — and you didn't even know.&quot;). The natural next step is: &quot;Want us to fix this?&quot; You're not selling — you just showed them a problem they now desperately want solved.</p>
+    </div>
+
+    <!-- 02D: The Rule of 100 -->
+    <h3>02D. The Rule of 100</h3>
+
+    <div class="card accent-left" style="margin-bottom:20px;">
+      <div class="big-num">100</div>
+      <div class="big-num-context">outreach attempts per day × 100 days = 10,000 touchpoints</div>
+      <p style="margin-top:16px;">Hormozi's rule: every day, do ONE of: 100 cold outreach attempts (calls, emails, DMs), 100 minutes creating content, 100 minutes of paid ad work, or $100 spent on ads. <strong>Do this for 100 days before concluding &quot;it doesn't work.&quot;</strong></p>
+    </div>
+
+    <div class="card green-left">
+      <h4>SCM Application — The Math Solves Itself</h4>
+      <p><strong>Chris commits to 100 outreach per day for 100 days.</strong> That's 10,000 touchpoints across warm and cold channels.</p>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:16px;">
+        <div style="text-align:center; padding:16px; background:var(--bg-surface); border-radius:var(--radius-sm);">
+          <div style="font-size:32px; font-weight:800; color:var(--red);">0.5%</div>
+          <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">Conversion Rate</div>
+          <div style="font-size:14px; color:var(--text); margin-top:4px;">= <strong>50 clients</strong></div>
+        </div>
+        <div style="text-align:center; padding:16px; background:var(--bg-surface); border-radius:var(--radius-sm);">
+          <div style="font-size:32px; font-weight:800; color:var(--gold);">1%</div>
+          <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">Conversion Rate</div>
+          <div style="font-size:14px; color:var(--text); margin-top:4px;">= <strong>100 clients</strong></div>
+        </div>
+        <div style="text-align:center; padding:16px; background:var(--bg-surface); border-radius:var(--radius-sm);">
+          <div style="font-size:32px; font-weight:800; color:var(--green);">2%</div>
+          <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">Conversion Rate</div>
+          <div style="font-size:14px; color:var(--text); margin-top:4px;">= <strong>200 clients</strong></div>
+        </div>
+      </div>
+      <p style="margin-top:16px; text-align:center;">At 50 clients × $149/mo = <strong style="color:var(--green);">$7,450 MRR</strong>. At 100 clients = <strong style="color:var(--green);">$14,900 MRR</strong>. The math solves itself with volume.</p>
+    </div>
+
+    <!-- 02E: LTGP:CAC -->
+    <h3>02E. LTGP:CAC — The Money Math</h3>
+
+    <div class="formula-box">
+      <div class="formula"><em>LTGP</em> : <em>CAC</em> — Lifetime Gross Profit ÷ Cost to Acquire Customer</div>
+      <div class="formula-desc">&lt; 3:1 = Struggling &nbsp;|&nbsp; 3:1 = Minimum Viable &nbsp;|&nbsp; &gt; 3:1 = Ready to Scale</div>
+    </div>
+
+    <div class="card green-left">
+      <h4>SCM Growth Tier Economics</h4>
+      <table>
+        <thead><tr><th>Metric</th><th>Calculation</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td><strong>LTGP</strong></td><td>$149/mo × 18 months avg retention</td><td><strong style="color:var(--green);">$2,682</strong></td></tr>
+          <tr><td><strong>CAC</strong></td><td>100 AI-driven cold emails to get 1 client</td><td><strong style="color:var(--green);">≈ $0</strong></td></tr>
+          <tr style="background:rgba(34,197,94,0.05);"><td><strong>LTGP:CAC</strong></td><td>$2,682 ÷ ~$0</td><td><strong style="color:var(--green); font-size:18px;">♾️ INFINITE</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout success" style="margin-top:16px;">
+      <span class="icon">💰</span>
+      <div><h4>Client-Financed Acquisition</h4><p>Hormozi: &quot;If a customer pays you back in 30 days, you can fund acquisition with a credit card and reinvest indefinitely.&quot; SCM's <strong>$599 upfront + $149 month 1 = $748 in first 30 days</strong>, far exceeding the near-zero acquisition cost. Each client funds the next 10+ acquisitions. This is exponential growth mechanics.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 03: $100M MONEY MODELS — APPLIED -->
+<!-- ============================================================ -->
+<section>
+  <div class="container">
+    <div class="section-label">03 · $100M Money Models — Applied</div>
+    <h2>Hormozi's Revenue Architecture Mapped to Space Coast Marketing</h2>
+    <p class="section-desc">Every principle from &quot;how to make money while you sleep&quot; applied to SCM's three-tier revenue engine.</p>
+
+    <!-- 03A: The 30-Day Profit Rule -->
+    <h3>03A. The 30-Day Profit Rule</h3>
+
+    <div class="quote-block">
+      <p>&quot;A good Money Model should generate enough profit from a customer to cover the cost of acquiring them within 30 days or less.&quot;</p>
+      <div class="attrib">— Alex Hormozi, $100M Money Models</div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card green-left">
+        <h4>🖥️ Website Tier</h4>
+        <div style="font-size:32px; font-weight:800; color:var(--green); margin:8px 0;">$599</div>
+        <p style="font-size:13px;">One-time payment. Acquisition cost: near-zero (AI-driven outreach). Profit within 30 days: <strong>$599</strong>.</p>
+        <span class="tag green" style="margin-top:8px;">✅ PASSES</span>
+      </div>
+      <div class="card green-left">
+        <h4>📈 Growth Tier</h4>
+        <div style="font-size:32px; font-weight:800; color:var(--green); margin:8px 0;">$748</div>
+        <p style="font-size:13px;">$599 upfront + $149 month 1. Acquisition cost: near-zero. Profit within 30 days: <strong>$748</strong>.</p>
+        <span class="tag green" style="margin-top:8px;">✅ PASSES</span>
+      </div>
+      <div class="card green-left">
+        <h4>🏢 CMO Tier</h4>
+        <div style="font-size:32px; font-weight:800; color:var(--green); margin:8px 0;">$1,500</div>
+        <p style="font-size:13px;">Month 1 retainer. Acquisition cost: near-zero. Profit within 30 days: <strong>$1,500</strong>.</p>
+        <span class="tag green" style="margin-top:8px;">✅ PASSES</span>
+      </div>
+    </div>
+
+    <div class="callout success" style="margin-top:20px;">
+      <span class="icon">✅</span>
+      <div><h4>All Three Tiers Pass the 30-Day Profit Rule</h4><p>Because SCM uses AI-driven outreach (near-zero marginal cost), every single tier recovers its acquisition cost within 30 days. This is the holy grail Hormozi describes: a business that can scale acquisition infinitely because every customer immediately funds the next ones.</p></div>
+    </div>
+
+    <!-- 03B: Monetizing the "Free" Lead -->
+    <h3>03B. Monetizing the &quot;Free&quot; Lead — The Storage Unit Lesson</h3>
+
+    <div class="quote-block">
+      <p>&quot;A storage unit owner gives the first month free → sells a lock ($47) + packing supplies + insurance + unit upgrade → $127 before the customer even moves in. What's free for the customer doesn't have to be free for you.&quot;</p>
+      <div class="attrib">— Alex Hormozi, $100M Money Models</div>
+    </div>
+
+    <div class="card accent-left">
+      <h4>SCM's Ascension Path — Every Step Solves the NEXT Problem</h4>
+      <div style="display:flex; flex-direction:column; gap:0; margin-top:16px;">
+        <div style="display:flex; align-items:center; gap:12px; padding:16px; background:var(--bg-surface); border-radius:var(--radius-sm) var(--radius-sm) 0 0; border:1px solid var(--border);">
+          <span style="font-size:24px;">🔍</span>
+          <div style="flex:1;"><strong>Free Visibility Audit</strong><br><span style="font-size:12px; color:var(--text-muted);">Reveals: &quot;You're invisible on ChatGPT and Google Maps&quot;</span></div>
+          <span style="color:var(--text-dim); font-size:13px;">$0 (lead magnet)</span>
+        </div>
+        <div style="text-align:center; color:var(--orange); padding:4px; font-size:18px;">↓ &quot;Want us to fix this?&quot;</div>
+        <div style="display:flex; align-items:center; gap:12px; padding:16px; background:var(--bg-surface); border:1px solid var(--border); border-top:none;">
+          <span style="font-size:24px;">🖥️</span>
+          <div style="flex:1;"><strong>Website Build</strong><br><span style="font-size:12px; color:var(--text-muted);">Delivers: Fully optimized, AI-visible website in 72 hours</span></div>
+          <span style="color:var(--green); font-weight:700;">$599</span>
+        </div>
+        <div style="text-align:center; color:var(--orange); padding:4px; font-size:18px;">↓ &quot;Want ongoing marketing too?&quot;</div>
+        <div style="display:flex; align-items:center; gap:12px; padding:16px; background:var(--bg-surface); border:1px solid var(--border); border-top:none;">
+          <span style="font-size:24px;">📈</span>
+          <div style="flex:1;"><strong>Growth Tier</strong><br><span style="font-size:12px; color:var(--text-muted);">Adds: Social media, blog content, review management</span></div>
+          <span style="color:var(--green); font-weight:700;">$149/mo</span>
+        </div>
+        <div style="text-align:center; color:var(--orange); padding:4px; font-size:18px;">↓ &quot;Ready to scale?&quot;</div>
+        <div style="display:flex; align-items:center; gap:12px; padding:16px; background:var(--bg-surface); border:1px solid var(--border); border-top:none; border-radius:0 0 var(--radius-sm) var(--radius-sm);">
+          <span style="font-size:24px;">🏢</span>
+          <div style="flex:1;"><strong>Fractional CMO</strong><br><span style="font-size:12px; color:var(--text-muted);">Adds: Full strategy, ads management, monthly reporting</span></div>
+          <span style="color:var(--green); font-weight:700;">$1,500/mo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top:16px;">
+      <h4>You're Not Selling — You're Problem-Solving in Sequence</h4>
+      <p>Every step reveals the next problem the customer didn't know they had. The audit reveals a visibility gap → the website fixes it → then they realize they need ongoing content → then they want to scale. Each ascension is their idea, not your pitch. This is Hormozi's &quot;storage unit&quot; model applied to services.</p>
+    </div>
+
+    <!-- 03C: Self-Funding Growth Engine -->
+    <h3>03C. Self-Funding Growth Engine</h3>
+
+    <div class="quote-block">
+      <p>&quot;Acquire customer → get paid → pay off balance → repeat indefinitely.&quot;</p>
+      <div class="attrib">— Alex Hormozi, $100M Money Models</div>
+    </div>
+
+    <div class="card green-left">
+      <h4>SCM's Flywheel</h4>
+      <div style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; padding:24px 0;">
+        <div style="text-align:center; padding:16px; background:var(--bg-surface); border-radius:8px; min-width:100px;">
+          <div style="font-size:12px; color:var(--text-dim);">Free Audit</div>
+          <div style="font-size:18px; font-weight:700; color:var(--green);">≈ $0 cost</div>
+        </div>
+        <span style="color:var(--orange); font-size:24px;">→</span>
+        <div style="text-align:center; padding:16px; background:var(--bg-surface); border-radius:8px; min-width:100px;">
+          <div style="font-size:12px; color:var(--text-dim);">Website Build</div>
+          <div style="font-size:18px; font-weight:700; color:var(--green);">$599 rev</div>
+        </div>
+        <span style="color:var(--orange); font-size:24px;">→</span>
+        <div style="text-align:center; padding:16px; background:var(--bg-surface); border-radius:8px; min-width:100px;">
+          <div style="font-size:12px; color:var(--text-dim);">Growth Tier</div>
+          <div style="font-size:18px; font-weight:700; color:var(--green);">$149/mo</div>
+        </div>
+        <span style="color:var(--orange); font-size:24px;">→</span>
+        <div style="text-align:center; padding:16px; background:var(--bg-surface); border-radius:8px; min-width:100px;">
+          <div style="font-size:12px; color:var(--text-dim);">CMO Upsell</div>
+          <div style="font-size:18px; font-weight:700; color:var(--green);">$1,500/mo</div>
+        </div>
+      </div>
+      <p style="text-align:center; margin-top:8px;">1 client at $599 → funds outreach for 10+ more clients. Each new client → funds outreach for 10 more. <strong style="color:var(--orange);">This is exponential.</strong></p>
+    </div>
+
+    <!-- 03D: The Pivot Principle -->
+    <h3>03D. The Pivot Principle</h3>
+
+    <div class="quote-block">
+      <p>&quot;You have a level-10 skill in a level-2 opportunity. Stop running gyms. Start teaching gym owners.&quot;</p>
+      <div class="attrib">— Alex Hormozi, pivoting from gym ownership to Gym Launch</div>
+    </div>
+
+    <div class="card accent-left">
+      <h4>Applied to Chris — The Pivot</h4>
+      <table>
+        <thead><tr><th>What</th><th>Level</th><th>Details</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--green);">Level-10 Skill</strong></td>
+            <td><span class="tag green">STRENGTH</span></td>
+            <td>B2B sales in Brevard County — Thryv, ADP, Hayes Handpiece, Allstate. You've sold to hundreds of local business owners. You know their objections before they say them. You speak their language.</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--red);">Level-2 Opportunity</strong></td>
+            <td><span class="tag red">PAST</span></td>
+            <td>Selling insurance at Allstate. A commodity product with thin margins, capped territory, and no differentiation.</td>
+          </tr>
+          <tr style="background:rgba(34,197,94,0.05);">
+            <td><strong style="color:var(--gold);">Level-10 Opportunity</strong></td>
+            <td><span class="tag green" style="background:rgba(240,160,48,0.15); color:var(--gold);">NOW</span></td>
+            <td>Selling marketing services to the <strong>same types of business owners</strong> you've been selling to for years — but with a product (AI-powered agency, 72-hour delivery, done-for-you) that's genuinely better than anything they can buy elsewhere.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout success" style="margin-top:16px;">
+      <span class="icon">🎯</span>
+      <div><h4>Your Unfair Advantage</h4><p>You already know how to sell to Brevard business owners. You already have their trust (Hayes dental clients, Allstate business owners, Thryv prospects). You're not starting from zero relationships. Hormozi would say: <em>&quot;Stop selling someone else's commodity. Sell your own premium service to the same people who already trust you.&quot;</em></p></div>
+    </div>
+
+    <!-- 03E: Money Model Types Applied -->
+    <h3>03E. Money Model Types Applied</h3>
+    <p>Hormozi categorizes money models into distinct types. Here's how each maps to SCM's architecture:</p>
+
+    <table>
+      <thead><tr><th>Hormozi Model Type</th><th>Definition</th><th>SCM Application</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Subscription</strong></td>
+          <td>Recurring revenue, predictable monthly cash flow</td>
+          <td>Growth Tier (<strong>$149/mo</strong>), CMO Tier (<strong>$1,500/mo</strong>)</td>
+        </tr>
+        <tr>
+          <td><strong>One-Time + Recurring</strong></td>
+          <td>Upfront payment followed by ongoing lower-tier subscription</td>
+          <td>Website (<strong>$599</strong> one-time) + Site Care (<strong>$49/mo</strong>) for clients who don't need full Growth</td>
+        </tr>
+        <tr>
+          <td><strong>Financing / Free Trial</strong></td>
+          <td>Remove upfront cost barrier; convert after value is proven</td>
+          <td>72-hour preview = free trial (they see the site first). Free audit = free trial (they see the data first).</td>
+        </tr>
+        <tr>
+          <td><strong>Consumable / Add-On</strong></td>
+          <td>Products or services purchased repeatedly alongside core offer</td>
+          <td>Site Care add-on (<strong>$49/mo</strong>) for businesses with existing sites. GBP optimization as a standalone upsell.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <h4>Multiple Revenue Streams = Stability</h4>
+      <p>Hormozi emphasizes that the best money models combine multiple types. SCM combines one-time ($599 website builds), recurring subscriptions ($149–$1,500/mo), free trials (72-hour preview), and add-ons ($49/mo Site Care). This diversification means no single revenue stream makes or breaks the business.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 04: THE MASTER SYNTHESIS -->
+<!-- ============================================================ -->
+<section>
+  <div class="container">
+    <div class="section-label">04 · Master Synthesis</div>
+    <h2>SCM's Hormozi-Aligned Strategy — Complete Map</h2>
+    <p class="section-desc">Every principle from all three books, mapped to SCM's specific execution, with current status.</p>
+
+    <div class="card" style="padding:8px;">
+      <table>
+        <thead>
+          <tr><th>Hormozi Principle</th><th>SCM Application</th><th style="width:110px">Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Grand Slam Offer</strong></td>
+            <td>72-hr preview, no contracts, free hosting, you own everything</td>
+            <td><span class="tag green">✅ Built</span></td>
+          </tr>
+          <tr>
+            <td><strong>Value Equation</strong></td>
+            <td>Dream outcome (more calls), likelihood (preview guarantee), time (72hrs), effort (done-for-you)</td>
+            <td><span class="tag green">✅ Built</span></td>
+          </tr>
+          <tr>
+            <td><strong>Niching</strong></td>
+            <td>&quot;AI visibility for Brevard service businesses&quot; → dental niche premium</td>
+            <td><span class="tag green">✅ Refined</span></td>
+          </tr>
+          <tr style="background:rgba(239,68,68,0.04);">
+            <td><strong>Core Four: Warm Outreach</strong></td>
+            <td>Dental contacts + Facebook group + former Thryv/ADP/Allstate prospects</td>
+            <td><span class="tag red">🔴 START HERE</span></td>
+          </tr>
+          <tr>
+            <td><strong>Core Four: Cold Outreach</strong></td>
+            <td>35 emails/day + 20 calls/day to scraped Brevard leads</td>
+            <td><span class="tag amber">⏳ After 10 clients</span></td>
+          </tr>
+          <tr>
+            <td><strong>Core Four: Content</strong></td>
+            <td>Facebook group posts + YouTube shorts + LinkedIn articles</td>
+            <td><span class="tag amber">⏳ Build alongside</span></td>
+          </tr>
+          <tr>
+            <td><strong>Core Four: Paid Ads</strong></td>
+            <td>Google/Facebook ads once case studies and testimonials exist</td>
+            <td><span class="tag amber">⏳ When profitable</span></td>
+          </tr>
+          <tr style="background:rgba(239,68,68,0.04);">
+            <td><strong>Rule of 100</strong></td>
+            <td>100 outreach/day for 100 days — 10,000 touchpoints. 1% = 100 clients.</td>
+            <td><span class="tag red">🔴 COMMIT NOW</span></td>
+          </tr>
+          <tr>
+            <td><strong>Lead Magnet</strong></td>
+            <td>Free Visibility Audit — Type 1 (&quot;Reveal Problems&quot;) diagnosis</td>
+            <td><span class="tag green">✅ Built</span></td>
+          </tr>
+          <tr>
+            <td><strong>30-Day Profit Rule</strong></td>
+            <td>$599 upfront covers near-zero acquisition cost within 30 days</td>
+            <td><span class="tag green">✅ PASSES</span></td>
+          </tr>
+          <tr>
+            <td><strong>Client-Financed Acquisition</strong></td>
+            <td>Each client's $748 (month 1) funds outreach for next 10+ clients</td>
+            <td><span class="tag green">✅ System designed</span></td>
+          </tr>
+          <tr>
+            <td><strong>LTGP:CAC &gt; 3:1</strong></td>
+            <td>Infinite ratio — AI-powered outreach costs near-zero, LTGP is $2,682</td>
+            <td><span class="tag green">✅ EXCEEDS</span></td>
+          </tr>
+          <tr>
+            <td><strong>ACA Framework</strong></td>
+            <td>Acknowledge, Compliment, Ask — warm outreach scripts built</td>
+            <td><span class="tag green">✅ In scripts</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info" style="margin-top:24px;">
+      <span class="icon">📊</span>
+      <div><h4>Status Summary</h4><p><strong>8 of 13 principles are BUILT or REFINED.</strong> The remaining 5 are execution-stage items — warm outreach and the Rule of 100 need to START NOW. Cold outreach, content, and paid ads come later in Hormozi's prescribed sequence. The architecture is complete. Execution begins today.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 05: WHAT TO DO MONDAY -->
+<!-- ============================================================ -->
+<section>
+  <div class="container">
+    <div class="section-label">05 · Action Plan</div>
+    <h2>What To Do Monday — Hormozi Prioritized</h2>
+    <p class="section-desc">In Hormozi's exact order of operations. No skipping steps. No adding channels before mastering the current one.</p>
+
+    <ol class="priority-list">
+      <li>
+        <div class="pri-num">1</div>
+        <div class="pri-content">
+          <strong>Warm outreach to 10 dental contacts using ACA framework</strong>
+          <span>Pull your Hayes Handpiece contact list. Draft ACA messages: Acknowledge the relationship, Compliment genuinely (specific to their practice), Ask for nothing more than a conversation. Send today.</span>
+        </div>
+        <div class="bolt">⚡</div>
+      </li>
+      <li>
+        <div class="pri-num">2</div>
+        <div class="pri-content">
+          <strong>Post in Facebook group offering free audits</strong>
+          <span>Give value first. &quot;I'm offering 5 free visibility audits this week for Brevard business owners — I'll show you exactly where you show up on Google and ChatGPT vs. your competitors. DM me.&quot;</span>
+        </div>
+        <div class="bolt">⚡</div>
+      </li>
+      <li>
+        <div class="pri-num">3</div>
+        <div class="pri-content">
+          <strong>Rule of 100: commit to 100 daily outreach for 100 days</strong>
+          <span>Start a tracker. 100 outreach per day — warm first, then mix in cold. This is non-negotiable. Hormozi: &quot;The people who succeed aren't smarter. They just do the work for 100 days.&quot;</span>
+        </div>
+        <div class="bolt">⚡</div>
+      </li>
+      <li>
+        <div class="pri-num">4</div>
+        <div class="pri-content">
+          <strong>Master warm outreach before moving to cold</strong>
+          <span>Do not add cold outreach until you have 10 paying clients from warm channels. Hormozi is clear: one channel at a time, mastered completely, before adding the next.</span>
+        </div>
+        <div class="bolt">⚡</div>
+      </li>
+      <li>
+        <div class="pri-num">5</div>
+        <div class="pri-content">
+          <strong>Once at 10 clients, add cold outreach + content simultaneously</strong>
+          <span>35 emails/day + 20 calls/day. Simultaneously post 3×/week in Facebook groups and publish 1 YouTube short/week. Give-Give-Give-Ask.</span>
+        </div>
+        <div class="bolt">⏳</div>
+      </li>
+      <li>
+        <div class="pri-num">6</div>
+        <div class="pri-content">
+          <strong>Once profitable, add paid ads last</strong>
+          <span>Only after you have case studies, testimonials, a proven close rate, and positive unit economics. Paid ads amplify what's already working — they don't fix a broken funnel.</span>
+        </div>
+        <div class="bolt">⏳</div>
+      </li>
+    </ol>
+
+    <div class="guarantee-box" style="margin-top:32px;">
+      <div class="icon-lg">🚀</div>
+      <h4>The Hormozi Guarantee Applied to SCM</h4>
+      <p>&quot;If you execute the Core Four in order, follow the Rule of 100 for 100 days, and deploy the Grand Slam Offer — you will have clients. The math doesn't care about your feelings. 10,000 touchpoints × any conversion rate above zero = revenue. Start today.&quot;</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Space Coast Marketing <span class="divider">·</span> Merritt Island FL <span class="divider">·</span> Socrates AI Chief of Staff<br>
+    Frameworks from Alex Hormozi's <em>$100M Offers</em>, <em>$100M Leads</em>, and <em>$100M Money Models</em> — synthesized from publicly available book summaries, author interviews, and framework documentation.<br>
+    Buy the books at <a href="https://acquisition.com" target="_blank" rel="noopener">acquisition.com</a>
+  </div>
+</footer>
+
+</body>
+</html>

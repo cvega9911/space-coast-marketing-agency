@@ -1,0 +1,402 @@
+{
+    "models": {
+        "providers": {
+            "anthropic": {
+                "models": [
+                    {
+                        "id": "claude-opus-4-8",
+                        "name": "claude-opus-4-8"
+                    }
+                ]
+            },
+            "openrouter": {
+                "timeoutSeconds": 600,
+                "models": [
+                    {
+                        "id": "openrouter/deepseek/deepseek-v4-pro",
+                        "name": "deepseek-v4-pro"
+                    },
+                    {
+                        "id": "openrouter/deepseek/deepseek-v4-flash",
+                        "name": "deepseek-v4-flash"
+                    }
+                ],
+                "params": {
+                    "provider": {
+                        "sort": "latency",
+                        "require_parameters": false,
+                        "data_collection": "deny"
+                    }
+                }
+            }
+        }
+    },
+    "agents": {
+        "defaults": {
+            "workspace": "/home/jarvis/.openclaw/workspace",
+            "timeoutSeconds": 600,
+            "models": {
+                "openrouter/deepseek/deepseek-v4-pro": {
+                    "params": {
+                        "responseCache": true,
+                        "responseCacheTtlSeconds": 300,
+                        "timeoutSeconds": 900,
+                        "provider": {
+                            "require_parameters": false
+                        }
+                    }
+                },
+                "openrouter/deepseek/deepseek-v4-flash": {
+                    "params": {
+                        "responseCache": true,
+                        "responseCacheTtlSeconds": 300,
+                        "timeoutSeconds": 300,
+                        "provider": {
+                            "require_parameters": false
+                        }
+                    }
+                },
+                "anthropic/claude-opus-4-8": {}
+            },
+            "model": {
+                "primary": "openrouter/deepseek/deepseek-v4-pro"
+            },
+            "memorySearch": {
+                "enabled": false
+            },
+            "subagents": {
+                "allowAgents": [
+                    "scout",
+                    "ink",
+                    "pixel",
+                    "main",
+                    "oni"
+                ]
+            }
+        },
+        "list": [
+            {
+                "id": "main",
+                "default": true,
+                "workspace": "/home/jarvis/.openclaw/workspace",
+                "model": {
+                    "primary": "openrouter/deepseek/deepseek-v4-pro"
+                }
+            },
+            {
+                "id": "scout",
+                "workspace": "/home/jarvis/.openclaw/workspace-scout",
+                "model": {
+                    "primary": "openrouter/deepseek/deepseek-v4-flash"
+                },
+                "tools": {
+                    "deny": [
+                        "exec",
+                        "process",
+                        "browser"
+                    ]
+                },
+                "subagents": {
+                    "allowAgents": [
+                        "main"
+                    ]
+                }
+            },
+            {
+                "id": "ink",
+                "workspace": "/home/jarvis/.openclaw/workspace-ink",
+                "model": {
+                    "primary": "openrouter/deepseek/deepseek-v4-flash"
+                },
+                "tools": {
+                    "deny": [
+                        "exec",
+                        "process",
+                        "browser"
+                    ]
+                },
+                "subagents": {
+                    "allowAgents": [
+                        "main"
+                    ]
+                }
+            },
+            {
+                "id": "pixel",
+                "workspace": "/home/jarvis/.openclaw/workspace-pixel",
+                "model": {
+                    "primary": "openrouter/deepseek/deepseek-v4-flash"
+                },
+                "tools": {
+                    "deny": [
+                        "exec",
+                        "process",
+                        "browser"
+                    ]
+                },
+                "subagents": {
+                    "allowAgents": [
+                        "main"
+                    ]
+                }
+            },
+            {
+                "id": "oni",
+                "workspace": "/home/jarvis/.openclaw/workspace-oni",
+                "model": {
+                    "primary": "openrouter/deepseek/deepseek-v4-flash"
+                },
+                "tools": {
+                    "deny": [
+                        "browser"
+                    ]
+                },
+                "subagents": {
+                    "allowAgents": [
+                        "main"
+                    ]
+                }
+            }
+        ]
+    },
+    "gateway": {
+        "mode": "local",
+        "auth": {
+            "mode": "token",
+            "token": "${OPENCLAW_GATEWAY_TOKEN}"
+        },
+        "port": 18789,
+        "bind": "loopback",
+        "tailscale": {
+            "mode": "off",
+            "resetOnExit": false
+        },
+        "controlUi": {
+            "allowInsecureAuth": false
+        },
+        "nodes": {
+            "denyCommands": [
+                "camera.snap",
+                "camera.clip",
+                "screen.record",
+                "contacts.add",
+                "calendar.add",
+                "reminders.add",
+                "sms.send",
+                "sms.search"
+            ]
+        }
+    },
+    "session": {
+        "dmScope": "per-channel-peer"
+    },
+    "tools": {
+        "profile": "coding",
+        "web": {
+            "search": {
+                "provider": "parallel-free",
+                "enabled": true
+            }
+        },
+        "fs": {
+            "workspaceOnly": true
+        }
+    },
+    "plugins": {
+        "entries": {
+            "anthropic": {
+                "enabled": true
+            },
+            "discord": {
+                "enabled": true
+            },
+            "parallel": {
+                "enabled": true
+            },
+            "canvas": {
+                "config": {
+                    "host": {
+                        "enabled": true,
+                        "root": "~/.openclaw/canvas",
+                        "liveReload": true
+                    }
+                },
+                "enabled": true
+            },
+            "openrouter": {
+                "enabled": true
+            }
+        }
+    },
+    "auth": {
+        "profiles": {
+            "anthropic:default": {
+                "provider": "anthropic",
+                "mode": "api_key"
+            },
+            "openrouter:default": {
+                "provider": "openrouter",
+                "mode": "api_key"
+            }
+        }
+    },
+    "channels": {
+        "discord": {
+            "enabled": true,
+            "token": "${DISCORD_BOT_TOKEN}",
+            "groupPolicy": "allowlist",
+            "guilds": {
+                "<DISCORD_GUILD_ID>": {
+                    "channels": {
+                        "<DISCORD_CHANNEL_ID_1>": {}
+                    }
+                }
+            }
+        }
+    },
+    "wizard": {
+        "lastRunAt": "2026-06-15T19:14:51.870Z",
+        "lastRunVersion": "2026.6.6",
+        "lastRunCommand": "doctor",
+        "lastRunMode": "local"
+    },
+    "meta": {
+        "lastTouchedVersion": "2026.6.6",
+        "lastTouchedAt": "2026-06-15T19:14:52.100Z"
+    },
+    "commands": {
+        "ownerAllowFrom": [
+            "discord:<DISCORD_USER_ID>"
+        ]
+    },
+    "skills": {
+        "entries": {
+            "1password": {
+                "enabled": false
+            },
+            "apple-notes": {
+                "enabled": false
+            },
+            "apple-reminders": {
+                "enabled": false
+            },
+            "bear-notes": {
+                "enabled": false
+            },
+            "blogwatcher": {
+                "enabled": false
+            },
+            "blucli": {
+                "enabled": false
+            },
+            "camsnap": {
+                "enabled": false
+            },
+            "clawhub": {
+                "enabled": false
+            },
+            "coding-agent": {
+                "enabled": false
+            },
+            "eightctl": {
+                "enabled": false
+            },
+            "gemini": {
+                "enabled": false
+            },
+            "gh-issues": {
+                "enabled": false
+            },
+            "gifgrep": {
+                "enabled": false
+            },
+            "github": {
+                "enabled": false
+            },
+            "gog": {
+                "enabled": false
+            },
+            "goplaces": {
+                "enabled": false
+            },
+            "himalaya": {
+                "enabled": false
+            },
+            "imsg": {
+                "enabled": false
+            },
+            "mcporter": {
+                "enabled": false
+            },
+            "model-usage": {
+                "enabled": false
+            },
+            "nano-pdf": {
+                "enabled": false
+            },
+            "obsidian": {
+                "enabled": false
+            },
+            "openai-whisper": {
+                "enabled": false
+            },
+            "openai-whisper-api": {
+                "enabled": false
+            },
+            "openhue": {
+                "enabled": false
+            },
+            "oracle": {
+                "enabled": false
+            },
+            "ordercli": {
+                "enabled": false
+            },
+            "peekaboo": {
+                "enabled": false
+            },
+            "sag": {
+                "enabled": false
+            },
+            "session-logs": {
+                "enabled": false
+            },
+            "sherpa-onnx-tts": {
+                "enabled": false
+            },
+            "slack": {
+                "enabled": false
+            },
+            "songsee": {
+                "enabled": false
+            },
+            "sonoscli": {
+                "enabled": false
+            },
+            "spotify-player": {
+                "enabled": false
+            },
+            "summarize": {
+                "enabled": false
+            },
+            "things-mac": {
+                "enabled": false
+            },
+            "trello": {
+                "enabled": false
+            },
+            "video-frames": {
+                "enabled": false
+            },
+            "voice-call": {
+                "enabled": false
+            },
+            "wacli": {
+                "enabled": false
+            },
+            "xurl": {
+                "enabled": false
+            }
+        }
+    }
+}

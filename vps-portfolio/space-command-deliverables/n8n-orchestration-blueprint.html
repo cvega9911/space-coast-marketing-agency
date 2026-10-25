@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>n8n Orchestration Blueprint · Autonomous Agency Workflows — Space Coast Marketing</title>
+<style>
+:root {
+  --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+  --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+  --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+  --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+  --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+  --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+  --border: #1E293B; --border-accent: #2D3A5C;
+  --radius: 10px; --radius-sm: 6px;
+  --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg-deep); color: var(--text); font-family: var(--font); line-height: 1.6; padding-bottom: 120px; }
+nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+nav .inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+nav .links { display: flex; gap: 24px; font-size: 13px; }
+nav .links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+nav .links a:hover { color: var(--text); }
+nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.hero { padding: 80px 0 60px; text-align: center; background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%); }
+.hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+.hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 640px; margin: 0 auto 40px; }
+.stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+.stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+.stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+.stat-pill .value.accent { color: var(--orange); }
+.stat-pill .value.green { color: var(--green); }
+.stat-pill .value.gold { color: var(--gold); }
+.stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+section { padding: 60px 0; border-top: 1px solid var(--border); }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+.section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+.card.accent-left { border-left: 3px solid var(--orange); }
+.card.green-left { border-left: 3px solid var(--green); }
+.card.amber-left { border-left: 3px solid var(--amber); }
+.card.red-left { border-left: 3px solid var(--red); }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+.callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+.callout.info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); }
+.callout.danger { background: var(--red-bg); border: 1px solid rgba(239,68,68,0.3); }
+.callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+.callout .icon { font-size: 20px; flex-shrink: 0; }
+.callout h4 { font-size: 15px; margin-bottom: 4px; }
+.callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+.table-wrap { overflow-x: auto; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead { background: var(--bg-surface); }
+th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+tr:hover { background: rgba(255,255,255,0.02); }
+.mono { font-family: var(--font-mono); font-size: 12px; }
+.tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.tag.win { background: var(--green-bg); color: var(--green); }
+.tag.loss { background: var(--red-bg); color: var(--red); }
+.tag.neutral { background: var(--amber-bg); color: var(--amber); }
+.win { color: var(--green); font-weight: 600; }
+.loss { color: var(--red); font-weight: 600; }
+.muted { color: var(--text-dim); }
+.code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0; }
+.code-block .c1 { color: var(--text-dim); }
+.code-block .c2 { color: var(--green); }
+.code-block .c3 { color: var(--gold); }
+.insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+.insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+.badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.badge-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--text-muted); }
+footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+.split-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--border); margin-bottom: 8px; }
+.split-bar .seg { height: 100%; }
+h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+li { margin-bottom: 4px; }
+a { color: var(--orange); text-decoration: none; }
+a:hover { text-decoration: underline; }
+strong { color: var(--text); }
+.back-link { display: inline-block; margin-bottom: 24px; font-size: 13px; color: var(--text-muted); }
+.back-link:hover { color: var(--text); text-decoration: none; }
+.pipeline-step { display: flex; gap: 16px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.pipeline-step:last-child { border-bottom: none; }
+.step-num { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; flex-shrink: 0; }
+.step-num.orange { background: rgba(255,69,0,0.15); color: var(--orange); }
+.step-num.green { background: var(--green-bg); color: var(--green); }
+.step-num.amber { background: var(--amber-bg); color: var(--amber); }
+.step-num.blue { background: rgba(59,130,246,0.15); color: #3B82F6; }
+.step-num.purple { background: rgba(147,51,234,0.15); color: #9333EA; }
+.step-body h4 { margin-bottom: 4px; }
+.step-body p { font-size: 13px; margin-bottom: 0; }
+.arrow-down { text-align: center; color: var(--orange); font-size: 18px; padding: 4px 0 4px 64px; }
+.arrow-down span { opacity: 0.4; }
+.arrow-branch { display: flex; gap: 0; color: var(--text-dim); font-size: 13px; padding: 4px 0 4px 64px; }
+.arrow-branch .branch-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); }
+.field-list { list-style: none; margin: 8px 0; padding: 0; }
+.field-list li { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); padding: 3px 0; }
+.field-list li::before { content: "▸ "; color: var(--orange); }
+.schema-tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-right: 4px; }
+.schema-tag.pk { background: rgba(255,69,0,0.15); color: var(--orange); }
+.schema-tag.fk { background: rgba(59,130,246,0.15); color: #3B82F6; }
+.schema-tag.text { background: rgba(34,197,94,0.12); color: var(--green); }
+.schema-tag.num { background: rgba(245,158,11,0.15); color: var(--amber); }
+.node-connector { display: flex; align-items: center; gap: 12px; padding: 8px 0 8px 24px; color: var(--text-dim); font-size: 12px; font-family: var(--font-mono); }
+.node-connector .arrow { color: var(--orange); font-size: 16px; }
+@media (max-width: 640px) {
+  .hero h1 { font-size: 28px; }
+  .stat-row { gap: 10px; }
+  .stat-pill { min-width: 120px; padding: 14px 16px; }
+  nav .links { display: none; }
+  .card-grid { grid-template-columns: 1fr; }
+  .pipeline-step { flex-direction: column; }
+  .arrow-down { padding-left: 0; }
+}
+@media print {
+  body { background: #fff; color: #111; font-size: 11px; }
+  nav { display: none; }
+  section { break-inside: avoid; border-color: #ddd; }
+  .card, .table-wrap, .callout, .insight-box, .code-block { border-color: #ddd; }
+  .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+  h2, h3, h4 { color: #111; }
+  .stat-pill { border-color: #ddd; }
+  .stat-pill .value { color: #111; }
+  .section-label { color: #FF4500; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span>Space Coast Marketing</div>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="hardware-configuration.html">Hardware</a>
+      <a href="socrates-architecture.html">Socrates</a>
+      <a href="agent-pipeline.html">Pipeline</a>
+      <a href="n8n-orchestration-blueprint.html">Orchestration</a>
+    </div>
+    <span class="badge">⚡ Live</span>
+  </div>
+</nav>
+
+<div class="container">
+
+  <a href="index.html" class="back-link">← Back to Space Command Center</a>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="kicker">Space Coast Marketing Agency · Automation Infrastructure</div>
+    <h1>n8n Orchestration Blueprint<br>Autonomous Agency Workflows</h1>
+    <p class="subtitle">A fully autonomous outreach pipeline spanning 10 nodes across Airtable, Serper, a local LLM engine, Slack, and Instantly.ai — built on n8n with human-in-the-loop safeguards and batch-level VRAM protection.</p>
+    <div class="stat-row">
+      <div class="stat-pill">
+        <div class="value accent">10</div>
+        <div class="label">Nodes</div>
+      </div>
+      <div class="stat-pill">
+        <div class="value green">1</div>
+        <div class="label">Batch Size</div>
+      </div>
+      <div class="stat-pill">
+        <div class="value gold">25s</div>
+        <div class="label">Timeout</div>
+      </div>
+      <div class="stat-pill">
+        <div class="value accent">HITL</div>
+        <div class="label">Human-in-the-Loop</div>
+      </div>
+    </div>
+    <div class="split-bar">
+      <div class="seg" style="width: 40%; background: var(--orange);"></div>
+      <div class="seg" style="width: 30%; background: var(--green);"></div>
+      <div class="seg" style="width: 30%; background: var(--gold);"></div>
+    </div>
+    <div class="badge-row" style="justify-content: center;">
+      <span class="badge-pill">n8n Self-Hosted</span>
+      <span class="badge-pill">Ollama Local LLM</span>
+      <span class="badge-pill">Airtable Backend</span>
+      <span class="badge-pill">Instantly.ai</span>
+    </div>
+  </div>
+
+  <!-- SECTION 01: THE DATA HIGHWAY -->
+  <section id="data-highway">
+    <div class="section-label">Section 01</div>
+    <h2>The Data Highway</h2>
+    <p class="section-desc">Complete workflow pipeline from trigger to active outreach. Each node feeds the next in a strict sequential chain with branching logic at the quality-control gate. Arrows represent data flow direction.</p>
+
+    <div class="card" style="margin-bottom: 24px;">
+      <div class="insight-box" style="margin: 0 0 20px 0;">
+        <h4>🔗 Pipeline Architecture: Sequential with QC Branch</h4>
+        <p>Nodes 1–5 run in strict sequence. Node 5 (Local LLM Engine) acts as the quality-control gate: approved prospects fork to Node 6A (HITL staging), while rejected/spam prospects route to Node 6B (skip logging). After human approval via Slack webhook, the flow continues to Instantly.ai for cold email delivery.</p>
+      </div>
+
+      <!-- Node 1 -->
+      <div class="pipeline-step">
+        <div class="step-num orange">1</div>
+        <div class="step-body">
+          <h4>Trigger — Schedule / Webhook</h4>
+          <p>Fires every 15 minutes (cron: <span class="mono">*/15 * * * *</span>) or on-demand via webhook. Acts as the heartbeat of the entire outreach engine. Each execution picks up the next unprocessed batch from Airtable.</p>
+        </div>
+      </div>
+
+      <div class="arrow-down"><span>│</span><br><span>▼</span></div>
+
+      <!-- Node 2 -->
+      <div class="pipeline-step">
+        <div class="step-num orange">2</div>
+        <div class="step-body">
+          <h4>Airtable CRM Reader — Extract Client Data</h4>
+          <p>Reads from the <strong>Campaigns</strong> table. Fetches client profiles marked <span class="tag win">READY</span> along with their target keyword, value proposition, and prospect URL. Output includes <span class="mono">client_id</span>, <span class="mono">client_url</span>, <span class="mono">client_value_prop</span>, and <span class="mono">target_keyword</span>.</p>
+          <ul class="field-list">
+            <li>Method: GET · Airtable REST API</li>
+            <li>Base: https://api.airtable.com/v0/{base_id}/Campaigns</li>
+            <li>Filter: Status = "READY", limit 10 per run</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="arrow-down"><span>│</span><br><span>▼</span></div>
+
+      <!-- Node 3 -->
+      <div class="pipeline-step">
+        <div class="step-num orange">3</div>
+        <div class="step-body">
+          <h4>HTTP Request — Serper API (Google Search)</h4>
+          <p>Queries Serper.dev for the top 20 Google search results per keyword. Returns organic URLs, titles, and snippets that the LLM engine will later scrape and evaluate.</p>
+        </div>
+      </div>
+      <div class="node-connector" style="margin-left: 64px;">
+        <span class="arrow">→</span> POST https://google.serper.dev/search
+      </div>
+
+      <div class="arrow-down"><span>│</span><br><span>▼</span></div>
+
+      <!-- Node 4 -->
+      <div class="pipeline-step">
+        <div class="step-num amber">4</div>
+        <div class="step-body">
+          <h4>Split In Batches — VRAM Protection Gate</h4>
+          <p>Enforces <strong>Batch Size: 1</strong> to prevent the local LLM from exhausting the Mac Mini's unified memory. Each prospect URL is processed individually, with the model loaded fresh for each batch to prevent memory fragmentation. This is the critical safety valve that makes local inference viable.</p>
+        </div>
+      </div>
+
+      <div class="arrow-down"><span>│</span><br><span>▼</span></div>
+
+      <!-- Node 5 -->
+      <div class="pipeline-step">
+        <div class="step-num blue">5</div>
+        <div class="step-body">
+          <h4>Execute Python Script — Local LLM Engine</h4>
+          <p>The core intelligence node. Scrapes the target URL, evaluates content relevance against the client's value proposition, drafts a personalized cold email, and performs quality-control checks. Returns a structured JSON verdict: <strong>Approved</strong> or <strong>Rejected</strong> with the draft email body, subject line, and rejection reason.</p>
+          <ul class="field-list">
+            <li>Script: ~/socrates/engines/outreach_engine.py</li>
+            <li>Model: qwen3:30b (Ollama local)</li>
+            <li>Timeout: 25 seconds</li>
+            <li>QC Checks: spam detection, competitor detection, relevance scoring</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="arrow-down"><span>│</span><br><span>▼</span></div>
+
+      <!-- Branch: Node 6A / 6B -->
+      <div style="display: flex; gap: 0; padding-left: 24px;">
+        <div style="flex: 1; border-right: 1px solid var(--border); padding-right: 16px;">
+          <div class="pipeline-step" style="border-bottom: none;">
+            <div class="step-num green">6A</div>
+            <div class="step-body">
+              <h4>Airtable Update — Approved <span class="tag win">✓</span></h4>
+              <p>Writes to the <strong>Pitches</strong> table with status <span class="mono">"Pending Human Approval"</span>. Stores the full draft: URL, Subject, Email Body, Review Status, and Record ID for the approval webhook.</p>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1; padding-left: 16px;">
+          <div class="pipeline-step" style="border-bottom: none;">
+            <div class="step-num red">6B</div>
+            <div class="step-body">
+              <h4>Airtable Update — Rejected <span class="tag loss">✗</span></h4>
+              <p>Logs to the <strong>Prospects</strong> table with status <span class="mono">"Skipped: Competitor/Spam"</span>. Records the rejection reason for audit trails. No further action taken.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down"><span>│</span><br><span>▼</span></div>
+
+      <!-- Node 7 -->
+      <div class="pipeline-step">
+        <div class="step-num purple">7</div>
+        <div class="step-body">
+          <h4>Slack / Discord Notification — Human Approval Request</h4>
+          <p>Sends a formatted preview card to the #outreach-approvals Slack channel (or Discord webhook). Includes a clickable approve button, preview of the draft email, and a direct link to the Airtable record.</p>
+          <div class="code-block" style="margin-top: 8px;">
+<span class="c1">// Slack Block Kit message template</span>
+{
+  <span class="c3">"channel"</span>: <span class="c2">"#outreach-approvals"</span>,
+  <span class="c3">"blocks"</span>: [
+    { <span class="c3">"type"</span>: <span class="c2">"header"</span>, <span class="c3">"text"</span>: <span class="c2">"📬 New Outreach Draft"</span> },
+    { <span class="c3">"type"</span>: <span class="c2">"section"</span>, <span class="c3">"fields"</span>: [
+      <span class="c2">"*Client:* Acme Corp"</span>, <span class="c2">"*Prospect:* example.com"</span>,
+      <span class="c2">"*Subject:* Quick question re: your SEO"</span>
+    ]},
+    { <span class="c3">"type"</span>: <span class="c2">"actions"</span>, <span class="c3">"elements"</span>: [
+      { <span class="c3">"type"</span>: <span class="c2">"button"</span>, <span class="c3">"text"</span>: <span class="c2">"✅ Approve & Send"</span>,
+        <span class="c3">"url"</span>: <span class="c2">"https://n8n.spacecoast.dev/webhook/approve?rid=recXXXX"</span> }
+    ]}
+  ]
+}
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down"><span>│</span><br><span>▼</span></div>
+
+      <!-- Node 8 -->
+      <div class="pipeline-step">
+        <div class="step-num purple">8</div>
+        <div class="step-body">
+          <h4>Webhook Trigger — Human Approval Listener</h4>
+          <p>Listens for the approval webhook from Slack/Discord. When a human clicks "Approve & Send," this webhook fires and updates the Airtable record status to <span class="mono">"Approved"</span>, then triggers Node 9. Webhook path includes the Record ID as a query parameter for traceability.</p>
+        </div>
+      </div>
+
+      <div class="arrow-down"><span>│</span><br><span>▼</span></div>
+
+      <!-- Node 9 -->
+      <div class="pipeline-step">
+        <div class="step-num green">9</div>
+        <div class="step-body">
+          <h4>HTTP Request — Instantly.ai API (Cold Email Delivery)</h4>
+          <p>Pushes the approved email into the Instantly.ai campaign sequence. Instantly handles deliverability optimization, sending infrastructure, and reply tracking. The campaign is pre-configured with the client's sending domain and warm-up status.</p>
+          <ul class="field-list">
+            <li>Method: POST · Instantly API v2</li>
+            <li>Endpoint: https://api.instantly.ai/api/v2/leads</li>
+            <li>Headers: X-API-Key, Content-Type: application/json</li>
+            <li>Payload: campaign_id, email, first_name, custom_variables</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="arrow-down"><span>│</span><br><span>▼</span></div>
+
+      <!-- Node 10 -->
+      <div class="pipeline-step">
+        <div class="step-num green">10</div>
+        <div class="step-body">
+          <h4>Airtable Update — Sent / Active Outreach</h4>
+          <p>Final state update. Marks the pitch record as <span class="mono">"Sent / Active Outreach"</span> with a timestamp. Updates the Prospects table with the outreach stage. Triggers the follow-up scheduler (see Section 05) to queue subsequent touches.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 02: NODE-BY-NODE TECHNICAL SPECS -->
+  <section id="technical-specs">
+    <div class="section-label">Section 02</div>
+    <h2>Node-by-Node Technical Specifications</h2>
+    <p class="section-desc">Detailed API contracts, headers, JSON bodies, and field mappings for every node in the pipeline. Use this as the authoritative reference for troubleshooting and extension.</p>
+
+    <div class="card-grid">
+      <!-- Node 1 Card -->
+      <div class="card accent-left">
+        <h4>🔔 Node 1: Trigger</h4>
+        <p style="font-size:13px;"><strong>Type:</strong> Schedule Trigger + Webhook</p>
+        <p style="font-size:13px;"><strong>Cron:</strong> <span class="mono">*/15 * * * *</span></p>
+        <p style="font-size:13px;"><strong>Webhook Path:</strong> <span class="mono">/trigger/outreach-run</span></p>
+        <p style="font-size:13px;"><strong>Purpose:</strong> Initiates each outreach cycle. The cron schedule ensures continuous operation; the webhook allows manual or event-driven triggering (e.g., after a new campaign is created).</p>
+      </div>
+
+      <!-- Node 2 Card -->
+      <div class="card accent-left">
+        <h4>📋 Node 2: Airtable CRM Reader</h4>
+        <p style="font-size:13px;"><strong>Method:</strong> GET</p>
+        <p style="font-size:13px;"><strong>Endpoint:</strong> <span class="mono">https://api.airtable.com/v0/{base_id}/Campaigns</span></p>
+        <p style="font-size:13px;"><strong>Headers:</strong></p>
+        <div class="code-block" style="margin: 4px 0; padding: 10px; font-size: 11px;">
+Authorization: Bearer {{AIRTABLE_API_KEY}}<br>
+Content-Type: application/json
+        </div>
+        <p style="font-size:13px;"><strong>Query Params:</strong> <span class="mono">filterByFormula=AND({Status}="READY",{BatchProcessed}=0)</span>, <span class="mono">maxRecords=10</span></p>
+        <p style="font-size:13px;"><strong>Output Fields Needed:</strong></p>
+        <ul class="field-list">
+          <li>client_id (Record ID)</li>
+          <li>client_url (Prospect website)</li>
+          <li>client_value_prop (Value proposition)</li>
+          <li>target_keyword (Search keyword)</li>
+          <li>client_name (Company name)</li>
+          <li>campaign_id (Campaign reference)</li>
+        </ul>
+      </div>
+
+      <!-- Node 3 Card -->
+      <div class="card accent-left">
+        <h4>🔍 Node 3: Serper API</h4>
+        <p style="font-size:13px;"><strong>Method:</strong> POST</p>
+        <p style="font-size:13px;"><strong>Endpoint:</strong> <span class="mono">https://google.serper.dev/search</span></p>
+        <p style="font-size:13px;"><strong>Headers:</strong></p>
+        <div class="code-block" style="margin: 4px 0; padding: 10px; font-size: 11px;">
+X-API-KEY: {{SERPER_API_KEY}}<br>
+Content-Type: application/json
+        </div>
+        <p style="font-size:13px;"><strong>JSON Body:</strong></p>
+        <div class="code-block" style="margin: 4px 0; padding: 10px; font-size: 11px;">
+{<br>
+  "q": "{{target_keyword}}",<br>
+  "num": 20,<br>
+  "gl": "us",<br>
+  "hl": "en"<br>
+}
+        </div>
+        <p style="font-size:13px;"><strong>Response Fields Used:</strong> <span class="mono">organic[].link</span>, <span class="mono">organic[].title</span>, <span class="mono">organic[].snippet</span></p>
+      </div>
+
+      <!-- Node 4 Card -->
+      <div class="card amber-left">
+        <h4>🔀 Node 4: Split In Batches</h4>
+        <p style="font-size:13px;"><strong>Type:</strong> n8n native SplitInBatches node</p>
+        <p style="font-size:13px;"><strong>Batch Size:</strong> <span class="mono">1</span></p>
+        <p style="font-size:13px;"><strong>Options:</strong> Reset on each run = true</p>
+        <div class="callout warn" style="margin: 8px 0;">
+          <div class="icon">⚠️</div>
+          <div>
+            <h4>Critical: Why Batch Size = 1</h4>
+            <p>The Mac Mini M4 Pro has 64 GB unified memory shared between CPU and GPU. Each 30B-parameter model loaded into Ollama consumes ~18–20 GB. Processing multiple prospects concurrently would trigger memory pressure, causing the OS to swap and crater performance to unusable levels. Batch size 1 ensures the model loads, processes one prospect, and unloads before the next batch.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Node 5 Card -->
+      <div class="card accent-left">
+        <h4>🧠 Node 5: Execute Python Script</h4>
+        <p style="font-size:13px;"><strong>Script Path:</strong> <span class="mono">~/socrates/engines/outreach_engine.py</span></p>
+        <p style="font-size:13px;"><strong>Python Env:</strong> <span class="mono">/home/jarvis/socrates-venv/bin/python3</span></p>
+        <p style="font-size:13px;"><strong>Input Parameters (via stdin JSON):</strong></p>
+        <div class="code-block" style="margin: 4px 0; padding: 10px; font-size: 11px;">
+{<br>
+  "prospect_url": "https://example.com",<br>
+  "client_value_prop": "We help SaaS...",<br>
+  "client_name": "Acme Corp",<br>
+  "target_keyword": "SEO agency Florida",<br>
+  "serper_results": [...],<br>
+  "model": "qwen3:30b"<br>
+}
+        </div>
+        <p style="font-size:13px;"><strong>Expected JSON Response:</strong></p>
+        <div class="code-block" style="margin: 4px 0; padding: 10px; font-size: 11px;">
+{<br>
+  "status": "approved" | "rejected",<br>
+  "subject": "Quick question re: your SEO",<br>
+  "email_body": "Hi {{first_name}},\n\n...",<br>
+  "relevance_score": 0.87,<br>
+  "rejection_reason": null | "competitor" | "spam" | "irrelevant",<br>
+  "first_name": "John",<br>
+  "scraped_insights": "They rank #3 for..."<br>
+}
+        </div>
+        <p style="font-size:13px;"><strong>Processing Steps:</strong> 1) Scrape URL with BeautifulSoup, 2) Extract text + meta, 3) Evaluate relevance via LLM, 4) Draft email if relevant, 5) QC check for spam/competitor patterns</p>
+      </div>
+
+      <!-- Node 6A Card -->
+      <div class="card green-left">
+        <h4>✅ Node 6A: Airtable Update (Approved)</h4>
+        <p style="font-size:13px;"><strong>Method:</strong> PATCH</p>
+        <p style="font-size:13px;"><strong>Table:</strong> <span class="mono">Pitches</span></p>
+        <p style="font-size:13px;"><strong>Columns Written:</strong></p>
+        <ul class="field-list">
+          <li>URL — Prospect website</li>
+          <li>Subject — Email subject line</li>
+          <li>Email Body — Full draft text</li>
+          <li>Review Status — "Pending Human Approval"</li>
+          <li>Record ID — Airtable record for webhook</li>
+          <li>Relevance Score — 0–1 float</li>
+          <li>Scraped Insights — Key findings text</li>
+          <li>Created At — Timestamp</li>
+        </ul>
+      </div>
+
+      <!-- Node 6B Card -->
+      <div class="card red-left">
+        <h4>❌ Node 6B: Airtable Update (Rejected)</h4>
+        <p style="font-size:13px;"><strong>Method:</strong> POST (create)</p>
+        <p style="font-size:13px;"><strong>Table:</strong> <span class="mono">Prospects</span></p>
+        <p style="font-size:13px;"><strong>Columns Written:</strong></p>
+        <ul class="field-list">
+          <li>URL — Prospect website</li>
+          <li>Status — "Skipped: Competitor/Spam"</li>
+          <li>Rejection Reason — Detailed explanation</li>
+          <li>Scanned At — Timestamp</li>
+          <li>Campaign — Linked campaign ID</li>
+        </ul>
+      </div>
+
+      <!-- Node 7 Card -->
+      <div class="card accent-left">
+        <h4>💬 Node 7: Slack/Discord Notification</h4>
+        <p style="font-size:13px;"><strong>Method:</strong> POST</p>
+        <p style="font-size:13px;"><strong>Channel:</strong> <span class="mono">#outreach-approvals</span></p>
+        <p style="font-size:13px;"><strong>Format:</strong> Slack Block Kit / Discord Embed</p>
+        <p style="font-size:13px;"><strong>Approve Button URL:</strong> <span class="mono">https://n8n.spacecoast.dev/webhook/approve?rid={{record_id}}&token={{hmac_token}}</span></p>
+        <div class="callout info" style="margin: 8px 0;">
+          <div class="icon">🔐</div>
+          <div>
+            <h4>Security: HMAC Token</h4>
+            <p>The approval webhook includes an HMAC-SHA256 token derived from the record ID + a shared secret. The webhook listener validates this before processing to prevent unauthorized approvals.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Node 8 Card -->
+      <div class="card accent-left">
+        <h4>🪝 Node 8: Webhook Trigger</h4>
+        <p style="font-size:13px;"><strong>Type:</strong> Webhook (GET)</p>
+        <p style="font-size:13px;"><strong>Path:</strong> <span class="mono">/webhook/approve</span></p>
+        <p style="font-size:13px;"><strong>Query Parameters:</strong></p>
+        <ul class="field-list">
+          <li>rid — Airtable Record ID</li>
+          <li>token — HMAC validation token</li>
+          <li>action — "approve" | "reject" | "edit"</li>
+        </ul>
+        <p style="font-size:13px;"><strong>On Approve:</strong> Updates Pitch status → "Approved," advances to Node 9.</p>
+        <p style="font-size:13px;"><strong>On Reject:</strong> Updates Pitch status → "Rejected by Human," logs reason.</p>
+      </div>
+
+      <!-- Node 9 Card -->
+      <div class="card green-left">
+        <h4>📧 Node 9: Instantly.ai API</h4>
+        <p style="font-size:13px;"><strong>Method:</strong> POST</p>
+        <p style="font-size:13px;"><strong>Endpoint:</strong> <span class="mono">https://api.instantly.ai/api/v2/leads</span></p>
+        <p style="font-size:13px;"><strong>Headers:</strong></p>
+        <div class="code-block" style="margin: 4px 0; padding: 10px; font-size: 11px;">
+X-API-Key: {{INSTANTLY_API_KEY}}<br>
+Content-Type: application/json
+        </div>
+        <p style="font-size:13px;"><strong>JSON Body:</strong></p>
+        <div class="code-block" style="margin: 4px 0; padding: 10px; font-size: 11px;">
+{<br>
+  "campaign_id": "{{campaign_id}}",<br>
+  "email": "prospect@example.com",<br>
+  "first_name": "John",<br>
+  "custom_variables": {<br>
+    "subject": "Quick question re: your SEO",<br>
+    "body": "Hi John,\n\nI noticed your site..."<br>
+  }<br>
+}
+        </div>
+      </div>
+
+      <!-- Node 10 Card -->
+      <div class="card green-left">
+        <h4>📊 Node 10: Airtable Update (Sent)</h4>
+        <p style="font-size:13px;"><strong>Method:</strong> PATCH</p>
+        <p style="font-size:13px;"><strong>Table:</strong> <span class="mono">Pitches</span></p>
+        <p style="font-size:13px;"><strong>Columns Updated:</strong></p>
+        <ul class="field-list">
+          <li>Review Status → "Sent / Active Outreach"</li>
+          <li>Sent At → ISO 8601 timestamp</li>
+          <li>Instantly Lead ID → API response ID</li>
+        </ul>
+        <p style="font-size:13px;"><strong>Side Effect:</strong> Triggers the Follow-Up Scheduler workflow (see Section 05) to queue Touch 2, 3, and 4.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 03: ERROR HANDLING -->
+  <section id="error-handling">
+    <div class="section-label">Section 03</div>
+    <h2>Error Handling & Halting Logic</h2>
+    <p class="section-desc">Production-grade resilience patterns that prevent cascading failures, resource exhaustion, and silent data loss. Every failure mode has a defined recovery path.</p>
+
+    <h3>Context Timeout Guard</h3>
+    <div class="card accent-left" style="margin-bottom: 20px;">
+      <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 250px;">
+          <h4 style="color: var(--orange);">⏱️ 25-Second Timeout</h4>
+          <p style="font-size: 13px;">The Execute Python Script node (Node 5) has a hard timeout of <strong>25 seconds</strong>. If the LLM takes longer — due to a long webpage, model loading delays, or memory pressure — n8n terminates the execution and routes to the error handler.</p>
+        </div>
+        <div style="flex: 1; min-width: 250px;">
+          <h4 style="color: var(--green);">🔄 Recovery Path</h4>
+          <ul style="font-size: 13px;">
+            <li><strong>Route to:</strong> "Log Error" node → writes to Airtable Errors table</li>
+            <li><strong>Error Log Fields:</strong> timestamp, node, error_message, prospect_url, batch_number</li>
+            <li><strong>Then:</strong> Automatically advances to next batch</li>
+            <li><strong>Retry:</strong> Flagged prospects retried on next cron cycle</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>Queue Concurrency Lock</h3>
+    <div class="card amber-left" style="margin-bottom: 20px;">
+      <h4 style="color: var(--amber);">🔒 Own Workflow Mode — No Parallel Execution</h4>
+      <p style="font-size: 13px;">The workflow is configured with <strong>Own Workflow Mode</strong>, meaning only one instance can run at a time. If a cron trigger fires while the previous run is still processing, the new trigger is queued — not executed concurrently. This prevents:</p>
+      <ul style="font-size: 13px;">
+        <li>Multiple LLM instances competing for VRAM simultaneously</li>
+        <li>Race conditions on Airtable reads/writes</li>
+        <li>Duplicate outreach to the same prospect</li>
+        <li>Instantly.ai rate-limit violations</li>
+      </ul>
+      <div class="callout info" style="margin-top: 12px;">
+        <div class="icon">ℹ️</div>
+        <div>
+          <h4>Queue Behavior</h4>
+          <p>Max queue depth: 1. If a trigger fires while a run is active AND the queue is full, the trigger is dropped with a log entry. This intentional design prevents backlog accumulation during LLM stalls.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>VRAM OOM Protection</h3>
+    <div class="card red-left" style="margin-bottom: 20px;">
+      <h4 style="color: var(--red);">🧠 Memory Management Strategy</h4>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px;">
+        <div style="flex: 1; min-width: 200px; background: var(--bg-surface); border-radius: var(--radius-sm); padding: 16px;">
+          <p style="font-size: 12px; font-weight: 700; color: var(--orange); margin-bottom: 6px;">① Batch Size = 1</p>
+          <p style="font-size: 12px; color: var(--text-muted);">Every prospect processed individually. The LLM loads, processes one URL, produces one output, and releases memory before the next batch begins.</p>
+        </div>
+        <div style="flex: 1; min-width: 200px; background: var(--bg-surface); border-radius: var(--radius-sm); padding: 16px;">
+          <p style="font-size: 12px; font-weight: 700; color: var(--orange); margin-bottom: 6px;">② Model Lifecycle Management</p>
+          <p style="font-size: 12px; color: var(--text-muted);">Python script calls <span class="mono">ollama run qwen3:30b --keep-alive 0</span> to ensure the model is unloaded from VRAM immediately after inference completes. No lingering model in GPU memory.</p>
+        </div>
+        <div style="flex: 1; min-width: 200px; background: var(--bg-surface); border-radius: var(--radius-sm); padding: 16px;">
+          <p style="font-size: 12px; font-weight: 700; color: var(--orange); margin-bottom: 6px;">③ Memory Watchdog</p>
+          <p style="font-size: 12px; color: var(--text-muted);">Before each batch, the script checks <span class="mono">vm_stat</span> for memory pressure. If available memory drops below 8 GB, the workflow pauses for 30 seconds to let the OS reclaim pages.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 04: AIRTABLE SCHEMA -->
+  <section id="airtable-schema">
+    <div class="section-label">Section 04</div>
+    <h2>Airtable Schema</h2>
+    <p class="section-desc">Complete database design spanning four tables with relationships, field types, and usage context. Designed for n8n formula-style filtering and linked record traversal.</p>
+
+    <h3>Table: Campaigns</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="schema-tag pk">PK</span> Record ID</td>
+            <td>Auto-number</td>
+            <td>Unique campaign identifier</td>
+          </tr>
+          <tr>
+            <td>Client Name</td>
+            <td><span class="schema-tag text">Single line text</span></td>
+            <td>Company or brand name</td>
+          </tr>
+          <tr>
+            <td>Client URL</td>
+            <td><span class="schema-tag text">URL</span></td>
+            <td>Client's website for context</td>
+          </tr>
+          <tr>
+            <td>Client Value Prop</td>
+            <td><span class="schema-tag text">Long text</span></td>
+            <td>The value proposition used for relevance matching</td>
+          </tr>
+          <tr>
+            <td>Target Keyword</td>
+            <td><span class="schema-tag text">Single line text</span></td>
+            <td>Google search keyword for prospect discovery</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td><span class="schema-tag text">Single select</span></td>
+            <td>READY, RUNNING, PAUSED, COMPLETED</td>
+          </tr>
+          <tr>
+            <td>Batch Processed</td>
+            <td><span class="schema-tag num">Checkbox</span></td>
+            <td>Toggle to mark campaign as fully processed</td>
+          </tr>
+          <tr>
+            <td>Instantly Campaign ID</td>
+            <td><span class="schema-tag fk">Single line text</span></td>
+            <td>Linked Instantly.ai campaign for delivery</td>
+          </tr>
+          <tr>
+            <td>Prospects</td>
+            <td><span class="schema-tag fk">Link to Prospects</span></td>
+            <td>Linked records in Prospects table</td>
+          </tr>
+          <tr>
+            <td>Created At</td>
+            <td><span class="schema-tag text">Date/time</span></td>
+            <td>Campaign creation timestamp</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Table: Prospects</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="schema-tag pk">PK</span> Record ID</td>
+            <td>Auto-number</td>
+            <td>Unique prospect identifier</td>
+          </tr>
+          <tr>
+            <td>URL</td>
+            <td><span class="schema-tag text">URL</span></td>
+            <td>Prospect website URL</td>
+          </tr>
+          <tr>
+            <td>Domain</td>
+            <td><span class="schema-tag text">Single line text</span></td>
+            <td>Extracted domain for deduplication</td>
+          </tr>
+          <tr>
+            <td>Title (SERP)</td>
+            <td><span class="schema-tag text">Single line text</span></td>
+            <td>Google search result title</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td><span class="schema-tag text">Single select</span></td>
+            <td>New, Scraped, Reviewed: Approved, Skipped: Competitor, Skipped: Spam, Skipped: Irrelevant</td>
+          </tr>
+          <tr>
+            <td>Relevance Score</td>
+            <td><span class="schema-tag num">Number (0–1)</span></td>
+            <td>LLM-calculated relevance to client value prop</td>
+          </tr>
+          <tr>
+            <td>Scraped Insights</td>
+            <td><span class="schema-tag text">Long text</span></td>
+            <td>Key findings from webpage scrape</td>
+          </tr>
+          <tr>
+            <td>Campaign</td>
+            <td><span class="schema-tag fk">Link to Campaigns</span></td>
+            <td>Parent campaign reference</td>
+          </tr>
+          <tr>
+            <td>Scanned At</td>
+            <td><span class="schema-tag text">Date/time</span></td>
+            <td>When this prospect was evaluated</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Table: Pitches</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="schema-tag pk">PK</span> Record ID</td>
+            <td>Auto-number</td>
+            <td>Unique pitch identifier</td>
+          </tr>
+          <tr>
+            <td>Subject</td>
+            <td><span class="schema-tag text">Single line text</span></td>
+            <td>Drafted email subject line</td>
+          </tr>
+          <tr>
+            <td>Email Body</td>
+            <td><span class="schema-tag text">Long text</span></td>
+            <td>Full personalized email draft</td>
+          </tr>
+          <tr>
+            <td>Review Status</td>
+            <td><span class="schema-tag text">Single select</span></td>
+            <td>Pending Human Approval, Approved, Rejected by Human, Sent / Active Outreach, Bounced, Replied</td>
+          </tr>
+          <tr>
+            <td>Prospect</td>
+            <td><span class="schema-tag fk">Link to Prospects</span></td>
+            <td>Linked prospect record</td>
+          </tr>
+          <tr>
+            <td>Campaign</td>
+            <td><span class="schema-tag fk">Link to Campaigns</span></td>
+            <td>Parent campaign reference</td>
+          </tr>
+          <tr>
+            <td>Instantly Lead ID</td>
+            <td><span class="schema-tag fk">Single line text</span></td>
+            <td>Instantly.ai lead identifier after sending</td>
+          </tr>
+          <tr>
+            <td>Sent At</td>
+            <td><span class="schema-tag text">Date/time</span></td>
+            <td>When email was delivered via Instantly</td>
+          </tr>
+          <tr>
+            <td>Opened At</td>
+            <td><span class="schema-tag text">Date/time</span></td>
+            <td>First open timestamp (from Instantly webhook)</td>
+          </tr>
+          <tr>
+            <td>Replied At</td>
+            <td><span class="schema-tag text">Date/time</span></td>
+            <td>Reply timestamp (from Instantly webhook)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Table: Approvals</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="schema-tag pk">PK</span> Record ID</td>
+            <td>Auto-number</td>
+            <td>Unique approval record</td>
+          </tr>
+          <tr>
+            <td>Pitch</td>
+            <td><span class="schema-tag fk">Link to Pitches</span></td>
+            <td>Linked pitch being reviewed</td>
+          </tr>
+          <tr>
+            <td>Reviewer</td>
+            <td><span class="schema-tag text">Single line text</span></td>
+            <td>Slack username or identifier</td>
+          </tr>
+          <tr>
+            <td>Decision</td>
+            <td><span class="schema-tag text">Single select</span></td>
+            <td>Approved, Rejected, Needs Edit</td>
+          </tr>
+          <tr>
+            <td>Notes</td>
+            <td><span class="schema-tag text">Long text</span></td>
+            <td>Reviewer feedback or edit instructions</td>
+          </tr>
+          <tr>
+            <td>Decided At</td>
+            <td><span class="schema-tag text">Date/time</span></td>
+            <td>When the human made a decision</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight-box">
+      <h4>🔗 Relationship Summary</h4>
+      <p><strong>Campaigns</strong> 1→N <strong>Prospects</strong> (one campaign generates many prospects). <strong>Prospects</strong> 1→1 <strong>Pitches</strong> (each approved prospect gets one pitch). <strong>Pitches</strong> 1→1 <strong>Approvals</strong> (each pitch has one human approval record). The linked-record structure enables n8n to traverse relationships without additional API calls.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 05: SOCRATIC ADDITIONS -->
+  <section id="socratic-additions">
+    <div class="section-label">Section 05</div>
+    <h2>Socratic Additions — Intelligent Enhancements</h2>
+    <p class="section-desc">Socrates AI contributes four intelligent workflow extensions that transform the pipeline from a simple automaton into a self-monitoring, self-correcting outreach system.</p>
+
+    <h3>📡 Deliverability Monitor</h3>
+    <div class="card accent-left" style="margin-bottom: 20px;">
+      <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 250px;">
+          <h4>48-Hour Health Check</h4>
+          <p style="font-size: 13px;">A separate n8n workflow runs every 6 hours, querying the Instantly.ai reporting API for all emails sent in the last 48 hours. It checks open rates per campaign and per sending domain.</p>
+        </div>
+        <div style="flex: 1; min-width: 250px;">
+          <div class="callout danger" style="margin: 0;">
+            <div class="icon">🚨</div>
+            <div>
+              <h4>Zero Opens = Spam Alert</h4>
+              <p>If any campaign shows <strong>0 opens</strong> after 48 hours with 20+ emails sent, the monitor immediately alerts Socrates via Slack with: the campaign name, sending domain, email volume, and a recommendation to pause and investigate (DNS/SPF/DKIM, domain reputation, copy audit).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 16px;">
+        <h4 style="color: var(--text-muted); font-size: 13px;">Alert Template:</h4>
+        <div class="code-block" style="font-size: 11px;">
+<span class="c1">// Slack alert to #socrates-alerts when 0 opens detected</span>
+🚨 <span class="c3">Deliverability Alert: {campaign_name}</span>
+• Domain: {sending_domain} — <span class="c2">0 opens / {email_count} sent (48h)</span>
+• Action: Campaign auto-paused. Check SPF/DKIM/DMARC, domain blacklists,
+  and email copy for spam triggers. Manual review required before resuming.
+        </div>
+      </div>
+    </div>
+
+    <h3>📅 Follow-Up Scheduler</h3>
+    <div class="card green-left" style="margin-bottom: 20px;">
+      <h4 style="color: var(--green);">Automated Multi-Touch Sequence</h4>
+      <p style="font-size: 13px;">When Node 10 confirms a Touch 1 email has been sent, the Follow-Up Scheduler automatically queues subsequent touches in Airtable with due dates. A separate cron workflow picks up due follow-ups and sends them via Instantly.</p>
+      <div class="table-wrap" style="margin-top: 12px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Touch</th>
+              <th>Day</th>
+              <th>Channel</th>
+              <th>Template Strategy</th>
+              <th>Condition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Touch 1</strong></td>
+              <td>Day 0</td>
+              <td>Email (Instantly)</td>
+              <td>Cold outreach — personalization hook</td>
+              <td>Always sent</td>
+            </tr>
+            <tr>
+              <td><strong>Touch 2</strong></td>
+              <td>Day 3</td>
+              <td>Email (Instantly)</td>
+              <td>Value-add follow-up — case study link</td>
+              <td>No reply to Touch 1</td>
+            </tr>
+            <tr>
+              <td><strong>Touch 3</strong></td>
+              <td>Day 5</td>
+              <td>LinkedIn</td>
+              <td>Connection request + note</td>
+              <td>No reply to Touch 1 or 2</td>
+            </tr>
+            <tr>
+              <td><strong>Touch 4</strong></td>
+              <td>Day 7</td>
+              <td>Phone Call</td>
+              <td>Task created for human CSM</td>
+              <td>No reply, high-value prospect only</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout info" style="margin-top: 12px;">
+        <div class="icon">🛑</div>
+        <div>
+          <h4>Auto-Stop on Reply</h4>
+          <p>If Instantly detects a reply at any point, all subsequent scheduled touches for that prospect are automatically cancelled. The reply is routed to the human CSM via Slack with full context.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>📊 Daily Summary Digest</h3>
+    <div class="card accent-left" style="margin-bottom: 20px;">
+      <h4 style="color: var(--orange);">End-of-Day Pipeline Report</h4>
+      <p style="font-size: 13px;">Every day at 6:00 PM EST, a summary workflow queries all four Airtable tables and generates a Slack digest in the <span class="mono">#daily-reports</span> channel. The digest includes:</p>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px;">
+        <div style="flex: 1; min-width: 140px; background: var(--bg-surface); border-radius: var(--radius-sm); padding: 16px; text-align: center;">
+          <div style="font-size: 28px; font-weight: 800; color: var(--orange);">→ Sent</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Emails delivered today</div>
+        </div>
+        <div style="flex: 1; min-width: 140px; background: var(--bg-surface); border-radius: var(--radius-sm); padding: 16px; text-align: center;">
+          <div style="font-size: 28px; font-weight: 800; color: var(--green);">👁 Opened</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Unique opens (all time)</div>
+        </div>
+        <div style="flex: 1; min-width: 140px; background: var(--bg-surface); border-radius: var(--radius-sm); padding: 16px; text-align: center;">
+          <div style="font-size: 28px; font-weight: 800; color: var(--gold);">↩ Replied</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Replies received today</div>
+        </div>
+        <div style="flex: 1; min-width: 140px; background: var(--bg-surface); border-radius: var(--radius-sm); padding: 16px; text-align: center;">
+          <div style="font-size: 28px; font-weight: 800; color: var(--amber);">⏳ Pending</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Awaiting human approval</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>🌡️ Instantly.ai Warm-Up Integration</h3>
+    <div class="card amber-left" style="margin-bottom: 20px;">
+      <h4 style="color: var(--amber);">New Domain Warm-Up Workflow</h4>
+      <p style="font-size: 13px;">Before a new client's sending domain can be used for full-volume outreach, it must pass through Instantly's automated warm-up process. A separate n8n workflow manages this onboarding:</p>
+      <div class="card-grid" style="margin-top: 16px;">
+        <div class="card" style="background: var(--bg-surface); padding: 20px;">
+          <h4 style="font-size: 14px; color: var(--orange);">Step 1: Domain Registration</h4>
+          <p style="font-size: 12px;">When a new Campaign is created with status <span class="mono">"READY"</span> and no existing Instantly Campaign ID, the warm-up workflow triggers. It registers the sending domain in Instantly via <span class="mono">POST /api/v2/warmup/domains</span>.</p>
+        </div>
+        <div class="card" style="background: var(--bg-surface); padding: 20px;">
+          <h4 style="font-size: 14px; color: var(--orange);">Step 2: DNS Verification</h4>
+          <p style="font-size: 12px;">Checks SPF, DKIM, and DMARC records via DNS lookup. If records are missing, sends setup instructions to the client via Slack. Retries every 24 hours until verified.</p>
+        </div>
+        <div class="card" style="background: var(--bg-surface); padding: 20px;">
+          <h4 style="font-size: 14px; color: var(--orange);">Step 3: Warm-Up Progression</h4>
+          <p style="font-size: 12px;">Monitors Instantly's warm-up dashboard via API. Progresses through: 5/day → 10/day → 20/day → 50/day → Full Volume. Each stage requires 3 days of healthy metrics (open rate > 20%, bounce rate < 5%).</p>
+        </div>
+        <div class="card" style="background: var(--bg-surface); padding: 20px;">
+          <h4 style="font-size: 14px; color: var(--orange);">Step 4: Green Light</h4>
+          <p style="font-size: 12px;">When warm-up completes (typically 14–21 days), the workflow updates the Campaign with the Instantly Campaign ID and sets <span class="mono">warmup_status = "COMPLETE"</span>. Socrates receives a Slack notification and the outreach pipeline can begin.</p>
+        </div>
+      </div>
+      <div class="insight-box" style="margin-top: 16px;">
+        <h4>🧠 Socrates Oversight</h4>
+        <p>Socrates monitors warm-up metrics daily. If a domain shows declining open rates during warm-up, Socrates pauses progression and alerts the team to investigate — preventing a damaged sender reputation before it impacts outreach volume.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  Space Coast Marketing · Merritt Island, FL · Socrates AI Chief of Staff<br>
+  <span style="color: var(--text-dim);">© 2025 Space Coast Marketing Agency. All rights reserved.</span>
+</footer>
+
+</body>
+</html>

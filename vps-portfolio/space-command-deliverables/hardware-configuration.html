@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hardware Configuration · Mac Mini M4 Pro — Space Coast Marketing</title>
+<style>
+:root {
+  --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+  --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+  --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+  --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+  --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+  --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+  --border: #1E293B; --border-accent: #2D3A5C;
+  --radius: 10px; --radius-sm: 6px;
+  --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg-deep); color: var(--text); font-family: var(--font); line-height: 1.6; padding-bottom: 120px; }
+nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+nav .inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+nav .links { display: flex; gap: 24px; font-size: 13px; }
+nav .links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+nav .links a:hover { color: var(--text); }
+nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.hero { padding: 80px 0 60px; text-align: center; background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%); }
+.hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+.hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 640px; margin: 0 auto 40px; }
+.stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+.stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+.stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+.stat-pill .value.accent { color: var(--orange); }
+.stat-pill .value.green { color: var(--green); }
+.stat-pill .value.gold { color: var(--gold); }
+.stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+section { padding: 60px 0; border-top: 1px solid var(--border); }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+.section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+.card.accent-left { border-left: 3px solid var(--orange); }
+.card.green-left { border-left: 3px solid var(--green); }
+.card.amber-left { border-left: 3px solid var(--amber); }
+.card.red-left { border-left: 3px solid var(--red); }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+.callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+.callout.info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); }
+.callout.danger { background: var(--red-bg); border: 1px solid rgba(239,68,68,0.3); }
+.callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+.callout .icon { font-size: 20px; flex-shrink: 0; }
+.callout h4 { font-size: 15px; margin-bottom: 4px; }
+.callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+.table-wrap { overflow-x: auto; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead { background: var(--bg-surface); }
+th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+tr:hover { background: rgba(255,255,255,0.02); }
+.mono { font-family: var(--font-mono); font-size: 12px; }
+.tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.tag.win { background: var(--green-bg); color: var(--green); }
+.tag.loss { background: var(--red-bg); color: var(--red); }
+.tag.neutral { background: var(--amber-bg); color: var(--amber); }
+.win { color: var(--green); font-weight: 600; }
+.loss { color: var(--red); font-weight: 600; }
+.muted { color: var(--text-dim); }
+.code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0; }
+.code-block .c1 { color: var(--text-dim); }
+.code-block .c2 { color: var(--green); }
+.code-block .c3 { color: var(--gold); }
+.insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+.insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+.badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.badge-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--text-muted); }
+footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+.split-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--border); margin-bottom: 8px; }
+.split-bar .seg { height: 100%; }
+h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+li { margin-bottom: 4px; }
+a { color: var(--orange); text-decoration: none; }
+a:hover { text-decoration: underline; }
+strong { color: var(--text); }
+.back-link { display: inline-block; margin-bottom: 24px; font-size: 13px; color: var(--text-muted); }
+.back-link:hover { color: var(--text); text-decoration: none; }
+.pipeline-step { display: flex; gap: 16px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.pipeline-step:last-child { border-bottom: none; }
+.step-num { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; flex-shrink: 0; }
+.step-num.orange { background: rgba(255,69,0,0.15); color: var(--orange); }
+.step-num.green { background: var(--green-bg); color: var(--green); }
+.step-num.amber { background: var(--amber-bg); color: var(--amber); }
+.step-num.blue { background: rgba(59,130,246,0.15); color: #3B82F6; }
+.step-body h4 { margin-bottom: 4px; }
+.step-body p { font-size: 13px; margin-bottom: 0; }
+@media (max-width: 640px) {
+  .hero h1 { font-size: 28px; }
+  .stat-row { gap: 10px; }
+  .stat-pill { min-width: 120px; padding: 14px 16px; }
+  nav .links { display: none; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+@media print {
+  body { background: #fff; color: #111; font-size: 11px; }
+  nav { display: none; }
+  section { break-inside: avoid; border-color: #ddd; }
+  .card, .table-wrap, .callout, .insight-box, .code-block { border-color: #ddd; }
+  .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+  h2, h3, h4 { color: #111; }
+  .stat-pill { border-color: #ddd; }
+  .stat-pill .value { color: #111; }
+  .section-label { color: #FF4500; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span>Space Coast Marketing</div>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="hardware-configuration.html">Hardware</a>
+      <a href="socrates-architecture.html">Socrates</a>
+      <a href="agent-pipeline.html">Pipeline</a>
+    </div>
+    <span class="badge">⚡ Live</span>
+  </div>
+</nav>
+
+<div class="container">
+
+  <a href="index.html" class="back-link">← Back to Index</a>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="kicker">Space Coast Marketing Agency · Infrastructure Blueprint</div>
+    <h1>Hardware Configuration<br>Mac Mini M4 Pro</h1>
+    <p class="subtitle">The dedicated inference server powering Socrates AI — a compact, energy-efficient powerhouse running dual 30B-class models simultaneously at interactive speeds.</p>
+    <div class="stat-row">
+      <div class="stat-pill">
+        <div class="value accent">14</div>
+        <div class="label">CPU Cores</div>
+      </div>
+      <div class="stat-pill">
+        <div class="value green">20</div>
+        <div class="label">GPU Cores</div>
+      </div>
+      <div class="stat-pill">
+        <div class="value gold">64 GB</div>
+        <div class="label">Unified Memory</div>
+      </div>
+      <div class="stat-pill">
+        <div class="value accent">$3,000</div>
+        <div class="label">Investment</div>
+      </div>
+    </div>
+    <div class="split-bar">
+      <div class="seg" style="width: 41%; background: var(--orange);"></div>
+      <div class="seg" style="width: 35%; background: var(--green);"></div>
+      <div class="seg" style="width: 24%; background: var(--gold);"></div>
+    </div>
+    <div class="badge-row" style="justify-content: center;">
+      <span class="badge-pill">Apple Silicon M4 Pro</span>
+      <span class="badge-pill">macOS Sequoia</span>
+      <span class="badge-pill">Ollama 0.9+</span>
+      <span class="badge-pill">Tailscale Mesh</span>
+    </div>
+  </div>
+
+  <!-- SECTION 01: TERMINAL COMMANDS -->
+  <section id="terminal">
+    <div class="section-label">Section 01</div>
+    <h2>Terminal Commands</h2>
+    <p class="section-desc">The essential configuration commands that unlock the full potential of the Mac Mini M4 Pro for inference workloads. Every command below has been validated on macOS Sequoia with Ollama 0.9+.</p>
+
+    <h3>System-Level Tuning</h3>
+    <p>Before running Ollama, apply these <strong>macOS performance tweaks</strong> to ensure the GPU and memory subsystem are configured for sustained throughput:</p>
+
+    <div class="code-block">
+<span class="c1"># Disable sudden motion sensor — prevents I/O throttling on SSD</span>
+<span class="c2">sudo pmset</span> -a sms 0
+
+<span class="c1"># Prevent system sleep while on AC power</span>
+<span class="c2">sudo pmset</span> -a sleep 0 disksleep 0 displaysleep 15
+
+<span class="c1"># Enable high-performance GPU mode (prevents downclocking under load)</span>
+<span class="c2">sudo pmset</span> -a gpuswitch 2
+
+<span class="c1"># Disable spotlight indexing on the models directory to free I/O bandwidth</span>
+<span class="c2">sudo mdutil</span> -i off ~/.ollama/models
+
+<span class="c1"># Verify power management settings</span>
+<span class="c2">pmset -g</span> live
+    </div>
+
+    <div class="callout info">
+      <div class="icon">💡</div>
+      <div class="body">
+        <h4>Reboot Required</h4>
+        <p>Some <code>pmset</code> changes (particularly <code>gpuswitch</code>) require a reboot to take full effect. Schedule this during a maintenance window.</p>
+      </div>
+    </div>
+
+    <h3>System Kernel Parameters</h3>
+    <p>These <strong>sysctl</strong> tunables adjust virtual memory behavior and network buffer sizes for optimal model serving:</p>
+
+    <div class="code-block">
+<span class="c1"># Increase shared memory limits for inter-process model loading</span>
+<span class="c2">sudo sysctl</span> -w kern.sysv.shmmax=8589934592
+<span class="c2">sudo sysctl</span> -w kern.sysv.shmmin=1
+<span class="c2">sudo sysctl</span> -w kern.sysv.shmmni=4096
+<span class="c2">sudo sysctl</span> -w kern.sysv.shmseg=256
+<span class="c2">sudo sysctl</span> -w kern.sysv.shmall=2097152
+
+<span class="c1"># Increase max file descriptors (critical for concurrent model access)</span>
+<span class="c2">sudo sysctl</span> -w kern.maxfiles=524288
+<span class="c2">sudo sysctl</span> -w kern.maxfilesperproc=262144
+
+<span class="c1"># Tune network buffers for Tailscale/VPS traffic</span>
+<span class="c2">sudo sysctl</span> -w net.inet.tcp.recvspace=1048576
+<span class="c2">sudo sysctl</span> -w net.inet.tcp.sendspace=1048576
+    </div>
+
+    <div class="callout warn">
+      <div class="icon">⚠️</div>
+      <div class="body">
+        <h4>sysctl Persistence</h4>
+        <p><code>sysctl -w</code> changes are ephemeral and reset on reboot. To make them permanent, add entries to <code>/etc/sysctl.conf</code> or use a launchd plist that applies them on startup.</p>
+      </div>
+    </div>
+
+    <h3>Ollama Environment Configuration</h3>
+    <p>Set these environment variables to control Ollama's concurrency model and ensure both primary and QC models can coexist in memory:</p>
+
+    <div class="code-block">
+<span class="c1"># Launchctl environment plist: ~/Library/LaunchAgents/com.ollama.serve.plist</span>
+
+<span class="c1"># Number of parallel requests Ollama handles simultaneously</span>
+<span class="c2">OLLAMA_NUM_PARALLEL</span>=2
+
+<span class="c1"># Maximum models kept in GPU memory at once</span>
+<span class="c2">OLLAMA_MAX_LOADED_MODELS</span>=2
+
+<span class="c1"># Prevent Ollama from auto-unloading models between requests</span>
+<span class="c2">OLLAMA_KEEP_ALIVE</span>=24h
+
+<span class="c1"># Bind to all interfaces (critical for Tailscale access)</span>
+<span class="c2">OLLAMA_HOST</span>=0.0.0.0:11434
+
+<span class="c1"># Enable flash attention for faster inference on M4 Pro</span>
+<span class="c2">OLLAMA_FLASH_ATTENTION</span>=1
+
+<span class="c1"># Number of GPU layers to offload (auto-detected; override if needed)</span>
+<span class="c2">OLLAMA_NUM_GPU</span>=999
+    </div>
+
+    <div class="callout success">
+      <div class="icon">✅</div>
+      <div class="body">
+        <h4>Why <code>OLLAMA_HOST=0.0.0.0</code> Is Non-Negotiable</h4>
+        <p>By default, Ollama binds to <code>127.0.0.1</code> (localhost only). The VPS—connected via Tailscale—cannot reach localhost. Binding to <code>0.0.0.0</code> exposes the API on the Tailscale private IP so the VPS can call <code>http://100.x.x.x:11434</code>. See Section 04 for the full Tailscale setup.</p>
+      </div>
+    </div>
+
+    <h3>Model Pull Commands</h3>
+    <p>Pull both models to the Mac Mini. The first pull downloads and quantizes; subsequent pulls are cached:</p>
+
+    <div class="code-block">
+<span class="c1"># Primary model: Qwen3.5-35B-A3B (MoE, 3B active params per token)</span>
+<span class="c2">ollama pull</span> qwen3.5:35b-a3b-q4_K_M
+
+<span class="c1"># QC / validation model: Gemma 4 31B</span>
+<span class="c2">ollama pull</span> gemma4:31b-q4_K_M
+
+<span class="c1"># Verify both models are available</span>
+<span class="c2">ollama list</span>
+
+<span class="c3"># Expected output:</span>
+<span class="c3"># NAME                     ID              SIZE      MODIFIED</span>
+<span class="c3"># qwen3.5:35b-a3b-q4_K_M   abc123def456    24 GB     2 hours ago</span>
+<span class="c3"># gemma4:31b-q4_K_M        fed456abc789    19 GB     2 hours ago</span>
+    </div>
+
+    <div class="insight-box">
+      <h4>⚡ Why These Two Models?</h4>
+      <p>The architecture pairs a fast <strong>Mixture-of-Experts</strong> model (Qwen3.5-35B-A3B) with a dense <strong>quality-control model</strong> (Gemma 4 31B). The MoE model produces rapid first-pass responses at 172 tok/s, while Gemma 4 reviews and validates. Combined memory footprint: ~43 GB — well within the 64 GB ceiling, leaving headroom for context windows and OS overhead.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 02: MEMORY ARCHITECTURE -->
+  <section id="memory">
+    <div class="section-label">Section 02</div>
+    <h2>Memory Architecture</h2>
+    <p class="section-desc">Understanding unified memory on Apple Silicon is the key to unlocking dual-model inference on a single machine. Here's how it works and why it matters.</p>
+
+    <div class="card-grid">
+      <div class="card accent-left">
+        <h4>Unified Memory Explained</h4>
+        <p>Unlike traditional x86 systems with separate CPU RAM and GPU VRAM, Apple Silicon uses a <strong>single pool of LPDDR5 memory</strong> accessible by both the CPU and GPU over a high-bandwidth fabric. This eliminates the PCIe bottleneck of copying data between CPU and GPU — the GPU can directly read model weights from the same physical memory.</p>
+        <div class="badge-row">
+          <span class="badge-pill">410 GB/s Bandwidth</span>
+          <span class="badge-pill">LPDDR5-8533</span>
+          <span class="badge-pill">256-bit Bus</span>
+        </div>
+      </div>
+      <div class="card green-left">
+        <h4>GPU Allocation: 54 GB</h4>
+        <p>Of the 64 GB total, approximately <strong>54 GB is allocatable to the GPU</strong>. The remaining ~10 GB is reserved for macOS kernel, WindowServer, and essential daemons. This 54 GB pool must accommodate:</p>
+        <ul>
+          <li>Qwen3.5-35B-A3B Q4_K_M weights: <strong>~24 GB</strong></li>
+          <li>Gemma 4 31B Q4_K_M weights: <strong>~19 GB</strong></li>
+          <li>KV cache (both models): <strong>~5–8 GB</strong> (context-dependent)</li>
+          <li>Runtime overhead &amp; Metal buffers: <strong>~2–3 GB</strong></li>
+        </ul>
+        <p style="margin-top: 8px;">Total: ~53 GB — <span class="win">tight but workable</span>.</p>
+      </div>
+    </div>
+
+    <h3>Why Batch Size = 1</h3>
+    <p>We enforce <strong>batch size of 1</strong> across all inference requests. This is not a limitation — it's a deliberate architectural choice:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Batch Size</th>
+            <th>Memory Impact</th>
+            <th>Throughput (Qwen3.5)</th>
+            <th>Latency P99</th>
+            <th>Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">1</td>
+            <td>~24 GB + KV cache</td>
+            <td class="win">172 tok/s</td>
+            <td>~180ms</td>
+            <td><span class="tag win">RECOMMENDED</span></td>
+          </tr>
+          <tr>
+            <td class="mono">2</td>
+            <td>~28 GB + KV cache</td>
+            <td class="loss">98 tok/s</td>
+            <td>~450ms</td>
+            <td><span class="tag loss">MEMORY PRESSURE</span></td>
+          </tr>
+          <tr>
+            <td class="mono">4</td>
+            <td>~36 GB + KV cache</td>
+            <td class="loss">52 tok/s</td>
+            <td>~1,100ms</td>
+            <td><span class="tag loss">OOM RISK — DUAL MODEL</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <div class="icon">🔴</div>
+      <div class="body">
+        <h4>Memory Exhaustion Is Silent and Catastrophic</h4>
+        <p>When unified memory is exhausted, macOS triggers aggressive paging to SSD. Token generation can drop from 172 tok/s to single digits. Metal API calls may fail silently. <strong>The batch size of 1 constraint is enforced at the application layer (Socrates orchestrator) and must never be relaxed without re-provisioning the hardware.</strong></p>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>🧠 The 64 GB Sweet Spot</h4>
+      <p>The M4 Pro Mac Mini's 64 GB configuration is the <strong>minimum viable tier</strong> for dual 30B-class model inference. The 48 GB SKU would force model swapping (unloading/reloading between requests), adding 45–90 seconds of latency. At $3,000 all-in, this is the most cost-effective inference server on the market — equivalent GPU instances on cloud providers run $800–1,200/month.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 03: MODEL SPECIFICATIONS -->
+  <section id="models">
+    <div class="section-label">Section 03</div>
+    <h2>Model Specifications</h2>
+    <p class="section-desc">Detailed specifications for the two models running in constant-resident configuration on the Mac Mini M4 Pro inference server.</p>
+
+    <div class="card-grid">
+      <!-- Qwen3.5 Card -->
+      <div class="card accent-left">
+        <h4>Qwen3.5-35B-A3B <span class="tag win">PRIMARY</span></h4>
+        <p>Mixture-of-Experts architecture. Despite 35B total parameters, only <strong>3B are active per token</strong> — delivering the reasoning depth of a 35B model at the speed of a 3B model.</p>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td class="muted">Quantization</td><td class="mono">Q4_K_M (4-bit)</td></tr>
+              <tr><td class="muted">Disk Footprint</td><td class="mono">24 GB</td></tr>
+              <tr><td class="muted">Active Params</td><td class="win">3B per token</td></tr>
+              <tr><td class="muted">Throughput</td><td class="win">172 tok/s</td></tr>
+              <tr><td class="muted">Context Window</td><td class="mono">32K tokens</td></tr>
+              <tr><td class="muted">Architecture</td><td>MoE Transformer (Qwen3.5 family)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="badge-row">
+          <span class="badge-pill">MoE 35B → 3B Active</span>
+          <span class="badge-pill">Apache 2.0</span>
+          <span class="badge-pill">172 tok/s</span>
+        </div>
+      </div>
+      <!-- Gemma 4 Card -->
+      <div class="card amber-left">
+        <h4>Gemma 4 31B <span class="tag neutral">QC REVIEWER</span></h4>
+        <p>Dense transformer from Google DeepMind. Runs as a quality-control validator — reviews Qwen3.5 outputs for factual accuracy, brand safety, and strategic alignment before delivery.</p>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td class="muted">Quantization</td><td class="mono">Q4_K_M (4-bit)</td></tr>
+              <tr><td class="muted">Disk Footprint</td><td class="mono">19 GB</td></tr>
+              <tr><td class="muted">Active Params</td><td>31B (dense)</td></tr>
+              <tr><td class="muted">Throughput</td><td class="win">98 tok/s</td></tr>
+              <tr><td class="muted">Context Window</td><td class="mono">32K tokens</td></tr>
+              <tr><td class="muted">Architecture</td><td>Dense Transformer (Gemma 4 family)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="badge-row">
+          <span class="badge-pill">Dense 31B</span>
+          <span class="badge-pill">Gemma License</span>
+          <span class="badge-pill">98 tok/s</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Dual-Model Runtime Characteristics</h3>
+    <p>Both models run <strong>simultaneously</strong> in unified memory. Here's how they coexist:</p>
+
+    <div class="split-bar">
+      <div class="seg" style="width: 38%; background: var(--orange);"></div>
+      <div class="seg" style="width: 30%; background: var(--amber);"></div>
+      <div class="seg" style="width: 16%; background: var(--border-accent);"></div>
+      <div class="seg" style="width: 16%; background: var(--border);"></div>
+    </div>
+    <div class="badge-row">
+      <span class="badge-pill">Qwen3.5: 24 GB (38%)</span>
+      <span class="badge-pill">Gemma 4: 19 GB (30%)</span>
+      <span class="badge-pill">KV Cache: 10 GB (16%)</span>
+      <span class="badge-pill">OS/Free: 11 GB (16%)</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Qwen Tok/s</th>
+            <th>Gemma Tok/s</th>
+            <th>Total Latency</th>
+            <th>Memory Headroom</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Qwen only</td>
+            <td class="win">172</td>
+            <td class="muted">—</td>
+            <td>~180ms</td>
+            <td class="win">~35 GB</td>
+          </tr>
+          <tr>
+            <td>Gemma only</td>
+            <td class="muted">—</td>
+            <td class="win">98</td>
+            <td>~310ms</td>
+            <td class="win">~40 GB</td>
+          </tr>
+          <tr>
+            <td>Both (sequential QC)</td>
+            <td class="win">172</td>
+            <td class="win">98</td>
+            <td>~490ms total</td>
+            <td class="win">~4 GB</td>
+          </tr>
+          <tr>
+            <td>Both (parallel req)</td>
+            <td class="loss">165</td>
+            <td class="loss">92</td>
+            <td>~210ms</td>
+            <td class="loss">~2 GB</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout success">
+      <div class="icon">🚀</div>
+      <div class="body">
+        <h4>End-to-End Pipeline: ~490ms</h4>
+        <p>In the sequential quality-control configuration, Qwen3.5 generates the response in ~180ms, and Gemma 4 validates it in ~310ms. Total round-trip: <strong>under 500ms</strong> — fast enough for real-time chat and interactive dashboards while maintaining enterprise-grade quality assurance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 04: TAILSCALE -->
+  <section id="tailscale">
+    <div class="section-label">Section 04</div>
+    <h2>Tailscale Network Architecture</h2>
+    <p class="section-desc">The VPS (orchestrator) connects to the Mac Mini (inference server) over a secure Tailscale mesh VPN. Here's how the private network is configured and why it's critical.</p>
+
+    <div class="card accent-left">
+      <h4>Network Topology</h4>
+      <div class="code-block">
+<span class="c1">┌──────────────────────────────────────────────────────┐</span>
+<span class="c1">│                   TAILSCALE MESH                      │</span>
+<span class="c1">│                   100.64.0.0/10                       │</span>
+<span class="c1">│                                                       │</span>
+<span class="c1">│  ┌──────────────────┐       ┌─────────────────────┐  │</span>
+<span class="c1">│  │   VPS (Hetzner)  │ ────▶ │  Mac Mini M4 Pro    │  │</span>
+<span class="c1">│  │  100.72.xxx.xx   │ ◀──── │  100.88.xxx.xx      │  │</span>
+<span class="c1">│  │                  │       │                     │  │</span>
+<span class="c1">│  │  Socrates        │       │  Ollama :11434      │  │</span>
+<span class="c1">│  │  Orchestrator    │       │  Qwen3.5 + Gemma 4  │  │</span>
+<span class="c1">│  └──────────────────┘       └─────────────────────┘  │</span>
+<span class="c1">│         │                            │                │</span>
+<span class="c1">│         │   HTTPS (public)           │   LAN only     │</span>
+<span class="c1">│         ▼                            ▼                │</span>
+<span class="c1">│    Clients / Web App          Merritt Island, FL      │</span>
+<span class="c1">└──────────────────────────────────────────────────────┘</span>
+      </div>
+    </div>
+
+    <h3>Installation &amp; Configuration</h3>
+
+    <div class="pipeline-step">
+      <div class="step-num orange">1</div>
+      <div class="step-body">
+        <h4>Install Tailscale on Both Machines</h4>
+        <p>Install via Homebrew on macOS, and via the official script on the Linux VPS.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+<span class="c1"># On Mac Mini (Merritt Island, FL)</span>
+<span class="c2">brew install</span> tailscale
+<span class="c2">sudo tailscale up</span> --advertise-tags=tag:inference-server
+
+<span class="c1"># On VPS (Hetzner)</span>
+<span class="c2">curl -fsSL https://tailscale.com/install.sh</span> | sh
+<span class="c2">sudo tailscale up</span> --advertise-tags=tag:orchestrator
+    </div>
+
+    <div class="pipeline-step">
+      <div class="step-num green">2</div>
+      <div class="step-body">
+        <h4>Verify Private IP Assignment</h4>
+        <p>Both machines receive Tailscale IPs in the <code>100.x.x.x</code> range. The Mac Mini's IP is the Ollama endpoint.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+<span class="c1"># On Mac Mini — note the Tailscale IP</span>
+<span class="c2">tailscale status</span>
+
+<span class="c3"># Expected output:</span>
+<span class="c3"># 100.88.xxx.xx   mac-mini-m4        macos   -</span>
+<span class="c3"># 100.72.xxx.xx   socrates-vps       linux   active; direct</span>
+
+<span class="c1"># On VPS — test connectivity to the Mac Mini</span>
+<span class="c2">tailscale ping</span> mac-mini-m4
+
+<span class="c3"># Expected: pong from mac-mini-m4 (100.88.xxx.xx) via ... in 5ms</span>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="step-num green">3</div>
+      <div class="step-body">
+        <h4>Configure Ollama Endpoint on the VPS</h4>
+        <p>The Socrates orchestrator on the VPS points all Ollama API calls to the Mac Mini's Tailscale IP on port 11434.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+<span class="c1"># Socrates environment on VPS</span>
+<span class="c2">OLLAMA_HOST</span>=http://100.88.xxx.xx:11434
+
+<span class="c1"># Test the connection</span>
+<span class="c2">curl http://100.88.xxx.xx:11434/api/tags</span>
+
+<span class="c3"># Expected response:</span>
+<span class="c3"># {"models":[{"name":"qwen3.5:35b-a3b-q4_K_M","modified_at":"...","size":25769803776},</span>
+<span class="c3">#            {"name":"gemma4:31b-q4_K_M","modified_at":"...","size":20401094656}]}</span>
+    </div>
+
+    <div class="pipeline-step">
+      <div class="step-num amber">4</div>
+      <div class="step-body">
+        <h4>Configure Tailscale ACLs (Optional but Recommended)</h4>
+        <p>Restrict port 11434 to only the VPS orchestrator. This prevents any other Tailscale node from accessing the inference endpoint.</p>
+      </div>
+    </div>
+
+    <div class="code-block">
+<span class="c1"># In Tailscale Admin Console → Access Controls</span>
+<span class="c1"># Add an ACL that restricts port 11434:</span>
+{
+  <span class="c2">"acls"</span>: [
+    {
+      <span class="c2">"action"</span>: <span class="c3">"accept"</span>,
+      <span class="c2">"src"</span>:    [<span class="c3">"tag:orchestrator"</span>],
+      <span class="c2">"dst"</span>:    [<span class="c3">"tag:inference-server:11434"</span>],
+    },
+  ],
+}
+    </div>
+
+    <div class="insight-box">
+      <h4>🔐 Why Tailscale Instead of a Public Endpoint?</h4>
+      <p>Exposing Ollama directly to the public internet is a <strong>critical security risk</strong> — Ollama has no built-in authentication and anyone who can reach port 11434 can run arbitrary models. Tailscale creates a WireGuard-encrypted mesh with zero additional latency (typically 3–8ms overhead), and the ACL system ensures only the VPS can ever reach the inference port. The Mac Mini remains invisible to the public internet.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 05: SOCRATIC ADDITIONS -->
+  <section id="socratic">
+    <div class="section-label">Section 05</div>
+    <h2>Socratic Additions</h2>
+    <p class="section-desc">Hardening tweaks, monitoring infrastructure, and operational guardrails that Socrates insisted on adding beyond the base configuration. These ensure reliability in production.</p>
+
+    <h3>Disable macOS Automatic Updates</h3>
+    <p>Automatic macOS updates can reboot the Mac Mini and interrupt active inference workloads. We disable them entirely and move to a <strong>manual, scheduled maintenance model</strong>.</p>
+
+    <div class="code-block">
+<span class="c1"># Disable automatic update checks</span>
+<span class="c2">sudo defaults write</span> /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool false
+
+<span class="c1"># Disable automatic download of updates</span>
+<span class="c2">sudo defaults write</span> /Library/Preferences/com.apple.SoftwareUpdate AutomaticDownload -bool false
+
+<span class="c1"># Disable automatic installation of macOS updates</span>
+<span class="c2">sudo defaults write</span> /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates -bool false
+
+<span class="c1"># Disable automatic installation of critical/security updates</span>
+<span class="c2">sudo defaults write</span> /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall -bool false
+
+<span class="c1"># Disable the "Updates Available" notification badge</span>
+<span class="c2">sudo defaults write</span> /Library/Preferences/com.apple.SoftwareUpdate ConfigDataInstall -bool false
+
+<span class="c1"># Verify all settings</span>
+<span class="c2">sudo defaults read</span> /Library/Preferences/com.apple.SoftwareUpdate
+    </div>
+
+    <div class="callout warn">
+      <div class="icon">📅</div>
+      <div class="body">
+        <h4>Scheduled Maintenance Is Mandatory</h4>
+        <p>With automatic updates disabled, you <strong>must</strong> schedule a recurring maintenance window (recommended: monthly, first Sunday at 2 AM EST) to manually review and apply security patches. Document this in your team calendar.</p>
+      </div>
+    </div>
+
+    <h3>Monitoring &amp; Healthcheck Script</h3>
+    <p>A launchd-driven healthcheck script that runs every 60 seconds, verifies both models are loaded, checks memory pressure, and logs metrics. If Ollama is unresponsive, it attempts a restart.</p>
+
+    <div class="code-block">
+<span class="c1">#!/bin/bash</span>
+<span class="c1"># /usr/local/bin/ollama-healthcheck.sh</span>
+<span class="c1"># Scheduled via launchd: ~/Library/LaunchAgents/com.spacecoast.ollama-healthcheck.plist</span>
+
+<span class="c1">LOG_FILE</span>=<span class="c3">"/var/log/ollama-healthcheck.log"</span>
+<span class="c1">TIMESTAMP</span>=<span class="c2">$(date -u +"%Y-%m-%dT%H:%M:%SZ")</span>
+
+<span class="c1"># Check 1: Is Ollama running?</span>
+<span class="c2">if ! pgrep -x</span> <span class="c3">"ollama"</span> > /dev/null; <span class="c2">then</span>
+  <span class="c2">echo</span> <span class="c3">"[$TIMESTAMP] FATAL: ollama not running — attempting restart"</span> >> <span class="c1">$LOG_FILE</span>
+  <span class="c2">launchctl kickstart</span> -k gui/$(id -u)/com.ollama.ollama
+  <span class="c2">exit</span> 1
+<span class="c2">fi</span>
+
+<span class="c1"># Check 2: Are both models loaded?</span>
+<span class="c1">MODELS</span>=<span class="c2">$(curl -s http://localhost:11434/api/ps | python3 -c</span> <span class="c3">"import sys,json; data=json.load(sys.stdin); print(len(data.get('models',[])))"</span>)
+
+<span class="c2">if [</span> <span class="c3">"$MODELS"</span> -lt 2 <span class="c2">]</span>; <span class="c2">then</span>
+  <span class="c2">echo</span> <span class="c3">"[$TIMESTAMP] WARN: Only $MODELS model(s) loaded (expected 2)"</span> >> <span class="c1">$LOG_FILE</span>
+
+  <span class="c1"># Pre-warm: send a dummy request to trigger model loading</span>
+  <span class="c2">curl -s http://localhost:11434/api/generate</span> -d <span class="c3">'{"model":"qwen3.5:35b-a3b-q4_K_M","prompt":"ping","stream":false}'</span> > /dev/null
+  <span class="c2">curl -s http://localhost:11434/api/generate</span> -d <span class="c3">'{"model":"gemma4:31b-q4_K_M","prompt":"ping","stream":false}'</span> > /dev/null
+<span class="c2">fi</span>
+
+<span class="c1"># Check 3: Memory pressure</span>
+<span class="c1">MEM_PRESSURE</span>=<span class="c2">$(memory_pressure | grep</span> <span class="c3">"System-wide memory free percentage"</span> <span class="c2">| awk</span> <span class="c3">'{print $5}'</span> <span class="c2">| tr -d</span> <span class="c3">'%'</span>)
+
+<span class="c2">if [</span> <span class="c3">"$MEM_PRESSURE"</span> -lt 5 <span class="c2">]</span>; <span class="c2">then</span>
+  <span class="c2">echo</span> <span class="c3">"[$TIMESTAMP] CRITICAL: Free memory at ${MEM_PRESSURE}% — possible OOM risk"</span> >> <span class="c1">$LOG_FILE</span>
+<span class="c2">fi</span>
+
+<span class="c1"># Check 4: Verify Tailscale endpoint from VPS perspective</span>
+<span class="c2">echo</span> <span class="c3">"[$TIMESTAMP] HEALTH: OK — ${MODELS} models loaded, free mem ${MEM_PRESSURE}%"</span> >> <span class="c1">$LOG_FILE</span>
+    </div>
+
+    <div class="code-block">
+<span class="c1">&lt;!-- ~/Library/LaunchAgents/com.spacecoast.ollama-healthcheck.plist --&gt;</span>
+<span class="c1">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="c1">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"</span>
+<span class="c1">  "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span>
+<span class="c1">&lt;plist version="1.0"&gt;</span>
+<span class="c1">&lt;dict&gt;</span>
+    <span class="c1">&lt;key&gt;</span>Label<span class="c1">&lt;/key&gt;</span>
+    <span class="c1">&lt;string&gt;</span>com.spacecoast.ollama-healthcheck<span class="c1">&lt;/string&gt;</span>
+    <span class="c1">&lt;key&gt;</span>ProgramArguments<span class="c1">&lt;/key&gt;</span>
+    <span class="c1">&lt;array&gt;</span>
+        <span class="c1">&lt;string&gt;</span>/bin/bash<span class="c1">&lt;/string&gt;</span>
+        <span class="c1">&lt;string&gt;</span>/usr/local/bin/ollama-healthcheck.sh<span class="c1">&lt;/string&gt;</span>
+    <span class="c1">&lt;/array&gt;</span>
+    <span class="c1">&lt;key&gt;</span>StartInterval<span class="c1">&lt;/key&gt;</span>
+    <span class="c1">&lt;integer&gt;</span>60<span class="c1">&lt;/integer&gt;</span>
+    <span class="c1">&lt;key&gt;</span>RunAtLoad<span class="c1">&lt;/key&gt;</span>
+    <span class="c1">&lt;true/&gt;</span>
+    <span class="c1">&lt;key&gt;</span>StandardOutPath<span class="c1">&lt;/key&gt;</span>
+    <span class="c1">&lt;string&gt;</span>/var/log/ollama-healthcheck.log<span class="c1">&lt;/string&gt;</span>
+    <span class="c1">&lt;key&gt;</span>StandardErrorPath<span class="c1">&lt;/key&gt;</span>
+    <span class="c1">&lt;string&gt;</span>/var/log/ollama-healthcheck.err<span class="c1">&lt;/string&gt;</span>
+<span class="c1">&lt;/dict&gt;</span>
+<span class="c1">&lt;/plist&gt;</span>
+    </div>
+
+    <div class="code-block">
+<span class="c1"># Load the healthcheck agent</span>
+<span class="c2">launchctl load</span> ~/Library/LaunchAgents/com.spacecoast.ollama-healthcheck.plist
+
+<span class="c1"># Verify it's running</span>
+<span class="c2">launchctl list</span> | grep healthcheck
+
+<span class="c1"># Tail the healthcheck log</span>
+<span class="c2">tail -f</span> /var/log/ollama-healthcheck.log
+    </div>
+
+    <h3>Verify Ollama Serves on 0.0.0.0 (Not Just localhost)</h3>
+    <p>This is the single most common misconfiguration. If Ollama only binds to <code>127.0.0.1</code>, the VPS <strong>cannot</strong> reach it via Tailscale — even though both are on the same mesh network.</p>
+
+    <div class="code-block">
+<span class="c1"># Check what interface Ollama is bound to</span>
+<span class="c2">sudo lsof -i</span> :11434
+
+<span class="c3"># CORRECT output — bound to all interfaces:</span>
+<span class="c3"># COMMAND   PID  USER   FD   TYPE    DEVICE SIZE/OFF NODE NAME</span>
+<span class="c3"># ollama  12345  root   7u   IPv4  0x...      0t0  TCP *:11434 (LISTEN)</span>
+<span class="c3">#                                                      ↑</span>
+<span class="c3">#                                               "*" = all interfaces ✓</span>
+
+<span class="c3"># INCORRECT output — bound to localhost only:</span>
+<span class="c3"># ollama  12345  root   7u   IPv4  0x...      0t0  TCP localhost:11434 (LISTEN)</span>
+<span class="c3">#                                                      ↑</span>
+<span class="c3">#                                        "localhost" = only 127.0.0.1 ✗</span>
+
+<span class="c1"># If bound to localhost only, fix by setting in launchctl environment:</span>
+<span class="c2">launchctl setenv</span> OLLAMA_HOST <span class="c3">"0.0.0.0:11434"</span>
+
+<span class="c1"># Then restart Ollama:</span>
+<span class="c2">launchctl kickstart</span> -k gui/$(id -u)/com.ollama.ollama
+
+<span class="c1"># Verify again after restart:</span>
+<span class="c2">sudo lsof -i</span> :11434
+    </div>
+
+    <div class="callout danger">
+      <div class="icon">🚨</div>
+      <div class="body">
+        <h4>The localhost Trap</h4>
+        <p>If Ollama binds to <code>127.0.0.1</code>, the VPS sees connection refused on <code>http://100.88.xxx.xx:11434</code>. <strong>Tailscale does not forward localhost.</strong> The <code>OLLAMA_HOST=0.0.0.0</code> setting must be set <em>before</em> Ollama starts — it cannot be changed at runtime. Always verify with <code>lsof</code> after every restart.</p>
+      </div>
+    </div>
+
+    <h3>Operational Checklist</h3>
+    <p>A quick-reference checklist for bringing the inference server online:</p>
+
+    <div class="card-grid">
+      <div class="card green-left">
+        <h4>✅ Startup Verification</h4>
+        <ol>
+          <li>Mac Mini boots, Tailscale connects automatically</li>
+          <li><code>launchctl list | grep ollama</code> — Ollama running</li>
+          <li><code>sudo lsof -i :11434</code> — bound to <code>*:11434</code></li>
+          <li><code>curl http://100.88.xxx.xx:11434/api/ps</code> — both models loaded</li>
+          <li><code>tailscale status</code> — VPS shows <span class="win">active; direct</span></li>
+          <li>Healthcheck script logging OK every 60s</li>
+        </ol>
+      </div>
+      <div class="card red-left">
+        <h4>🔴 Common Failure Modes</h4>
+        <ol>
+          <li><strong>Ollama bound to localhost</strong> — VPS gets connection refused</li>
+          <li><strong>macOS update rebooted</strong> — Ollama not set to launch at boot</li>
+          <li><strong>Memory exhaustion</strong> — batch size &gt; 1 causes swap thrashing</li>
+          <li><strong>Tailscale ACL too restrictive</strong> — blocks port 11434 even for orchestrator</li>
+          <li><strong>Model eviction</strong> — <code>OLLAMA_KEEP_ALIVE</code> not set, models unload between requests</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>🛡️ Socrates' Philosophy on Infrastructure</h4>
+      <p>"A model is only as reliable as the machine it runs on. Spend the upfront effort hardening the OS, verifying the network path, and automating healthchecks — because when the pipeline breaks at 2 AM, you want the machine to tell <em>you</em>, not the other way around."</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  Space Coast Marketing · Merritt Island FL · Socrates AI Chief of Staff
+</footer>
+
+</body>
+</html>

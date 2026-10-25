@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPACE COAST MARKETING — Orbital Command</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   SPACE COAST MARKETING — ORBITAL COMMAND v3.0
+   ISS Top-Down Movement Engine + CRM
+   ═══════════════════════════════════════════════════════ */
+:root{--space:#030812;--panel:#0a1428;--panel2:#0f1c34;--metal:#1c3252;--metal2:#284570;--accent:#00ccff;--accent2:#0077bb;--warn:#ff5533;--gold:#ffaa00;--green:#00cc55;--pink:#ff55aa;--text:#c8ddf8;--text2:#7aaacc;--text3:#335577;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--space);color:var(--text);font-family:'Share Tech Mono',monospace;min-height:100vh;overflow-x:hidden;}
+
+/* Space background — stars, nebula, planet */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(2px 2px at 5% 15%,rgba(255,255,255,.9),transparent),
+    radial-gradient(1.5px 1.5px at 12% 45%,rgba(200,220,255,.7),transparent),
+    radial-gradient(1px 1px at 22% 8%,rgba(255,255,255,.6),transparent),
+    radial-gradient(2px 2px at 35% 60%,rgba(150,200,255,.8),transparent),
+    radial-gradient(1px 1px at 48% 22%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1.5px 1.5px at 55% 75%,rgba(200,220,255,.7),transparent),
+    radial-gradient(1px 1px at 65% 12%,rgba(255,255,255,.6),transparent),
+    radial-gradient(2px 2px at 72% 55%,rgba(180,210,255,.8),transparent),
+    radial-gradient(1px 1px at 80% 30%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1.5px 1.5px at 88% 70%,rgba(200,220,255,.7),transparent),
+    radial-gradient(1px 1px at 92% 18%,rgba(255,255,255,.6),transparent),
+    radial-gradient(1px 1px at 15% 82%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1px 1px at 42% 88%,rgba(200,220,255,.6),transparent),
+    radial-gradient(1.5px 1.5px at 68% 92%,rgba(255,255,255,.7),transparent),
+    /* Nebula glows */
+    radial-gradient(ellipse 120px 60px at 20% 40%,rgba(100,50,200,.08),transparent),
+    radial-gradient(ellipse 80px 100px at 75% 30%,rgba(0,150,200,.06),transparent),
+    radial-gradient(ellipse 60px 80px at 50% 70%,rgba(200,50,100,.05),transparent),
+    /* Planet hint */
+    radial-gradient(circle 30px at 85% 80%,rgba(100,150,200,.15),transparent);
+  animation:spaceDrift 200s linear infinite;}
+@keyframes spaceDrift{0%{transform:translate(0,0)}50%{transform:translate(-30px,-15px)}100%{transform:translate(0,0)}}
+
+.wrap{max-width:1500px;margin:0 auto;padding:8px 6px 60px;position:relative;z-index:2;}
+
+/* ═══ PIN GATE ═══ */
+#pin-gate{position:fixed;inset:0;z-index:9999;background:var(--space);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;}
+#pin-gate.unlocked{display:none;}
+.pg-title{font-size:18px;color:var(--accent);letter-spacing:3px;margin-bottom:6px;}
+.pg-sub{font-size:7px;color:var(--text3);letter-spacing:2px;margin-bottom:20px;}
+.pg-dots{display:flex;gap:10px;margin-bottom:18px;}
+.pg-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--metal2);background:var(--panel);transition:all .15s;}
+.pg-dot.filled{background:var(--accent);border-color:var(--accent);box-shadow:0 0 10px var(--accent);}
+.pg-dot.error{background:var(--warn);border-color:var(--warn);animation:dotShake .3s;}
+@keyframes dotShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.pg-numpad{display:grid;grid-template-columns:repeat(3,50px);gap:8px;margin-bottom:14px;}
+.pg-key{width:50px;height:50px;background:var(--panel2);border:1px solid var(--metal);color:var(--text);font-family:'Orbitron',sans-serif;font-size:16px;cursor:pointer;transition:all .1s;border-radius:4px;}
+.pg-key:hover{background:var(--metal);border-color:var(--accent);box-shadow:0 0 12px rgba(0,204,255,.3);}
+.pg-status{font-size:9px;letter-spacing:2px;margin-top:8px;min-height:14px;color:var(--accent);}
+.pg-status.err{color:var(--warn);}
+.pg-status.ok{color:var(--green);}
+
+/* ═══ HEADER ═══ */
+.stn-header{text-align:center;padding:10px 20px 6px;margin-bottom:8px;border-bottom:2px solid var(--accent);background:linear-gradient(180deg,rgba(0,204,255,.06),transparent);}
+.stn-title{font-family:'Orbitron',sans-serif;font-size:clamp(12px,2vw,20px);color:var(--accent);text-shadow:0 0 30px rgba(0,204,255,.7);letter-spacing:5px;}
+.stn-sub{font-family:'Orbitron',sans-serif;font-size:6px;color:var(--accent2);letter-spacing:3px;margin-top:2px;}
+.stn-meta{display:flex;justify-content:center;gap:18px;margin-top:3px;font-size:8px;color:var(--text3);flex-wrap:wrap;}
+.stn-meta .v{color:var(--accent);font-family:'Orbitron',sans-serif;font-size:7px;}
+
+/* ═══ ISS TD SCENE ═══ */
+.td-scene{position:relative;width:100%;aspect-ratio:16/10;min-height:420px;max-height:720px;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,rgba(0,20,50,.3),rgba(3,8,18,.95));border:4px solid var(--metal);border-radius:10px;box-shadow:inset 0 0 80px rgba(0,0,0,.6),0 0 40px rgba(0,0,0,.5);}
+/* Space viewport — outside the station */
+.td-scene::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(1.5px 1.5px at 8% 20%,rgba(255,255,255,.8),transparent),
+    radial-gradient(1px 1px at 18% 55%,rgba(200,220,255,.6),transparent),
+    radial-gradient(2px 2px at 85% 15%,rgba(255,255,255,.7),transparent),
+    radial-gradient(1px 1px at 92% 65%,rgba(200,220,255,.5),transparent),
+    radial-gradient(1.5px 1.5px at 5% 80%,rgba(255,255,255,.6),transparent),
+    radial-gradient(1px 1px at 95% 40%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1px 1px at 75% 90%,rgba(200,220,255,.6),transparent),
+    radial-gradient(circle 25px at 88% 75%,rgba(80,140,200,.12),transparent),
+    radial-gradient(ellipse 60px 30px at 15% 35%,rgba(100,40,180,.06),transparent);}
+.td-stage{position:absolute;inset:12px;z-index:1;}
+
+/* Station hull — outer ring */
+.station-hull{position:absolute;inset:4px;border:2px solid var(--metal2);border-radius:6px;pointer-events:none;z-index:2;box-shadow:inset 0 0 40px rgba(0,204,255,.03);}
+
+/* Pods (rooms) */
+.td-pod{position:absolute;z-index:5;border:3px solid var(--rc,#666);border-radius:5px;background:linear-gradient(180deg,rgba(10,16,30,.7),rgba(8,12,24,.5));box-shadow:inset 0 0 20px rgba(0,0,0,.5),0 0 10px rgba(0,0,0,.4);cursor:pointer;transition:box-shadow .25s,filter .2s;overflow:hidden;}
+.td-pod:hover{filter:brightness(1.15);box-shadow:inset 0 0 20px rgba(0,0,0,.4),0 0 16px var(--rc);}
+.td-pod.td-selected{box-shadow:inset 0 0 20px rgba(0,0,0,.4),0 0 0 3px var(--rc),0 0 20px var(--rc)!important;}
+.td-pod-floor{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 12px,rgba(255,255,255,.02) 12px,rgba(255,255,255,.02) 13px),repeating-linear-gradient(90deg,transparent,transparent 12px,rgba(255,255,255,.015) 12px,rgba(255,255,255,.015) 13px);}
+.td-pod-label{position:absolute;top:3px;left:0;right:0;text-align:center;font-family:'Press Start 2P',monospace;font-size:clamp(3.5px,.55vw,5.5px);letter-spacing:.3px;color:var(--rc);text-shadow:0 0 6px rgba(0,0,0,.9);z-index:8;pointer-events:none;line-height:1.4;}
+.td-pod-dot{position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;border:1.5px solid rgba(0,0,0,.6);z-index:9;}
+/* Dot states */
+.dot-idle{background:var(--text3);}.dot-working{background:var(--accent);box-shadow:0 0 8px var(--accent);animation:dotPulse 1.5s infinite;}
+.dot-done{background:var(--green);}.dot-blocked{background:var(--warn);box-shadow:0 0 8px var(--warn);animation:dotPulse .8s infinite;}
+@keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* Common area */
+.common-area{position:absolute;z-index:4;border-radius:50%;border:2px dashed rgba(0,204,255,.3);background:radial-gradient(circle,rgba(0,204,255,.04),transparent 70%);pointer-events:none;}
+.common-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;font-size:5px;color:var(--text3);letter-spacing:1px;}
+
+/* Hallways */
+.td-hallway{position:absolute;z-index:3;background:linear-gradient(90deg,rgba(0,0,0,.3),rgba(20,40,60,.15),rgba(0,0,0,.3));border-left:1px solid rgba(0,204,255,.1);border-right:1px solid rgba(0,204,255,.1);}
+.td-hallway-v{background:linear-gradient(0deg,rgba(0,0,0,.3),rgba(20,40,60,.15),rgba(0,0,0,.3));border-top:1px solid rgba(0,204,255,.1);border-bottom:1px solid rgba(0,204,255,.1);}
+
+/* Vending machines — big visible stations */
+.vending{position:absolute;z-index:6;pointer-events:none;}
+.vending .vm-body{width:28px;height:36px;position:relative;background:#1a2a40;border:2px solid var(--metal2);border-radius:4px;box-shadow:0 0 8px rgba(0,0,0,.6);}
+.vending .vm-glass{position:absolute;top:3px;left:3px;right:3px;height:16px;background:rgba(0,20,40,.7);border:1px solid rgba(0,204,255,.3);border-radius:2px;}
+.vending .vm-glass::after{content:'';position:absolute;top:2px;left:4px;right:4px;bottom:2px;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.05) 2px,rgba(255,255,255,.05) 3px);}
+.vending .vm-tray{position:absolute;bottom:12px;left:4px;right:4px;height:4px;background:#0a1520;border:1px solid rgba(255,255,255,.1);border-radius:1px;}
+.vending .vm-slot{position:absolute;bottom:6px;left:10px;right:10px;height:5px;background:#000;border-radius:0 0 2px 2px;}
+.vending .vm-label{font-size:14px;position:absolute;top:8px;left:50%;transform:translateX(-50%);text-shadow:0 0 4px rgba(0,0,0,.8);}
+.vending .vm-sign{position:absolute;top:-8px;left:-4px;right:-4px;font-family:'Press Start 2P',monospace;font-size:3px;color:var(--accent);text-align:center;white-space:nowrap;}
+/* Mini vending next to big one */
+.vending-mini{position:absolute;z-index:6;pointer-events:auto;cursor:pointer;}
+.vending-mini:hover{transform:scale(1.15);}
+.vending-mini .vmb{width:8px;height:12px;background:#1a2a40;border:1px solid var(--metal2);border-radius:2px;position:relative;}
+.vending-mini .vmg{position:absolute;top:1px;left:1px;right:1px;height:5px;background:rgba(0,20,40,.6);border-radius:1px;}
+.vending-mini .vml{font-size:10px;position:absolute;top:3px;left:50%;transform:translateX(-50%);}
+
+/* Agents */
+.td-agent{position:absolute;z-index:30;width:30px;height:44px;margin-left:-15px;margin-top:-38px;cursor:pointer;will-change:transform;}
+.td-agent svg{width:100%;height:100%;image-rendering:pixelated;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));}
+.td-agent.td-selected svg{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 2px 3px rgba(0,0,0,.5));}
+.td-agent .td-body{animation:tdBob 1.8s ease-in-out infinite;}
+.td-agent.td-walking .td-body{animation:tdWalk .35s ease-in-out infinite;}
+@keyframes tdBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes tdWalk{0%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}70%{transform:translateY(-4px)}}
+
+.td-shadow{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:20px;height:7px;background:rgba(0,0,0,.4);border-radius:50%;z-index:0;pointer-events:none;}
+.td-nametag{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-family:'Press Start 2P',monospace;font-size:4px;color:var(--accent);white-space:nowrap;text-shadow:0 0 4px rgba(0,0,0,.8);background:rgba(0,0,0,.6);padding:1px 3px;border-radius:2px;pointer-events:none;}
+
+/* ═══ DETAIL PANEL ═══ */
+#detail-panel{position:absolute;z-index:50;background:var(--panel);border:2px solid var(--accent);border-radius:6px;padding:10px 12px;max-width:280px;min-width:200px;box-shadow:0 0 30px rgba(0,0,0,.8),0 0 10px rgba(0,204,255,.2);display:none;}
+#detail-panel.visible{display:block;}
+.detail-name{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--accent);margin-bottom:4px;}
+.detail-role{font-size:7px;color:var(--text2);margin-bottom:6px;}
+.detail-doing{font-size:7px;color:var(--text);margin-bottom:4px;line-height:1.4;}
+.detail-bar-row{display:flex;align-items:center;gap:6px;margin:3px 0;font-size:6px;}
+.detail-bar-row span{min-width:50px;color:var(--text2);}
+.detail-bar{flex:1;height:6px;background:var(--panel2);border-radius:3px;overflow:hidden;}
+.detail-bar-fill{height:100%;border-radius:3px;transition:width .5s;}
+
+/* ═══ CRM ═══ */
+.crm-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;}
+@media(max-width:950px){.crm-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.crm-grid{grid-template-columns:1fr;}}
+.crm-mod{background:var(--panel);border:1px solid var(--metal);border-radius:5px;padding:8px;position:relative;}
+.crm-mod::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);opacity:.5;}
+.crm-title{font-family:'Orbitron',sans-serif;font-size:6px;color:var(--accent2);letter-spacing:2px;margin-bottom:6px;}
+.pl-row{display:flex;align-items:center;justify-content:space-between;padding:3px 5px;margin-bottom:2px;background:var(--panel2);border-radius:3px;cursor:pointer;transition:background .15s;font-size:8px;}
+.pl-row:hover{background:var(--metal);}
+.pl-name{flex:1;}.pl-co{font-size:6px;color:var(--text3);}.pl-val{font-weight:700;margin-left:6px;}
+.pl-st{font-size:5px;padding:1px 4px;border-radius:2px;margin-left:4px;text-transform:uppercase;}
+.pl-st.lead,.pl-st.new{color:var(--text2);border:1px solid var(--metal2);}
+.pl-st.contacted,.pl-st.email_sent{color:var(--accent);border:1px solid var(--accent);}
+.pl-st.won{color:var(--green);border:1px solid var(--green);}
+.pl-st.lost{color:var(--warn);border:1px solid var(--warn);}
+.rev-big{font-family:'Orbitron',sans-serif;font-size:20px;color:var(--accent);}
+.rev-label{font-size:6px;color:var(--text3);}
+.rev-row{display:flex;justify-content:space-between;padding:2px 0;font-size:7px;border-bottom:1px solid rgba(255,255,255,.02);}
+.rev-row .v{color:var(--accent);}
+.funnel-bar{display:flex;align-items:flex-end;gap:4px;height:50px;padding:2px 0;}
+.funnel-stage{flex:1;text-align:center;}
+.funnel-stage .bar{background:var(--accent);width:100%;border-radius:3px 3px 0 0;margin:2px auto 0;min-height:2px;}
+.funnel-stage .n{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--accent);}
+.funnel-stage .lbl{font-size:5px;color:var(--text3);}
+.cad-item{display:flex;align-items:center;gap:4px;padding:3px 4px;margin-bottom:1px;background:var(--panel2);border-radius:3px;font-size:7px;cursor:pointer;}
+.cad-item:hover{background:var(--metal);}
+.cad-type{font-family:'Orbitron',sans-serif;font-size:5px;padding:1px 3px;border-radius:2px;text-transform:uppercase;}
+.cad-type.email{border:1px solid var(--accent);color:var(--accent);}
+.cad-type.call{border:1px solid var(--gold);color:var(--gold);}
+.lg-stat{text-align:center;padding:2px 0;}
+.lg-big{font-family:'Orbitron',sans-serif;font-size:18px;color:var(--accent);}
+.lg-sub{font-size:5px;color:var(--text3);}
+/* Tab Navigation */
+.tab-bar{display:flex;gap:0;margin-bottom:8px;border-bottom:1px solid var(--metal);padding:0 6px;}
+.tab-btn{font-family:'Orbitron',sans-serif;font-size:8px;padding:6px 14px;background:none;border:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;letter-spacing:1px;}
+.tab-btn:hover{color:var(--text);background:rgba(0,204,255,.05);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);text-shadow:0 0 8px rgba(0,204,255,.5);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+/* Nightly builds */
+.nb-card{background:var(--panel2);border-radius:4px;padding:8px;margin-bottom:4px;border-left:3px solid var(--accent);}
+.nb-card.error{border-left-color:var(--warn);}
+.nb-date{font-family:'Orbitron',sans-serif;font-size:7px;color:var(--accent);}
+.nb-title{font-size:8px;margin:2px 0;}
+.nb-desc{font-size:6px;color:var(--text2);}
+.nb-status{font-size:5px;padding:1px 4px;border-radius:2px;float:right;}
+.nb-status.ok{color:var(--green);border:1px solid var(--green);}
+.nb-status.error{color:var(--warn);border:1px solid var(--warn);}
+
+/* Modal */
+#client-modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.85);align-items:center;justify-content:center;}
+#client-modal.open{display:flex;}
+.modal-box{background:var(--panel);border:2px solid var(--accent);border-radius:8px;width:90%;max-width:750px;max-height:85vh;overflow-y:auto;padding:14px;}
+.modal-close{float:right;cursor:pointer;font-size:16px;color:var(--warn);background:none;border:none;font-family:'Orbitron',sans-serif;}
+.mt{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--accent);margin-bottom:10px;}
+.modal-tabs{display:flex;gap:0;margin-bottom:10px;border-bottom:1px solid var(--metal);}
+.modal-tab{padding:4px 10px;font-family:'Orbitron',sans-serif;font-size:6px;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;}
+.modal-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+.kanban{display:flex;gap:6px;overflow-x:auto;padding:4px 0;}
+.kanban-col{min-width:130px;flex:1;background:var(--panel2);border-radius:5px;padding:5px;border-top:3px solid var(--accent);}
+.kanban-col h4{font-family:'Orbitron',sans-serif;font-size:6px;color:var(--accent2);letter-spacing:1px;margin-bottom:4px;}
+.kanban-card{background:var(--metal);border-radius:4px;padding:4px;margin-bottom:3px;font-size:6px;border-left:3px solid var(--accent);cursor:pointer;}
+.kanban-card:hover{background:var(--metal2);}
+.kanban-card.done{border-left-color:var(--green);opacity:.7;}
+input,textarea,select{background:var(--panel2);border:1px solid var(--metal);color:var(--text);font-family:'Share Tech Mono',monospace;padding:4px 6px;border-radius:3px;font-size:7px;width:100%;margin-bottom:4px;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);}
+.btn{background:var(--accent2);color:#000;border:none;padding:4px 8px;border-radius:3px;font-family:'Orbitron',sans-serif;font-size:6px;cursor:pointer;letter-spacing:1px;}
+.btn:hover{background:var(--accent);box-shadow:0 0 12px rgba(0,204,255,.4);}
+.btn-warn{background:var(--warn);}
+/* Web Leads */
+.wl-item{padding:4px 6px;margin-bottom:2px;background:var(--panel2);border-radius:3px;cursor:pointer;transition:background .15s;font-size:7px;position:relative;}
+.wl-item:hover{background:var(--metal);}
+.wl-item.new{border-left:2px solid var(--accent);}
+.wl-item.promoted{opacity:.5;border-left:2px solid var(--green);}
+.wl-name{font-weight:700;color:var(--text);}
+.wl-email{font-size:6px;color:var(--text2);margin-left:4px;}
+.wl-msg{font-size:6px;color:var(--text3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wl-time{font-size:5px;color:var(--text3);}
+.wl-actions{display:flex;gap:3px;margin-top:3px;}
+.wl-actions .btn{font-size:5px;padding:1px 4px;}
+.wl-promote-btn{background:var(--green)!important;color:#000!important;}
+.wl-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+</style>
+</head>
+<body>
+
+<!-- PIN GATE -->
+<div id="pin-gate">
+  <div class="pg-title">ORBITAL COMMAND</div>
+  <div class="pg-sub">SPACE COAST MARKETING · AUTHORIZED PERSONNEL</div>
+  <div class="pg-dots" id="pg-dots"><div class="pg-dot" id="pd0"></div><div class="pg-dot" id="pd1"></div><div class="pg-dot" id="pd2"></div><div class="pg-dot" id="pd3"></div><div class="pg-dot" id="pd4"></div><div class="pg-dot" id="pd5"></div></div>
+  <div class="pg-numpad" id="pg-numpad"></div>
+  <div class="pg-status" id="pg-status">ENTER ACCESS CODE</div>
+</div>
+
+<div class="wrap">
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchMainTab('crm')">🚀 CRM</button>
+    <button class="tab-btn" onclick="switchMainTab('leadgen')">📋 LEADGEN</button>
+    <button class="tab-btn" onclick="switchMainTab('nightly')">🌙 NIGHTLY BUILDS</button>
+    <span style="margin-left:auto;font-size:6px;color:var(--text3);padding:6px;" id="tab-clock">--:--:-- UTC</span>
+  </div>
+
+  <!-- CRM TAB -->
+  <div class="tab-content active" id="tab-crm">
+  <div class="stn-header">
+    <div class="stn-title">SPACE COAST MARKETING</div>
+    <div class="stn-sub">ORBITAL COMMAND STATION</div>
+    <div class="stn-meta">
+      <span>STN <span class="v" id="stn-clock">--:--:--</span></span>
+      <span>PIPE <span class="v" id="hdr-pipe">$0</span></span>
+      <span>REV <span class="v" id="hdr-rev">$0</span></span>
+      <span>LEADS <span class="v" id="hdr-leads">0</span></span>
+    </div>
+  </div>
+
+  <!-- ISS TD SCENE -->
+  <div class="td-scene" id="td-scene">
+    <div class="station-hull"></div>
+    <div class="td-stage" id="td-stage">
+      <!-- Common area -->
+      <div class="common-area" id="common-area"><div class="common-label">COMMON AREA</div></div>
+      <!-- Hallways, pods, agents built by JS -->
+      <div id="td-pods"></div>
+      <div id="td-agents"></div>
+      <!-- Detail panel -->
+      <div id="detail-panel"><div id="detail-inner"></div></div>
+    </div>
+  </div>
+
+  <!-- CRM -->
+  <div class="crm-grid">
+    <div class="crm-mod"><div class="crm-title">PIPELINE</div><div id="pipeline-list"></div></div>
+    <div class="crm-mod"><div class="crm-title">REVENUE</div><div class="rev-big" id="rev-won">$0</div><div class="rev-label">CLOSED</div><div style="margin-top:4px;" id="rev-dets"></div></div>
+    <div class="crm-mod"><div class="crm-title">WEB LEADS <span id="wl-badge" style="font-size:6px;color:var(--accent);display:none;">● NEW</span></div><div id="web-leads-list" style="max-height:200px;overflow-y:auto;"></div></div>
+    <div class="crm-mod" style="grid-column:1/3;"><div class="crm-title">LEAD LIST <input id="lead-search" placeholder="Search leads..." style="width:120px;display:inline;margin:0 0 0 8px;font-size:5px;padding:2px 4px;" oninput="filterLeads()"></div><div id="lg-leads" style="max-height:180px;overflow-y:auto;"></div></div>
+    <div class="crm-mod"><div class="crm-title">FUNNEL</div><div class="funnel-bar" id="funnel-bar"></div></div>
+    <div class="crm-mod"><div class="crm-title">CADENCE</div><div id="cad-list"></div></div>
+  </div>
+  <div style="text-align:center;margin-top:4px;">
+    <button class="btn" onclick="showNewClient()">+ CLIENT</button>
+    <button class="btn" onclick="refreshAll()" style="margin-left:4px;">↻ REFRESH</button>
+  </div>
+
+  <!-- ANALYTICS PANEL -->
+  <div class="crm-mod" style="margin-top:8px;border-top:2px solid var(--accent);">
+    <div class="crm-title" style="display:flex;align-items:center;justify-content:space-between;">
+      <span>SITE ANALYTICS <span style="font-size:5px;color:var(--text3);" id="an-source">— PLACEHOLDER</span></span>
+      <button class="btn" style="font-size:5px;padding:1px 4px;" onclick="refreshAnalytics()">↻</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;" id="analytics-panel">
+      <div class="lg-stat"><div class="lg-big" id="an-views">—</div><div class="lg-sub">PAGE VIEWS</div></div>
+      <div class="lg-stat"><div class="lg-big" id="an-sessions">—</div><div class="lg-sub">SESSIONS</div></div>
+      <div class="lg-stat"><div class="lg-big" id="an-users">—</div><div class="lg-sub">USERS</div></div>
+      <div class="lg-stat"><div class="lg-big" id="an-engage">—</div><div class="lg-sub">AVG ENGAGEMENT</div></div>
+      <div class="lg-stat"><div class="lg-big" id="an-bounce">—%</div><div class="lg-sub">BOUNCE RATE</div></div>
+      <div class="lg-stat"><div class="lg-big" id="an-conv">—%</div><div class="lg-sub">CONV RATE</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px;font-size:7px;" id="an-details">
+      <div><span style="color:var(--text3);">TRAFFIC</span><div id="an-traffic"></div></div>
+      <div><span style="color:var(--text3);">DEVICES</span><div id="an-devices"></div></div>
+      <div><span style="color:var(--text3);">TOP PAGES</span><div id="an-pages"></div></div>
+    </div>
+  </div>
+</div>
+  </div><!-- /tab-crm -->
+
+  <!-- LEADGEN TAB -->
+  <div class="tab-content" id="tab-leadgen">
+    <div class="stn-header">
+      <div class="stn-title">LEAD ACQUISITION</div>
+      <div class="stn-sub">OUTBOUND PIPELINE — 73 BREVARD BUSINESSES</div>
+      <div class="stn-meta"><span>LEADS <span class="v" id="lg-total">0</span></span><span>SENT <span class="v" id="lg-sent">0</span></span><span>OPEN <span class="v" id="lg-open">0%</span></span></div>
+    </div>
+    <div class="crm-grid">
+      <div class="crm-mod" style="grid-column:1/3;"><div class="crm-title">LEADS <input id="lg-search" placeholder="Search..." style="width:100px;display:inline;margin:0 0 0 6px;font-size:5px;padding:2px;" oninput="filterLgLeads()"></div><div id="lg-lead-list" style="max-height:360px;overflow-y:auto;"></div></div>
+      <div class="crm-mod"><div class="crm-title">STATUS</div><div id="lg-status-bars"></div></div>
+    </div>
+  </div>
+
+  <!-- NIGHTLY BUILDS TAB -->
+  <div class="tab-content" id="tab-nightly">
+    <div class="stn-header">
+      <div class="stn-title">NIGHTLY BUILDS</div>
+      <div class="stn-sub">CRM IMPROVEMENTS — EVERY NIGHT AT 4 AM ET</div>
+      <div class="stn-meta"><span>CRON <span class="v" id="nb-cron-status">—</span></span><span>LAST <span class="v" id="nb-last-run">—</span></span><span>NEXT <span class="v" id="nb-next-run">—</span></span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="crm-mod"><div class="crm-title">BUILD HISTORY</div><div id="nb-history" style="max-height:500px;overflow-y:auto;"></div></div>
+      <div class="crm-mod"><div class="crm-title">CRON STATUS</div><div id="nb-status" style="font-size:7px;"></div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CLIENT MODAL -->
+<div id="client-modal"><div class="modal-box">
+  <button class="modal-close" onclick="closeModal()">✕</button><div class="mt" id="mt"></div>
+  <div class="modal-tabs">
+    <button class="modal-tab active" onclick="switchTab('info')">INFO</button>
+    <button class="modal-tab" onclick="switchTab('cadence')">CADENCE</button>
+    <button class="modal-tab" onclick="switchTab('history')">HISTORY</button>
+    <button class="modal-tab" onclick="switchTab('log')">LOG</button>
+    <button class="modal-tab" onclick="switchTab('timeline')">TIMELINE</button>
+  </div>
+  <div class="tab-content active" id="tab-info"></div>
+  <div class="tab-content" id="tab-cadence"></div>
+  <div class="tab-content" id="tab-history"></div>
+  <div class="tab-content" id="tab-log"></div>
+  <div class="tab-content" id="tab-timeline">
+    <div style="margin:8px 0 4px;font-size:6px;color:var(--text3);">LEAD ACTIVITY TIMELINE</div>
+    <div id="timeline-list" style="max-height:220px;overflow-y:auto;"></div>
+  </div>
+  <!-- NIGHTLY BUILD: 2026-07-02 — Added detailed timeline rendering -->
+  <script>
+  function renderTimeline(clientId) {
+    fetch(`/api/clients/${clientId}/interactions`)
+      .then(r=>r.json())
+      .then(interactions=>{
+        const list=document.getElementById('timeline-list');
+        list.innerHTML='';
+        
+        interactions.forEach(i=>{
+          const d=new Date(i.completed_date||i.created_at);
+          const item=document.createElement('div');
+          item.className='timeline-item';
+          item.style=`
+            border-left:3px solid ${i.type==='email'?'var(--accent)':i.type==='call'?'var(--gold)':'var(--text3)'};
+            padding:4px 6px 4px 10px;
+            margin-bottom:3px;
+            background:var(--panel2);
+            border-radius:0 3px 3px 0;
+          `;
+          
+          item.innerHTML=`
+            <div style="display:flex;justify-content:space-between;font-size:7px;">
+              <span style="color:var(--text);font-weight:700;">${i.type.toUpperCase()}</span>
+              <span style="color:var(--text3);">${d.toLocaleString()}</span>
+            </div>
+            ${i.notes?`<div style="font-size:6px;color:var(--text2);margin-top:2px;">${i.notes}</div>`:''}
+            ${i.outcome?`<div style="font-size:5px;margin-top:2px;">
+              <span style="color:${i.outcome==='positive'?'var(--green)':i.outcome==='negative'?'var(--warn)':'var(--text3)'};">
+                ${i.outcome.toUpperCase()}
+              </span>
+            </div>`:''}
+          `;
+          list.appendChild(item);
+        });
+      });
+  }
+  </script>
+</div></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// SPACE COAST MARKETING — ORBITAL COMMAND v3.0
+// ISS Top-Down Movement Engine + CRM
+// ═══════════════════════════════════════════════════════
+const API='';let currentClient=null;
+
+// ── ROSTER (pod coordinates in % of stage) + behavior profiles ──
+const ROSTER=[
+  {id:'socrates', name:'SOCRATES', color:'#c8e8ff', skin:'#f0d8b0', toga:true, pod:{x:42,y:3, w:16,h:14}, door:'bottom',
+   bh:{speed:.2, wanderChance:.08, pauseChance:.15, socialChance:.3, zone:'common', desc:'Slow, wise pacing. Often in common area reading scrolls.'}},
+  {id:'amaterasu',name:'AMATERASU',color:'#ffaa44',skin:'#f5d0a0', pod:{x:78,y:20,w:17,h:14},door:'left',
+   bh:{speed:.6, wanderChance:.3, pauseChance:.05, socialChance:.6, zone:'roam', desc:'Energetic. Bounces between pod and common area. Talks to everyone.'}},
+  {id:'kage',     name:'KAGE',     color:'#3c8cff',skin:'#e8b48a', pod:{x:5, y:20,w:17,h:14},door:'right',
+   bh:{speed:.15, wanderChance:.03, pauseChance:.4, socialChance:.1, zone:'pod', desc:'Lurks in shadows. Rarely leaves pod. Watches silently.'}},
+  {id:'tengu',    name:'TENGU',    color:'#00e5ff',skin:'#90a8b8', pod:{x:72,y:55,w:17,h:14},door:'left',
+   bh:{speed:.35, wanderChance:.15, pauseChance:.2, socialChance:.4, zone:'window', desc:'Drifts near windows. Gazes at stars. Occasional prophecy.'}},
+  {id:'prometheus',name:'PROMETHEUS',color:'#ff6600',skin:'#e0b890',toga:true,special:'fire',pod:{x:11,y:55,w:17,h:14},door:'right',
+   bh:{speed:.25, wanderChance:.1, pauseChance:.25, socialChance:.25, zone:'pod', desc:'Tinkers with equipment. Stays near pod. Sparks fly occasionally.'}},
+  {id:'daedalus', name:'DAEDALUS', color:'#ffd700',skin:'#e8c8a0',toga:true,special:'craft',pod:{x:40,y:75,w:20,h:14},door:'top',
+   bh:{speed:.4, wanderChance:.2, pauseChance:.1, socialChance:.5, zone:'roam', desc:'Moves between pods. Checks on everyone. Fixes things.'}},
+];
+const COMMON={x:32,y:28,w:36,h:36}; // common area in %
+
+// ── AGENT SVG (from dojo, extended) ────────────────────
+function agentSVG(a){
+  const c=a.color,skin=a.skin||'#e8b48a',id=a.id;
+  const build=(s)=>"<svg viewBox='0 0 32 48' width='30' height='44'>"+s+"</svg>";
+
+  if(id==='socrates'){
+    const tw='#dce8f0',ts='#b8ccd8',hw='#e8e8e8';
+    return build("<rect x='6' y='10' width='20' height='18' rx='4' fill='"+hw+"' stroke='#aaa' stroke-width='.6'/><rect x='9' y='8' width='14' height='14' rx='3' fill='"+skin+"' stroke='#000' stroke-width='.8'/><rect x='10' y='12' width='3' height='2.5' fill='#fff'/><rect x='19' y='12' width='3' height='2.5' fill='#fff'/><rect x='11' y='12.5' width='1.5' height='1.5' fill='#2a3a6a'/><rect x='20' y='12.5' width='1.5' height='1.5' fill='#2a3a6a'/><rect x='10' y='11' width='4' height='1' fill='"+hw+"' rx='.5'/><rect x='18' y='11' width='4' height='1' fill='"+hw+"' rx='.5'/><path d='M9 19 Q16 26 23 19 L22 24 Q16 29 10 24 Z' fill='"+hw+"' stroke='#aaa' stroke-width='.4'/><rect x='7' y='22' width='18' height='18' rx='2' fill='"+tw+"' stroke='#8a9aaa' stroke-width='1'/><line x1='10' y1='22' x2='8' y2='40' stroke='"+ts+"' stroke-width='1' opacity='.8'/><circle cx='21' cy='24' r='2' fill='"+c+"' stroke='#000' stroke-width='.6'/><rect x='3' y='23' width='5' height='9' rx='2' fill='"+skin+"' stroke='#000' stroke-width='.7'/><rect x='1' y='30' width='5' height='8' rx='1' fill='#f5e8c8' stroke='#7a5a2a' stroke-width='.6'/><rect x='9' y='39' width='5' height='8' rx='1' fill='"+skin+"' stroke='#8a5a2a' stroke-width='.6'/><rect x='18' y='39' width='5' height='8' rx='1' fill='"+skin+"' stroke='#8a5a2a' stroke-width='.6'/><text x='16' y='35' text-anchor='middle' font-size='5' fill='"+c+"' opacity='.7' font-family='serif'>智</text>");
+  }
+
+  if(id==='prometheus'){
+    return build("<rect x='5' y='5' width='22' height='16' rx='3' fill='#2a1000' stroke='#000' stroke-width='.7'/><rect x='4' y='3' width='8' height='6' rx='2' fill='#1a0800'/><rect x='20' y='3' width='8' height='6' rx='2' fill='#1a0800'/><rect x='9' y='10' width='14' height='13' rx='3' fill='"+skin+"' stroke='#000' stroke-width='.8'/><rect x='10' y='14' width='3' height='2.5' fill='#fff'/><rect x='19' y='14' width='3' height='2.5' fill='#fff'/><rect x='11' y='14.5' width='1.5' height='1.5' fill='#ff4400'/><rect x='20' y='14.5' width='1.5' height='1.5' fill='#ff4400'/><rect x='9' y='12' width='5' height='1.5' fill='#1a0800'/><rect x='18' y='12' width='5' height='1.5' fill='#1a0800'/><rect x='10' y='22' width='12' height='5' rx='2' fill='#1a0800'/><rect x='7' y='24' width='18' height='17' rx='2' fill='#f5e0c0' stroke='#8a6a3a' stroke-width='1'/><rect x='8' y='38' width='6' height='3' rx='1' fill='#993300' opacity='.4'/><line x1='10' y1='24' x2='8' y2='41' stroke='#c09060' stroke-width='.8' opacity='.7'/><circle cx='22' cy='27' r='2' fill='#ff6600' stroke='#000' stroke-width='.6'/><rect x='3' y='26' width='5' height='9' rx='2' fill='"+skin+"' stroke='#000' stroke-width='.7'/><rect x='2' y='15' width='3' height='12' rx='1' fill='#5a3a1a'/><circle cx='3.5' cy='14' r='3' fill='#ff6600'/><circle cx='3.5' cy='13' r='1.5' fill='#ffcc00'/><rect x='10' y='40' width='5' height='7' rx='1' fill='"+skin+"' stroke='#8a5a2a' stroke-width='.6'/><rect x='18' y='40' width='5' height='7' rx='1' fill='"+skin+"' stroke='#8a5a2a' stroke-width='.6'/>");
+  }
+
+  if(id==='daedalus'){
+    return build("<rect x='6' y='7' width='20' height='9' rx='3' fill='#777'/><rect x='8' y='6' width='16' height='4' rx='2' fill='#999'/><rect x='9' y='8' width='14' height='13' rx='3' fill='"+skin+"' stroke='#000' stroke-width='.8'/><rect x='10' y='11' width='3' height='2.5' fill='#fff'/><rect x='19' y='11' width='3' height='2.5' fill='#fff'/><rect x='11' y='11.5' width='1.5' height='1.5' fill='#334'/><rect x='20' y='11.5' width='1.5' height='1.5' fill='#334'/><rect x='8' y='10' width='7' height='5' rx='2' fill='none' stroke='#ffd700' stroke-width='.6'/><rect x='17' y='10' width='7' height='5' rx='2' fill='none' stroke='#ffd700' stroke-width='.6'/><line x1='15' y1='12.5' x2='17' y2='12.5' stroke='#ffd700' stroke-width='.5'/><rect x='11' y='19' width='10' height='4' rx='2' fill='#aaa'/><rect x='7' y='23' width='18' height='17' rx='2' fill='#d0d0d0' stroke='#aaa' stroke-width='1'/><rect x='7' y='23' width='18' height='3' fill='#ffd700' opacity='.6'/><line x1='10' y1='26' x2='8' y2='40' stroke='#bbb' stroke-width='.7' opacity='.7'/><circle cx='22' cy='27' r='2.5' fill='#ffd700' stroke='#000' stroke-width='.6'/><rect x='3' y='25' width='5' height='9' rx='2' fill='"+skin+"' stroke='#000' stroke-width='.7'/><rect x='0' y='28' width='4' height='10' rx='1' fill='#d0e8ff' stroke='#4a7aaa' stroke-width='.6'/><rect x='10' y='39' width='5' height='8' rx='1' fill='"+skin+"' stroke='#8a5a2a' stroke-width='.6'/><rect x='18' y='39' width='5' height='8' rx='1' fill='"+skin+"' stroke='#8a5a2a' stroke-width='.6'/>");
+  }
+
+  // Standard ninja
+  const o='#16161f';
+  return build("<rect x='7' y='6' width='18' height='20' rx='3' fill='"+o+"' stroke='#000' stroke-width='1'/><rect x='9' y='10' width='14' height='13' rx='2' fill='"+skin+"' stroke='#000' stroke-width='.8'/><rect x='10' y='13' width='3' height='3' fill='#fff'/><rect x='19' y='13' width='3' height='3' fill='#fff'/><rect x='11' y='14' width='1.5' height='2' fill='#102'/><rect x='20' y='14' width='1.5' height='2' fill='#102'/><rect x='6' y='8' width='20' height='4' fill='"+c+"' stroke='#000' stroke-width='.8'/><rect x='24' y='8' width='3' height='9' fill='"+c+"' stroke='#000' stroke-width='.6' opacity='.9'/><rect x='8' y='25' width='16' height='15' rx='2' fill='"+o+"' stroke='#000' stroke-width='1'/><rect x='8' y='32' width='16' height='3' fill='"+c+"' stroke='#000' stroke-width='.6'/><rect x='4' y='26' width='5' height='11' rx='2' fill='"+o+"' stroke='#000' stroke-width='.8'/><rect x='23' y='26' width='5' height='11' rx='2' fill='"+o+"' stroke='#000' stroke-width='.8'/><rect x='9' y='39' width='6' height='8' rx='1.5' fill='"+o+"' stroke='#000' stroke-width='.8'/><rect x='17' y='39' width='6' height='8' rx='1.5' fill='"+o+"' stroke='#000' stroke-width='.8'/><circle cx='16' cy='29' r='2.2' fill='"+c+"' stroke='#000' stroke-width='.6'/>");
+}
+
+// ── TIMELINE RENDERING ─────────────────────────────────
+function renderTimeline(clientId) {
+  fetch(`/api/clients/${clientId}/interactions`)
+    .then(r=>r.json())
+    .then(interactions=>{
+      const list=document.getElementById('timeline-list');
+      list.innerHTML='';
+      
+      interactions.forEach(i=>{
+        const d=new Date(i.completed_date||i.created_at);
+        const item=document.createElement('div');
+        item.className='timeline-item';
+        item.style=`
+          border-left:3px solid ${i.type==='email'?'var(--accent)':i.type==='call'?'var(--gold)':'var(--text3)'};
+          padding:4px 6px 4px 10px;
+          margin-bottom:3px;
+          background:var(--panel2);
+          border-radius:0 3px 3px 0;
+        `;
+        
+        item.innerHTML=`
+          <div style="display:flex;justify-content:space-between;font-size:7px;">
+            <span style="color:var(--text);font-weight:700;">${i.type.toUpperCase()}</span>
+            <span style="color:var(--text3);">${d.toLocaleString()}</span>
+          </div>
+          ${i.notes?`<div style="font-size:6px;color:var(--text2);margin-top:2px;">${i.notes}</div>`:''}
+          ${i.outcome?`<div style="font-size:5px;margin-top:2px;">
+            <span style="color:${i.outcome==='positive'?'var(--green)':i.outcome==='negative'?'var(--warn)':'var(--text3)'};">
+              ${i.outcome.toUpperCase()}
+            </span>
+          </div>`:''}
+        `;
+        list.appendChild(item);
+      });
+    });
+}
+
+// ── MOVEMENT ENGINE ─────────────────────────────────────
+const AG={};
+let agentEls={};
+
+function stageRect(){
+  const s=document.getElementById('td-stage');
+  return s?s.getBoundingClientRect():{left:0,top:0,width:800,height:500};
+}
+
+function podCenterPx(r){
+  const sr=stageRect();
+  return{x:sr.left+sr.width*(r.pod.x+r.pod.w/2)/100,y:sr.top+sr.height*(r.pod.y+r.pod.h/2)/100};
+}
+
+function commonCenterPx(){
+  const sr=stageRect();
+  return{x:sr.left+sr.width*(COMMON.x+COMMON.w/2)/100,y:sr.top+sr.height*(COMMON.y+COMMON.h/2)/100};
+}
+
+function rand(a,b){return a+Math.random()*(b-a);}
+
+function placeInitial(){
+  ROSTER.forEach(r=>{
+    const cp=podCenterPx(r);
+    const bh=r.bh||{speed:.4};
+    AG[r.id]={x:cp.x,y:cp.y,tx:cp.x,ty:cp.y,speed:bh.speed,state:'idle',pauseUntil:0,zone:bh.zone||'pod',lastZoneSwitch:0};
+  });
+}
+
+function pickTarget(a,id){
+  const r=ROSTER.find(rr=>rr.id===id);if(!r)return;
+  const bh=r.bh||{};
+  const cp=podCenterPx(r),cc=commonCenterPx();
+  const now=Date.now();
+
+  // Zone switching — every 8-20 seconds, decide to move
+  if(now-a.lastZoneSwitch>rand(8000,20000)){
+    a.lastZoneSwitch=now;
+    if(Math.random()<bh.wanderChance) a.zone='common';
+    else if(Math.random()<bh.pauseChance) a.zone='pod';
+    else if(bh.zone==='roam') a.zone=Math.random()<.5?'pod':'common';
+  }
+
+  if(a.zone==='pod'||a.state==='working'){
+    // Stay in/near own pod
+    a.tx=cp.x+rand(-12,12);a.ty=cp.y+rand(-8,8);
+  }else if(a.zone==='common'){
+    // Hang in common area — pick a spot near vending machines or center
+    const spots=[
+      {x:cc.x+rand(-35,-10),y:cc.y+rand(-20,-5)},  // near ☕
+      {x:cc.x+rand(10,35),y:cc.y+rand(-20,-5)},     // near 🥤
+      {x:cc.x+rand(-35,-10),y:cc.y+rand(5,20)},     // near 🍕
+      {x:cc.x+rand(10,35),y:cc.y+rand(5,20)},       // near 🍜
+      {x:cc.x+rand(-15,15),y:cc.y+rand(-15,15)},    // center
+    ];
+    const spot=spots[Math.floor(Math.random()*spots.length)];
+    a.tx=spot.x;a.ty=spot.y;
+  }else if(a.zone==='window'){
+    // Drift near edges of stage
+    const sr=stageRect();
+    a.tx=sr.left+sr.width*(Math.random()<.5?.05:.95)+rand(-20,20);
+    a.ty=sr.top+sr.height*rand(.2,.8);
+  }else{
+    // Roam anywhere
+    a.tx=cc.x+rand(-80,80);a.ty=cc.y+rand(-60,60);
+  }
+
+  // Clamp to stage
+  const sr=stageRect();
+  a.tx=Math.max(sr.left+20,Math.min(sr.left+sr.width-20,a.tx));
+  a.ty=Math.max(sr.top+20,Math.min(sr.top+sr.height-20,a.ty));
+}
+
+function checkBumps(now){
+  const ids=Object.keys(AG);
+  for(let i=0;i<ids.length;i++){
+    for(let j=i+1;j<ids.length;j++){
+      const a=AG[ids[i]],b=AG[ids[j]];
+      if(a.state==='done'&&b.state==='done'&&a.pauseUntil<now&&b.pauseUntil<now){
+        const dx=a.x-b.x,dy=a.y-b.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<20){
+          a.pauseUntil=now+1100;b.pauseUntil=now+1100;
+          a.tx=a.x+(dx>0?15:-15);b.tx=b.x+(dx>0?-15:15);
+          // Face each other
+          const elA=agentEls[ids[i]],elB=agentEls[ids[j]];
+          if(elA)elA.style.transform='scaleX('+(dx>0?1:-1)+')';
+          if(elB)elB.style.transform='scaleX('+(dx>0?-1:1)+')';
+        }
+      }
+    }
+  }
+}
+
+function tick(){
+  const now=Date.now(),ids=Object.keys(AG);
+  checkBumps(now);
+  ids.forEach(id=>{
+    const a=AG[id];
+    if(a.pauseUntil>now)return;
+    const dx=a.tx-a.x,dy=a.ty-a.y,dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<2){pickTarget(a,id);return;}
+    const step=Math.min(a.speed,dist);
+    a.x+=dx/dist*step;a.y+=dy/dist*step;
+
+    const el=agentEls[id];
+    if(el){
+      const sr=stageRect();
+      el.style.left=(a.x-sr.left)+'px';
+      el.style.top=(a.y-sr.top)+'px';
+      if(Math.abs(dx)>Math.abs(dy))el.style.transform='scaleX('+(dx>0?1:-1)+')';
+    }
+  });
+  requestAnimationFrame(tick);
+}
+
+function syncStatus(){
+  // Update agent states from window data (if available) or random idle patrol
+  ROSTER.forEach(r=>{
+    if(!AG[r.id])return;
+    // Simulate occasional state changes
+    if(Math.random()<.05)AG[r.id].state=['idle','working','done','idle'][Math.floor(Math.random()*4)];
+    pickTarget(AG[r.id],r.id);
+  });
+  // Update dots
+  document.querySelectorAll('.td-pod-dot').forEach(d=>{
+    const id=d.dataset.agent,st=(AG[id]||{}).state||'idle';
+    d.className='td-pod-dot dot-'+st;
+  });
+}
+
+// ── BUILD ISS ───────────────────────────────────────────
+function buildISS(){
+  const stage=document.getElementById('td-stage');
+  const podsC=document.getElementById('td-pods');
+  const agentsC=document.getElementById('td-agents');
+  const common=document.getElementById('common-area');
+  podsC.innerHTML='';agentsC.innerHTML='';
+  agentEls={};
+
+  // Common area positioning
+  common.style.left=COMMON.x+'%';common.style.top=COMMON.y+'%';
+  common.style.width=COMMON.w+'%';common.style.height=COMMON.h+'%';
+
+  // Vending machines in common area (decorative, % relative to stage)
+  const vms=[
+    {x:COMMON.x+2,y:COMMON.y+3,w:COMMON.w*.15,icon:'☕',color:'#ff8844',label:'COFFEE'},
+    {x:COMMON.x+COMMON.w-10,y:COMMON.y+3,w:COMMON.w*.15,icon:'🥤',color:'#44ccff',label:'SODA'},
+    {x:COMMON.x+2,y:COMMON.y+COMMON.h-12,w:COMMON.w*.15,icon:'🍕',color:'#ff6666',label:'PIZZA'},
+    {x:COMMON.x+COMMON.w-10,y:COMMON.y+COMMON.h-12,w:COMMON.w*.15,icon:'🍜',color:'#88dd44',label:'RAMEN'},
+  ];
+  vms.forEach(vm=>{
+    // Big vending machine
+    const el=document.createElement('div');
+    el.className='vending';el.style.cssText=`left:${vm.x}%;top:${vm.y}%;`;
+    el.innerHTML=`<div class="vm-body"><div class="vm-glass"></div><div class="vm-tray"></div><div class="vm-slot"></div><div class="vm-label">${vm.icon}</div></div><div class="vm-sign">${vm.label}</div>`;
+    podsC.appendChild(el);
+    // Mini version next to it (offset right/down)
+    const mini=document.createElement('div');
+    mini.className='vending-mini';mini.title=`Grab ${vm.label}`;
+    mini.style.cssText=`left:${vm.x+vm.w}%;top:${vm.y+3}%;`;
+    mini.innerHTML=`<div class="vmb"><div class="vmg"></div><div class="vml">${vm.icon}</div></div>`;
+    podsC.appendChild(mini);
+  });
+
+  // Hallways between pods and common area
+  ROSTER.forEach(r=>{
+    const pcx=r.pod.x+r.pod.w/2,pcy=r.pod.y+r.pod.h/2;
+    const ccx=COMMON.x+COMMON.w/2,ccy=COMMON.y+COMMON.h/2;
+
+    // Horizontal hallway
+    const hx=Math.min(pcx,ccx),hw=Math.abs(pcx-ccx);
+    const hy=Math.min(pcy,ccy)-2,hh=4;
+    if(hw>4){
+      const h=document.createElement('div');h.className='td-hallway';
+      h.style.cssText=`left:${hx}%;top:${hy}%;width:${hw}%;height:${hh}%;`;
+      podsC.appendChild(h);
+    }
+    // Vertical hallway
+    const vx=Math.min(pcx,ccx)-2,vw=4;
+    const vy=Math.min(pcy,ccy),vh=Math.abs(pcy-ccy);
+    if(vh>4){
+      const v=document.createElement('div');v.className='td-hallway td-hallway-v';
+      v.style.cssText=`left:${vx}%;top:${vy}%;width:${vw}%;height:${vh}%;`;
+      podsC.appendChild(v);
+    }
+  });
+
+  // Pods
+  ROSTER.forEach(r=>{
+    const pod=document.createElement('div');
+    pod.className='td-pod';pod.dataset.agent=r.id;
+    pod.style.cssText=`left:${r.pod.x}%;top:${r.pod.y}%;width:${r.pod.w}%;height:${r.pod.h}%;--rc:${r.color};`;
+    pod.innerHTML=`<div class="td-pod-floor"></div>
+      <div class="td-pod-label">${r.name}<br><span style="font-size:.7em;color:var(--text3);">${r.id==='socrates'?'CO-FOREMAN':r.id==='prometheus'?'SEO FULFILLMENT':r.id==='daedalus'?'BUILDER':'AGENT'}</span></div>
+      <div class="td-pod-dot dot-idle" data-agent="${r.id}"></div>`;
+    pod.onclick=function(e){selectISS(r.id,this,e);};
+    podsC.appendChild(pod);
+
+    // Agent element
+    const agent=document.createElement('div');
+    agent.className='td-agent';agent.id='agent-'+r.id;agent.dataset.agent=r.id;
+    agent.innerHTML=agentSVG(r)+
+      `<div class="td-shadow"></div><div class="td-nametag">${r.name}</div>`;
+    agent.onclick=function(e){e.stopPropagation();selectISS(r.id,pod,e);};
+    agentsC.appendChild(agent);
+    agentEls[r.id]=agent;
+  });
+}
+
+function selectISS(id,podEl,e){
+  document.querySelectorAll('.td-pod').forEach(p=>p.classList.remove('td-selected'));
+  document.querySelectorAll('.td-agent').forEach(a=>a.classList.remove('td-selected'));
+  if(podEl)podEl.classList.add('td-selected');
+  if(agentEls[id])agentEls[id].classList.add('td-selected');
+  showDetailPanel(id,e);
+}
+
+function showDetailPanel(id,e){
+  const r=ROSTER.find(r=>r.id===id);if(!r)return;
+  const ag=AG[id]||{state:'idle'};
+  const panel=document.getElementById('detail-panel');
+  const inner=document.getElementById('detail-inner');
+  const stage=document.getElementById('td-stage');
+  const sr=stage.getBoundingClientRect();
+
+  inner.innerHTML=`
+    <div class="detail-name">${r.name}</div>
+    <div class="detail-role">${r.id==='socrates'?'Co-Foreman — Intelligence & Learning':r.id==='prometheus'?'SEO/AEO Fulfillment — Fire-Bringer':r.id==='daedalus'?'Builder — Development & Deployment':r.id==='amaterasu'?'Solar Activation — Outreach':r.id==='kage'?'Shadow — Intelligence & Research':'Trend Oracle — Future Intelligence'}</div>
+    <div class="detail-doing">Status: <span style="color:${ag.state==='working'?'var(--accent)':ag.state==='done'?'var(--green)':'var(--text2)'}">${ag.state.toUpperCase()}</span></div>
+    <div class="detail-bar-row"><span>Focus</span><div class="detail-bar"><div class="detail-bar-fill" style="width:${r.id==='socrates'?97:r.id==='kage'?88:r.id==='tengu'?99:85}%;background:${r.color};"></div></div></div>
+    <div class="detail-bar-row"><span>Speed</span><div class="detail-bar"><div class="detail-bar-fill" style="width:${r.id==='socrates'?99:r.id==='kage'?85:r.id==='tengu'?92:78}%;background:${r.color};"></div></div></div>
+    <div class="detail-bar-row"><span>Reliability</span><div class="detail-bar"><div class="detail-bar-fill" style="width:${r.id==='socrates'?94:r.id==='kage'?90:r.id==='tengu'?88:92}%;background:${r.color};"></div></div></div>
+  `;
+
+  // Position near click
+  const cx=e?e.clientX:window.innerWidth/2,cy=e?e.clientY:window.innerHeight/2;
+  panel.style.left=Math.min(cx-sr.left,stage.clientWidth-290)+'px';
+  panel.style.top=Math.min(cy-sr.top-100,stage.clientHeight-180)+'px';
+  panel.classList.add('visible');
+
+  // Hide on outside click
+  setTimeout(()=>{
+    const hide=ev=>{if(!panel.contains(ev.target)&&!ev.target.closest('.td-pod')&&!ev.target.closest('.td-agent')){panel.classList.remove('visible');document.removeEventListener('click',hide);}};
+    document.addEventListener('click',hide);
+  },100);
+}
+
+// ── PIN GATE ──────────────────────────────────────────
+let pgBuf='',pgLocked=false,pgLockUntil=0;
+function buildNumpad(){
+  const pad=document.getElementById('pg-numpad');
+  for(let i=1;i<=9;i++){const b=document.createElement('div');b.className='pg-key';b.textContent=i;b.onclick=()=>pgPress(i);pad.appendChild(b);}
+  const clr=document.createElement('div');clr.className='pg-key';clr.textContent='CLR';clr.style.color='var(--warn)';clr.onclick=()=>pgPress('clear');pad.appendChild(clr);
+  const z=document.createElement('div');z.className='pg-key';z.textContent='0';z.onclick=()=>pgPress(0);pad.appendChild(z);
+  const go=document.createElement('div');go.className='pg-key';go.textContent='GO';go.style.color='var(--accent)';go.onclick=()=>pgPress('go');pad.appendChild(go);
+}
+function pgPress(val){
+  if(pgLocked&&Date.now()<pgLockUntil)return;
+  if(val==='clear'){pgBuf='';pgRenderDots();return;}
+  if(val==='go'){pgCheck();return;}
+  if(pgBuf.length>=6)return;pgBuf+=String(val);pgRenderDots();
+  if(pgBuf.length===6)pgCheck();
+}
+function pgRenderDots(){for(let i=0;i<6;i++)document.getElementById('pd'+i).classList.toggle('filled',i<pgBuf.length);}
+async function pgCheck(){
+  if(pgLocked)return;
+  try{const r=await fetch(API+'/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pin:pgBuf}),signal:AbortSignal.timeout(10000)});const j=await r.json();
+    if(j.ok){document.getElementById('pg-status').textContent='ACCESS GRANTED';document.getElementById('pg-status').className='pg-status ok';setTimeout(()=>{document.getElementById('pin-gate').classList.add('unlocked');boot();refreshAll();},400);}
+    else{pgBuf='';pgRenderDots();const st=document.getElementById('pg-status');st.className='pg-status err';
+      if(j.error==='locked'){pgLocked=true;pgLockUntil=Date.now()+j.locked_seconds*1000;st.textContent='LOCKED '+j.locked_seconds+'s';pgLockoutCountdown();}
+      else{st.textContent='DENIED ('+(j.remaining||'?')+' left)';}
+      for(let i=0;i<6;i++){const d=document.getElementById('pd'+i);d.classList.add('error');setTimeout(()=>d.classList.remove('error'),400);}}
+  }catch(e){document.getElementById('pg-status').textContent='CONNECTION ERROR';document.getElementById('pg-status').className='pg-status err';}
+}
+function pgLockoutCountdown(){if(!pgLocked)return;const rem=Math.ceil((pgLockUntil-Date.now())/1000);if(rem<=0){pgLocked=false;const st=document.getElementById('pg-status');st.className='pg-status';st.textContent='ENTER ACCESS CODE';return;}document.getElementById('pg-status').textContent='LOCKED '+rem+'s';setTimeout(pgLockoutCountdown,1000);}
+buildNumpad();
+
+// ── CLOCK ──────────────────────────────────────────────
+setInterval(()=>{document.getElementById('stn-clock').textContent=new Date().toTimeString().split(' ')[0]+' UTC';},1000);
+
+// ── WEB LEADS ────────────────────────────────────────────
+async function refreshWebLeads(){
+  try{
+    const r=await fetch(API+'/api/web-leads?limit=20');
+    const leads=await r.json();
+    window._webLeads=leads;
+    const el=document.getElementById('web-leads-list');
+    const badge=document.getElementById('wl-badge');
+    const newCount=leads.filter(l=>l.status==='new').length;
+    badge.style.display=newCount>0?'inline':'none';
+    badge.textContent='● '+newCount+' NEW';
+    if(!leads.length){el.innerHTML='<div style="color:var(--text3);font-size:7px;">No web leads yet</div>';return;}
+    el.innerHTML=leads.slice(0,10).map(l=>`<div class="wl-item ${l.status}" onclick="openWebLead(${l.id})">
+      <div><span class="wl-name">${esc(l.name)}</span><span class="wl-email">${esc(l.email)}</span><span style="float:right;font-size:5px;color:${l.status==='new'?'var(--accent)':l.status==='promoted'?'var(--green)':'var(--text3)'};">${l.status.toUpperCase()}</span></div>
+      <div class="wl-msg">${esc(l.message||'(no message)')}</div>
+      <div class="wl-time">${(l.created_at||'').slice(0,16)} · ${esc(l.source)}</div>
+    </div>`).join('');
+  }catch(e){console.error(e);}
+}
+
+async function promoteWebLead(id){
+  if(!confirm('Promote this web lead to a CRM client? This will create a new client with auto-generated cadence.'))return;
+  try{
+    const r=await fetch(API+'/api/web-leads/'+id+'/promote',{method:'POST'});
+    const j=await r.json();
+    if(j.ok){refreshWebLeads();refreshAll();alert('Promoted! Client #'+j.client.id+' created.');}
+    else{alert('Error: '+(j.error||'unknown'));}
+  }catch(e){alert('Failed: '+e);}
+}
+
+async function markWebLead(id,status){
+  try{
+    await fetch(API+'/api/web-leads/'+id+'/status',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
+    refreshWebLeads();
+  }catch(e){console.error(e);}
+}
+
+function openWebLead(id){
+  const lead=window._webLeads?.find(l=>l.id===id);
+  if(!lead)return;
+  document.getElementById('mt').textContent='Web Lead: '+lead.name;
+  document.getElementById('client-modal').classList.add('open');
+  document.querySelectorAll('.modal-tab').forEach(t=>t.style.display='none');
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-info').classList.add('active');
+  document.getElementById('tab-info').innerHTML=`
+    <div class="wl-modal-grid">
+      <div><label style="font-size:6px;color:var(--text3);">Name</label><div style="font-size:9px;color:var(--accent);">${esc(lead.name)}</div></div>
+      <div><label style="font-size:6px;color:var(--text3);">Status</label><div style="font-size:8px;"><span class="pl-st ${lead.status}">${lead.status}</span></div></div>
+      <div><label style="font-size:6px;color:var(--text3);">Email</label><div style="font-size:8px;">${esc(lead.email||'—')}</div></div>
+      <div><label style="font-size:6px;color:var(--text3);">Phone</label><div style="font-size:8px;">${esc(lead.phone||'—')}</div></div>
+      <div><label style="font-size:6px;color:var(--text3);">Company</label><div style="font-size:8px;">${esc(lead.company||'—')}</div></div>
+      <div><label style="font-size:6px;color:var(--text3);">Source</label><div style="font-size:8px;">${esc(lead.source)}${lead.source_url?' · '+esc(lead.source_url):''}</div></div>
+      <div style="grid-column:1/3;"><label style="font-size:6px;color:var(--text3);">Message</label><div style="font-size:8px;background:var(--panel2);padding:6px;border-radius:3px;margin-top:2px;">${esc(lead.message||'(no message)')}</div></div>
+      <div style="grid-column:1/3;"><label style="font-size:6px;color:var(--text3);">My Notes <span style="color:var(--green);font-size:5px;" id="wl-ns-ind">✓ saved</span></label><textarea id="wl-notes" rows="3" oninput="debouncedSaveWLNotes(${lead.id})" onblur="saveWLNotes(${lead.id})">${esc(lead.notes||'')}</textarea></div>
+      <div style="grid-column:1/3;"><label style="font-size:6px;color:var(--text3);">Received</label><div style="font-size:7px;color:var(--text2);">${lead.created_at||'—'}</div></div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+      ${lead.status!=='promoted'?`<button class="btn wl-promote-btn" onclick="promoteWebLead(${lead.id})">🚀 PROMOTE TO CLIENT</button>`:`<span style="font-size:7px;color:var(--green);">✓ Promoted to Client #${lead.client_id}</span>`}
+      ${lead.status==='new'?`<button class="btn" onclick="markWebLead(${lead.id},'viewed')">👁 VIEWED</button>`:''}
+      ${lead.status!=='archived'&&lead.status!=='promoted'?`<button class="btn" onclick="markWebLead(${lead.id},'contacted')">📞 CONTACTED</button>`:''}
+      ${lead.status!=='archived'?`<button class="btn btn-warn" onclick="markWebLead(${lead.id},'archived')">📦 ARCHIVE</button>`:''}
+      <button class="btn" onclick="closeModal()">CLOSE</button>
+          </div>`;
+      }
+      // ── MAIN TAB SWITCHING ──────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.querySelector(`.modal-tab[onclick="switchTab('${tab}')"]`).classList.add('active');
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  
+  if(tab==='timeline'&&currentClient) {
+    renderTimeline(currentClient);
+  }
+}
+  if(tab==='nightly')refreshNightlyTab();
+  if(tab==='crm')refreshAll();
+}
+// Tab clock
+setInterval(()=>{const el=document.getElementById('tab-clock');if(el)el.textContent=new Date().toTimeString().split(' ')[0]+' UTC';},1000);
+
+// ── LEADGEN TAB ─────────────────────────────────────────
+async function refreshLeadgenTab(){
+  try{
+    const[leads,stats]=await Promise.all([
+      fetch(API+'/api/leadgen/leads?limit=200').then(r=>r.json()),
+      fetch(API+'/api/leadgen/stats').then(r=>r.json())
+    ]);
+    window._lgLeads=Array.isArray(leads)?leads:[];
+    document.getElementById('lg-total').textContent=stats.total_leads||window._lgLeads.length;
+    document.getElementById('lg-sent').textContent=stats.emails_sent||0;
+    document.getElementById('lg-open').textContent=(stats.open_rate||0)+'%';
+    renderLgLeadList(window._lgLeads);
+    // Status bars
+    const byStatus={};window._lgLeads.forEach(l=>{const s=l.outreach||'new';byStatus[s]=(byStatus[s]||0)+1;});
+    document.getElementById('lg-status-bars').innerHTML=Object.entries(byStatus).map(([k,v])=>`<div class="rev-row"><span>${k}</span><span class="v">${v}</span></div>`).join('');
+  }catch(e){console.error(e);}
+}
+function renderLgLeadList(leads){
+  document.getElementById('lg-lead-list').innerHTML=leads.length?leads.slice(0,50).map(l=>`<div class="pl-row" style="cursor:pointer;" onclick="openLgLead(${l.id})">
+    <span class="pl-name">${esc(l.biz||l.name||'?')}</span>
+    <span class="pl-co">${esc(l.category||'')}</span>
+    <span class="pl-st ${l.outreach||'new'}">${l.outreach||'new'}</span>
+    ${l.opportunity_score?`<span style="font-size:5px;color:var(--gold);margin-left:4px;">★${l.opportunity_score}</span>`:''}
+  </div>`).join(''):'<div style="color:var(--text3);font-size:7px;">No leads</div>';
+}
+function filterLgLeads(){
+  const q=document.getElementById('lg-search').value.toLowerCase();
+  renderLgLeadList((window._lgLeads||[]).filter(l=>(l.biz||l.name||'').toLowerCase().includes(q)||(l.category||'').toLowerCase().includes(q)));
+}
+function openLgLead(id){
+  const l=window._lgLeads?.find(ll=>ll.id===id);if(!l)return;
+  document.getElementById('mt').textContent=l.biz||l.name||'Lead #'+id;
+  document.getElementById('client-modal').classList.add('open');
+  document.querySelectorAll('.modal-tab').forEach(t=>t.style.display='none');
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-info').classList.add('active');
+  document.getElementById('tab-info').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+    <div><label style="font-size:6px;color:var(--text3);">Business</label><div style="font-size:9px;color:var(--accent);">${esc(l.biz||l.name||'?')}</div></div>
+    <div><label style="font-size:6px;color:var(--text3);">Status</label><div><span class="pl-st ${l.outreach||'new'}">${l.outreach||'new'}</span></div></div>
+    <div><label style="font-size:6px;color:var(--text3);">Category</label><div style="font-size:8px;">${esc(l.category||'—')}</div></div>
+    <div><label style="font-size:6px;color:var(--text3);">Phone</label><div style="font-size:8px;">${esc(l.phone||'—')}</div></div>
+    <div><label style="font-size:6px;color:var(--text3);">Website</label><div style="font-size:8px;">${esc(l.website||'—')}</div></div>
+    <div><label style="font-size:6px;color:var(--text3);">Priority</label><div style="font-size:8px;">${esc(l.priority||'—')}</div></div>
+    <div style="grid-column:1/3;"><label style="font-size:6px;color:var(--text3);">Why This Lead</label><div style="font-size:7px;background:var(--panel2);padding:4px;border-radius:3px;">${esc(l.why_this_lead||'—')}</div></div>
+  </div>
+  <div style="margin-top:8px;display:flex;gap:6px;">
+    ${l.email?`<button class="btn" onclick="window.open('mailto:${esc(l.email)}')">EMAIL</button>`:''}
+    ${l.phone?`<button class="btn" onclick="window.open('tel:${esc(l.phone)}')">CALL</button>`:''}
+    <button class="btn" style="background:var(--gold);color:#000;" onclick="draftEmail(${l.id},'${esc(l.email||'')}')">✍️ DRAFT EMAIL</button>
+    <button class="btn" onclick="closeModal()">CLOSE</button>
+  </div>
+  <div id="email-draft-area" style="margin-top:8px;"></div>`;
+}
+// ── EMAIL DRAFTING ──────────────────────────────────────
+async function draftEmail(leadId,email){
+  const area=document.getElementById('email-draft-area');
+  area.innerHTML='<div style="color:var(--accent);font-size:7px;">Generating draft...</div>';
+  try{
+    const r=await fetch(API+'/api/leadgen/draft-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lead_id:leadId})});
+    const j=await r.json();
+    const draft=j.draft||'No draft generated.';
+    // Parse subject from draft
+    const lines=draft.split('\n');
+    let subject='',body='';
+    if(lines[0]&&lines[0].toLowerCase().startsWith('subject:')){
+      subject=lines[0].replace(/^Subject:\s*/i,'').trim();
+      body=lines.slice(1).join('\n').trim();
+    }else{body=draft;}
+    area.innerHTML=`
+      <div style="border-top:1px solid var(--metal);padding-top:6px;margin-top:4px;">
+        <label style="font-size:6px;color:var(--text3);">Subject</label>
+        <input id="draft-subject" value="${esc(subject)}" style="font-size:7px;">
+        <label style="font-size:6px;color:var(--text3);">Body</label>
+        <textarea id="draft-body" rows="8" style="font-size:7px;">${esc(body)}</textarea>
+        <div style="display:flex;gap:6px;margin-top:4px;">
+          ${email?`<button class="btn wl-promote-btn" onclick="sendDraft(${leadId},'${esc(email)}')">📨 SEND TO ${esc(email)}</button>`:'<span style="font-size:6px;color:var(--warn);">No email on file</span>'}
+          <button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('draft-body').value);alert('Copied!')">📋 COPY</button>
+        </div>
+      </div>`;
+  }catch(e){area.innerHTML='<div style="color:var(--warn);font-size:7px;">Draft failed: '+e+'</div>';}
+}
+
+async function sendDraft(leadId,email){
+  const subject=document.getElementById('draft-subject')?.value||'';
+  const body=document.getElementById('draft-body')?.value||'';
+  if(!confirm(`Send to ${email}?\n\nSubject: ${subject}`))return;
+  try{
+    const r=await fetch(API+'/api/leadgen/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lead_id:leadId,to_email:email,subject,body})});
+    const j=await r.json();
+    if(j.ok){alert('Email sent!');document.getElementById('email-draft-area').innerHTML='<div style="color:var(--green);font-size:7px;">✓ Sent to '+esc(email)+'</div>';}
+    else{alert('Failed: '+(j.error||'unknown'));}
+  }catch(e){alert('Send failed: '+e);}
+}
+
+// ── NIGHTLY BUILDS TAB ─────────────────────────────────
+async function refreshNightlyTab(){
+  try{
+    const r=await fetch(API+'/api/nightly');
+    const d=await r.json();
+    document.getElementById('nb-cron-status').textContent=d.cron_name||'Nightly CRM Upgrade';
+    document.getElementById('nb-last-run').textContent=d.history.length?d.history[0].date:'—';
+    document.getElementById('nb-next-run').textContent='~4 AM ET';
+    // Build history
+    document.getElementById('nb-history').innerHTML=d.history.length?d.history.map(b=>`<div class="nb-card ${b.has_error?'error':''}" onclick="openBuildDetail('${b.date}')">
+          <span class="nb-status ${b.has_error?'error':'ok'}">${b.has_error?'ERROR':'OK'}</span>
+          <div class="nb-date">${b.date}</div>
+          <div class="nb-title">${esc(b.summary.split('\\n')[0]?.replace(/^#+\\s*/,'')||'Untitled Build')}</div>
+          <div class="nb-desc">${esc(b.summary.split('\\n').slice(1,3).join(' ')||'')}</div>
+          <div style="margin-top:4px;display:flex;gap:4px;">
+            ${b.files.filter(f=>f.endsWith('.html')).map(f=>`<button class="btn" style="font-size:4px;padding:1px 3px;" onclick="event.stopPropagation();launchBuild('${b.date}','${f}')">▶ ${f.replace('.html','')}</button>`).join('')}
+          </div>
+        </div>`).join(''):'<div style="color:var(--text3);font-size:7px;">No builds yet. First one runs tonight at 4 AM ET.</div>';
+    // Cron status
+    document.getElementById('nb-status').innerHTML=`
+      <div class="rev-row"><span>Job ID</span><span class="v">${d.cron_job_id}</span></div>
+      <div class="rev-row"><span>Name</span><span class="v">${d.cron_name}</span></div>
+      <div class="rev-row"><span>Schedule</span><span class="v">${d.schedule}</span></div>
+      <div class="rev-row"><span>Total Builds</span><span class="v">${d.history.length}</span></div>
+      <div class="rev-row"><span>Latest</span><span class="v">${d.history.length?d.history[0].date:'—'}</span></div>
+      <div style="margin-top:8px;font-size:6px;color:var(--text2);">Every night at 4 AM ET, one CRM improvement ships automatically. Check the CRM tab each morning for the latest feature.</div>
+    `;
+  }catch(e){console.error(e);}
+}
+async function openBuildDetail(date){
+  try{
+    const r=await fetch(API+'/api/nightly/'+date);
+    const d=await r.json();
+    document.getElementById('mt').textContent='Build: '+date;
+    document.getElementById('client-modal').classList.add('open');
+    document.querySelectorAll('.modal-tab').forEach(t=>t.style.display='none');
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tab-info').classList.add('active');
+    document.getElementById('tab-info').innerHTML=`
+      <div class="nb-date">${date}</div>
+      <div style="font-size:7px;margin-top:8px;white-space:pre-wrap;line-height:1.5;">${esc(d.summary||'No summary available.')}</div>
+      <div style="margin-top:10px;"><button class="btn" onclick="closeModal()">CLOSE</button></div>
+    `;
+  }catch(e){alert('Failed to load build details.');}
+}
+
+function launchBuild(date,file){
+  window.open(API+'/nightly/'+date+'/'+file,'_blank');
+}
+
+async function refreshAnalytics(){
+  try{
+    const r=await fetch(API+'/api/analytics');
+    const a=await r.json();
+    document.getElementById('an-source').textContent='— '+(a.source==='placeholder'?'PLACEHOLDER (wire GA4)':a.source);
+    document.getElementById('an-views').textContent=(a.page_views||0).toLocaleString();
+    document.getElementById('an-sessions').textContent=(a.sessions||0).toLocaleString();
+    document.getElementById('an-users').textContent=(a.users||0).toLocaleString();
+    document.getElementById('an-engage').textContent=a.avg_engagement_time||'0m';
+    document.getElementById('an-bounce').textContent=(a.bounce_rate||0)+'%';
+    document.getElementById('an-conv').textContent=(a.conversion_rate||0)+'%';
+    // Traffic sources
+    const ts=a.traffic_sources||{};
+    document.getElementById('an-traffic').innerHTML=Object.entries(ts).map(([k,v])=>`<div class="rev-row"><span>${k}</span><span class="v">${v}</span></div>`).join('');
+    // Devices
+    const dev=a.devices||{};
+    document.getElementById('an-devices').innerHTML=Object.entries(dev).map(([k,v])=>`<div class="rev-row"><span>${k}</span><span class="v">${v}</span></div>`).join('');
+    // Top pages
+    const pages=a.top_pages||[];
+    document.getElementById('an-pages').innerHTML=pages.length?pages.slice(0,5).map(p=>`<div class="rev-row"><span style="font-size:6px;">${esc(p.path||p)}</span><span class="v" style="font-size:6px;">${p.views||0}</span></div>`).join(''):'<div style="color:var(--text3);font-size:6px;">No data</div>';
+  }catch(e){console.error(e);}
+} 
+
+async function refreshAll(){
+  try{const[clients,pipeline,lg,allLeads]=await Promise.all([
+    fetch(API+'/api/clients').then(r=>r.json()),
+    fetch(API+'/api/pipeline').then(r=>r.json()),
+    fetch(API+'/api/leadgen/stats').then(r=>r.json()).catch(()=>null),
+    fetch(API+'/api/leadgen/leads?limit=300').then(r=>r.json()).catch(()=>[])
+  ]);
+  document.getElementById('hdr-pipe').textContent='$'+(pipeline.pipeline_value||0).toLocaleString();
+  document.getElementById('hdr-rev').textContent='$'+(pipeline.revenue_won||0).toLocaleString();
+  document.getElementById('hdr-leads').textContent=lg?lg.total_leads:0;
+  // Pipeline
+  const pl=document.getElementById('pipeline-list');
+  pl.innerHTML=clients.length?clients.slice(0,7).map(c=>`<div class="pl-row" onclick="openClient(${c.id})"><span class="pl-name">${esc(c.name)}</span><span class="pl-co">${esc(c.company||'')}</span><span class="pl-val">$${(c.deal_value||0).toLocaleString()}</span><span class="pl-st ${c.status}">${c.status}</span></div>`).join(''):'<div style="color:var(--text3);font-size:7px;">No clients</div>';
+  // Revenue
+  document.getElementById('rev-won').textContent='$'+(pipeline.revenue_won||0).toLocaleString();
+  document.getElementById('rev-dets').innerHTML=`<div class="rev-row"><span>Pipeline</span><span class="v">$${(pipeline.pipeline_value||0).toLocaleString()}</span></div><div class="rev-row"><span>Won</span><span class="v">${pipeline.funnel.won}</span></div><div class="rev-row"><span>Active</span><span class="v">${pipeline.funnel.lead+pipeline.funnel.contacted+pipeline.funnel.proposal}</span></div>${lg?`<div class="rev-row"><span>Leads</span><span class="v">${lg.total_leads}</span></div><div class="rev-row"><span>Sent</span><span class="v">${lg.emails_sent}</span></div>`:''}`;
+  // Funnel
+  const fb=document.getElementById('funnel-bar');
+  const max=Math.max(...Object.values(pipeline.funnel),1);
+  fb.innerHTML=[{k:'lead',l:'LEAD'},{k:'contacted',l:'CONT'},{k:'proposal',l:'PROP'},{k:'won',l:'WON'},{k:'lost',l:'LOST'}].map(s=>`<div class="funnel-stage"><div class="n">${pipeline.funnel[s.k]}</div><div class="bar" style="height:${Math.max((pipeline.funnel[s.k]/max)*40,2)}px"></div><div class="lbl">${s.l}</div></div>`).join('');
+  // Cadence
+  const cl=document.getElementById('cad-list');
+  cl.innerHTML=pipeline.upcoming_cadence?.length?pipeline.upcoming_cadence.slice(0,6).map(c=>`<div class="cad-item" onclick="openClient(${c.client_id})"><span class="cad-type ${c.type}">${c.type}</span><span>${esc(c.client_name)}</span><span style="margin-left:auto;font-size:6px;color:var(--text2);">${c.scheduled_date}</span></div>`).join(''):'<div style="color:var(--text3);font-size:7px;">No upcoming</div>';
+  // LG leads
+  window._allLeads=allLeads||lg?.recent||[];
+  renderLeadList(window._allLeads);
+  // Web leads
+  refreshWebLeads();
+  // Analytics
+  refreshAnalytics();
+  }catch(e){console.error(e);}
+}
+
+// ── Lead List with Search ──────────────────────────────
+function renderLeadList(leads){
+  const el=document.getElementById('lg-leads');
+  if(!leads.length){el.innerHTML='<div style="color:var(--text3);font-size:7px;">No leads</div>';return;}
+  el.innerHTML=leads.map(l=>`<div class="pl-row" onclick="openLeadDetail(${l.id})">
+    <span class="pl-name">${esc(l.biz)}</span>
+    <span class="pl-co">${esc(l.category||'')}</span>
+    <span class="pl-st ${l.outreach||'new'}">${l.outreach||'new'}</span>
+    ${l.opportunity_score?`<span style="font-size:5px;color:var(--gold);margin-left:4px;">★${l.opportunity_score}</span>`:''}
+  </div>`).join('');
+}
+function filterLeads(){
+  const q=document.getElementById('lead-search').value.toLowerCase();
+  renderLeadList(window._allLeads.filter(l=>
+    (l.biz||'').toLowerCase().includes(q)||
+    (l.category||'').toLowerCase().includes(q)||
+    (l.outreach||'').toLowerCase().includes(q)||
+    (l.phone||'').includes(q)
+  ));
+}
+async function openLeadDetail(id){
+  // Pull full lead data + saved notes
+  try{
+    const[r,notesR]=await Promise.all([
+      fetch(API+'/api/leadgen/leads?limit=300'),
+      fetch(API+'/api/leadgen/notes/'+id).then(r=>r.json()).catch(()=>({notes:''}))
+    ]);
+    const leads=await r.json();
+    const lead=leads.find(l=>l.id===id);
+    if(!lead)return;
+    const savedNotes=notesR.notes||lead.notes||'';
+    document.getElementById('mt').textContent=lead.biz+' — Lead #'+lead.id;
+    document.getElementById('client-modal').classList.add('open');
+    document.querySelectorAll('.modal-tab').forEach(t=>t.style.display='none');
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tab-info').classList.add('active');
+    document.getElementById('tab-info').innerHTML=`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+        <div><label style="font-size:6px;color:var(--text3);">Business</label><div style="font-size:8px;color:var(--accent);">${esc(lead.biz)}</div></div>
+        <div><label style="font-size:6px;color:var(--text3);">Category</label><div style="font-size:8px;">${esc(lead.category||'—')}</div></div>
+        <div><label style="font-size:6px;color:var(--text3);">Phone</label><div style="font-size:8px;">${esc(lead.phone||'—')}</div></div>
+        <div><label style="font-size:6px;color:var(--text3);">Website</label><div style="font-size:8px;">${esc(lead.website||'—')}</div></div>
+        <div><label style="font-size:6px;color:var(--text3);">Status</label><div style="font-size:8px;"><span class="pl-st ${lead.outreach||'new'}">${lead.outreach||'new'}</span></div></div>
+        <div><label style="font-size:6px;color:var(--text3);">Priority</label><div style="font-size:8px;">${esc(lead.priority||'—')}</div></div>
+        <div><label style="font-size:6px;color:var(--text3);">Opp Score</label><div style="font-size:8px;color:var(--gold);">${lead.opportunity_score||'—'}</div></div>
+        <div><label style="font-size:6px;color:var(--text3);">Rev Score</label><div style="font-size:8px;color:var(--accent);">${lead.revenue_opportunity_score||'—'}</div></div>
+        <div style="grid-column:1/3;"><label style="font-size:6px;color:var(--text3);">Why This Lead</label><div style="font-size:7px;">${esc(lead.why_this_lead||'—')}</div></div>
+        <div style="grid-column:1/3;"><label style="font-size:6px;color:var(--text3);">My Notes <span style="color:var(--green);font-size:5px;" id="ln-ind">✓ saved</span></label><textarea id="lead-notes" rows="4" oninput="debouncedSaveLeadNotes(${lead.id})" onblur="autoSaveLeadNotes(${lead.id})">${esc(savedNotes)}</textarea></div>
+      </div>
+      <div style="margin-top:6px;display:flex;gap:6px;">
+        <button class="btn" onclick="closeModal()">CLOSE</button>
+        ${lead.email?`<button class="btn" onclick="window.open('mailto:${esc(lead.email)}')">EMAIL</button>`:''}
+        ${lead.phone?`<button class="btn" onclick="window.open('tel:${esc(lead.phone)}')">CALL</button>`:''}
+      </div>`;
+  }catch(e){console.error(e);}
+}
+
+// ── CLIENT MODAL ───────────────────────────────────────
+async function openClient(id){const r=await fetch(API+'/api/clients/'+id);currentClient=await r.json();document.getElementById('mt').textContent=currentClient.name+(currentClient.company?' — '+currentClient.company:'');document.getElementById('client-modal').classList.add('open');switchTab('info');}
+function closeModal(){document.getElementById('client-modal').classList.remove('open');currentClient=null;
+  // Restore tabs if they were hidden
+  document.querySelectorAll('.modal-tab').forEach(t=>t.style.display='');}
+function switchTab(tab){document.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));event.target.classList.add('active');document.getElementById('tab-'+tab).classList.add('active');if(tab==='info')renderInfo();if(tab==='cadence')renderCadence();if(tab==='history')renderHistory();if(tab==='log')renderLogForm();}
+function renderInfo(){const c=currentClient;if(!c)return;document.getElementById('tab-info').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;"><div><label style="font-size:6px;color:var(--text3);">Name</label><input id="ci-name" value="${esc(c.name)}"></div><div><label style="font-size:6px;color:var(--text3);">Company</label><input id="ci-company" value="${esc(c.company||'')}"></div><div><label style="font-size:6px;color:var(--text3);">Email</label><input id="ci-email" value="${esc(c.email||'')}"></div><div><label style="font-size:6px;color:var(--text3);">Phone</label><input id="ci-phone" value="${esc(c.phone||'')}"></div><div><label style="font-size:6px;color:var(--text3);">Status</label><select id="ci-status">${['lead','contacted','proposal','won','lost'].map(s=>`<option ${c.status===s?'selected':''}>${s}</option>`).join('')}</select></div><div><label style="font-size:6px;color:var(--text3);">Deal Value $</label><input id="ci-value" type="number" value="${c.deal_value||0}"></div><div style="grid-column:1/3;"><label style="font-size:6px;color:var(--text3);">Notes <span style="color:var(--green);font-size:5px;" id="ns-ind">✓ saved</span></label><textarea id="ci-notes" rows="3" oninput="debouncedSaveNotes()" onblur="autoSaveNotes()">${esc(c.notes||'')}</textarea></div></div><div style="margin-top:6px;display:flex;gap:6px;"><button class="btn" onclick="saveClient()">SAVE ALL</button><button class="btn btn-warn" style="font-size:5px;" onclick="resetCadence()">RESET CADENCE</button></div>`;}
+async function saveClient(){const d={name:document.getElementById('ci-name').value,company:document.getElementById('ci-company').value,email:document.getElementById('ci-email').value,phone:document.getElementById('ci-phone').value,status:document.getElementById('ci-status').value,deal_value:parseFloat(document.getElementById('ci-value').value)||0,notes:document.getElementById('ci-notes').value};await fetch(API+'/api/clients/'+currentClient.id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});refreshAll();closeModal();}
+
+// Auto-save notes on blur (immediate) and input (debounced)
+let _notesTimer=null;
+function debouncedSaveNotes(){
+  const ind=document.getElementById('ns-ind');if(ind)ind.textContent='typing...';
+  clearTimeout(_notesTimer);
+  _notesTimer=setTimeout(()=>{autoSaveNotes();},1500);
+}
+
+// ── Web Lead Notes Auto-Save ──────────────────────────
+let _wlNotesTimer=null;
+function debouncedSaveWLNotes(leadId){
+  const ind=document.getElementById('wl-ns-ind');if(ind)ind.textContent='typing...';
+  clearTimeout(_wlNotesTimer);
+  _wlNotesTimer=setTimeout(()=>{saveWLNotes(leadId);},1500);
+}
+async function saveWLNotes(leadId){
+  const notes=document.getElementById('wl-notes')?.value||'';
+  try{
+    await fetch(API+'/api/web-leads/'+leadId+'/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({notes})});
+    const ind=document.getElementById('wl-ns-ind');if(ind)ind.textContent='✓ saved';
+  }catch(e){console.error(e);}
+}
+
+// ── Cadence Step Notes Auto-Save ──────────────────────
+async function saveCadenceNotes(stepId){
+  const notes=document.getElementById('cad-notes-'+stepId)?.value||'';
+  try{
+    await fetch(API+'/api/cadence/'+stepId+'/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({notes})});
+    const ind=document.getElementById('cad-ind-'+stepId);if(ind)ind.textContent='✓';
+  }catch(e){console.error(e);}
+}
+async function autoSaveNotes(){
+  if(!currentClient||!currentClient.id)return;
+  const notes=document.getElementById('ci-notes')?.value||'';
+  try{
+    await fetch(API+'/api/clients/'+currentClient.id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({notes})});
+    const ind=document.getElementById('ns-ind');if(ind)ind.textContent='✓ saved';
+  }catch(e){console.error(e);}
+}
+
+// Auto-save lead notes
+let _leadNotesTimer=null;
+function debouncedSaveLeadNotes(leadId){
+  const ind=document.getElementById('ln-ind');if(ind)ind.textContent='typing...';
+  clearTimeout(_leadNotesTimer);
+  _leadNotesTimer=setTimeout(()=>{autoSaveLeadNotes(leadId);},1500);
+}
+async function autoSaveLeadNotes(leadId){
+  const notes=document.getElementById('lead-notes')?.value||'';
+  try{
+    await fetch(API+'/api/leadgen/notes/'+leadId,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({notes})});
+    const ind=document.getElementById('ln-ind');if(ind)ind.textContent='✓ saved';
+  }catch(e){console.error(e);}
+}
+
+function renderCadence(){const c=currentClient;if(!c||!c.cadence?.length){document.getElementById('tab-cadence').innerHTML='<div style="color:var(--text3);">No cadence</div>';return;}const g={pending:[],completed:[],skipped:[]};c.cadence.forEach(s=>g[s.status]?.push(s));document.getElementById('tab-cadence').innerHTML=`<div class="kanban">${['pending','completed','skipped'].map(st=>`<div class="kanban-col"><h4>${st.toUpperCase()} (${g[st].length})</h4>${g[st].map(s=>`<div class="kanban-card ${s.status==='completed'?'done':''}" onclick="event.stopPropagation()"><div class="kt">${s.type.toUpperCase()} · Day ${s.day_offset}</div><div style="font-size:5px;color:var(--text3);">${s.scheduled_date||''}${s.interaction_id?' ✓':''}</div><textarea id="cad-notes-${s.id}" placeholder="+ note" style="font-size:5px;margin-top:2px;padding:1px 3px;min-height:18px;resize:vertical;" oninput="saveCadenceNotes(${s.id})" onblur="saveCadenceNotes(${s.id})">${esc(s.notes||'')}</textarea><span style="font-size:4px;color:var(--green);" id="cad-ind-${s.id}">${s.notes?'✓':''}</span></div>`).join('')}</div>`).join('')}</div>`;}
+
+function renderHistory(){const c=currentClient;if(!c)return;const all=[...(c.interactions||[]).map(i=>({d:i.completed_date||i.created_at,t:`${i.type}: ${i.notes||'(none)'}`})),...(c.pipeline_history||[]).map(p=>({d:p.created_at,t:`${p.from_stage||'new'} → ${p.to_stage}`}))].sort((a,b)=>b.d?.localeCompare(a.d)||0);document.getElementById('tab-history').innerHTML=all.length?all.map(e=>`<div style="padding:2px 0;font-size:7px;border-bottom:1px solid rgba(255,255,255,.02);"><span style="color:var(--text3);font-size:5px;">${(e.d||'').slice(0,16)}</span> <span>${esc(e.t)}</span></div>`).join(''):'<div style="color:var(--text3);">No history</div>';}
+
+function renderLogForm(){
+  const c=currentClient;
+  const draftKey='log_draft_'+c.id;
+  const saved=localStorage.getItem(draftKey)||'';
+  document.getElementById('tab-log').innerHTML=`<div style="display:grid;gap:5px;">
+    <div><label style="font-size:6px;color:var(--text3);">Type</label><select id="log-type"><option>email</option><option>call</option><option>meeting</option><option>note</option></select></div>
+    <div><label style="font-size:6px;color:var(--text3);">Direction</label><select id="log-direction"><option>outbound</option><option>inbound</option></select></div>
+    <div><label style="font-size:6px;color:var(--text3);">Outcome</label><select id="log-outcome"><option value="">—</option><option>positive</option><option>neutral</option><option>negative</option><option>no_response</option></select></div>
+    <div><label style="font-size:6px;color:var(--text3);">Notes <span style="color:var(--green);font-size:5px;" id="log-ind">✓ draft saved</span></label><textarea id="log-notes" rows="3" oninput="autoSaveLogDraft()">${esc(saved)}</textarea></div>
+    <div><label style="font-size:6px;color:var(--text3);">Cadence Step</label><select id="log-cs"><option value="">— None —</option>${(currentClient.cadence||[]).filter(s=>s.status==='pending').map(s=>`<option value="${s.id}">Day ${s.day_offset}: ${s.type}</option>`).join('')}</select></div>
+    <button class="btn" onclick="logInteraction()">LOG INTERACTION</button>
+    ${saved?`<button class="btn btn-warn" style="font-size:5px;margin-top:3px;" onclick="clearLogDraft()">CLEAR DRAFT</button>`:''}
+  </div>`;
+}
+
+function autoSaveLogDraft(){
+  if(!currentClient||!currentClient.id)return;
+  const notes=document.getElementById('log-notes')?.value||'';
+  const draftKey='log_draft_'+currentClient.id;
+  if(notes.trim()){localStorage.setItem(draftKey,notes);}
+  else{localStorage.removeItem(draftKey);}
+  const ind=document.getElementById('log-ind');
+  if(ind)ind.textContent='✓ draft saved';
+}
+
+function clearLogDraft(){
+  if(!currentClient||!currentClient.id)return;
+  localStorage.removeItem('log_draft_'+currentClient.id);
+  document.getElementById('log-notes').value='';
+  document.getElementById('log-ind').textContent='✓ draft cleared';
+}
+
+function logForStep(sid,type){switchTab('log');setTimeout(()=>{document.getElementById('log-type').value=type;document.getElementById('log-cs').value=sid;},100);}
+async function logInteraction(){await fetch(API+'/api/clients/'+currentClient.id+'/interactions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:document.getElementById('log-type').value,direction:document.getElementById('log-direction').value,outcome:document.getElementById('log-outcome').value,notes:document.getElementById('log-notes').value,cadence_step_id:document.getElementById('log-cs').value||null})});localStorage.removeItem('log_draft_'+currentClient.id);const r=await fetch(API+'/api/clients/'+currentClient.id);currentClient=await r.json();switchTab('cadence');refreshAll();}
+async function resetCadence(){if(!confirm('Reset cadence?'))return;await fetch(API+'/api/clients/'+currentClient.id+'/cadence/reset',{method:'POST'});const r=await fetch(API+'/api/clients/'+currentClient.id);currentClient=await r.json();switchTab('cadence');}
+
+function showNewClient(){currentClient={id:null,name:'New Client',company:'',email:'',phone:'',status:'lead',deal_value:0,notes:'',cadence:[],interactions:[],pipeline_history:[]};document.getElementById('mt').textContent='NEW CLIENT';document.getElementById('client-modal').classList.add('open');switchTab('info');document.getElementById('tab-info').querySelector('.btn').onclick=async()=>{const d={name:document.getElementById('ci-name').value,company:document.getElementById('ci-company').value,email:document.getElementById('ci-email').value,phone:document.getElementById('ci-phone').value,status:document.getElementById('ci-status').value,deal_value:parseFloat(document.getElementById('ci-value').value)||0,notes:document.getElementById('ci-notes').value};if(!d.name)return alert('Name required');await fetch(API+'/api/clients',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});refreshAll();closeModal();};}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── BOOT ────────────────────────────────────────────────
+function boot(){
+  buildISS();
+  placeInitial();
+  syncStatus();
+  ROSTER.forEach(r=>pickTarget(AG[r.id],r.id));
+  requestAnimationFrame(tick);
+  setInterval(syncStatus,5000);
+}
+// Run on DOM ready or now
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{boot();refreshAll();});
+else{boot();refreshAll();}
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  const pg=document.getElementById('pin-gate');
+  if(!pg.classList.contains('unlocked')){
+    if(e.key>='0'&&e.key<='9')pgPress(parseInt(e.key));
+    if(e.key==='Backspace'){pgBuf=pgBuf.slice(0,-1);pgRenderDots();}
+    if(e.key==='Enter')pgCheck();
+  }
+  if(e.key==='Escape'){closeModal();document.getElementById('detail-panel').classList.remove('visible');}
+});
+window.addEventListener('resize',()=>{buildISS();placeInitial();});
+</script>
+</body>
+</html>

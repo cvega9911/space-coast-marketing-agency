@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IG Content Roast Strategy · Space Command Center</title>
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+    --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+    --border: #1E293B; --border-accent: #2D3A5C;
+    --radius: 10px; --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-deep); color: var(--text); font-family: var(--font); line-height: 1.6; padding-bottom: 120px; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+  nav .inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; }
+  nav a:hover { color: var(--text); }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  .hero { padding: 60px 0 40px; border-bottom: 1px solid var(--border); }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .hero .subtitle { color: var(--text-muted); font-size: 16px; max-width: 640px; }
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 20px; }
+  h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 20px; color: #fff; }
+  h3 { font-size: 18px; font-weight: 700; color: #fff; margin: 24px 0 10px; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.orange-left { border-left: 3px solid var(--orange); }
+  .bio-box { background: #0d0d1a; border: 2px solid var(--orange-glow); border-radius: 12px; padding: 24px; font-family: var(--font-mono); font-size: 15px; line-height: 1.8; color: #fff; margin: 16px 0; text-align: center; }
+  .bio-box .handle { color: var(--orange); font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  li { margin-bottom: 6px; }
+  strong { color: var(--text); }
+  .callout { display: flex; gap: 12px; padding: 16px 20px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+  .callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+  .callout.info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); }
+  .callout .icon { font-size: 18px; flex-shrink: 0; }
+  .callout h4 { font-size: 14px; margin-bottom: 4px; color: var(--text); }
+  .callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+  footer { max-width: 900px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .idea-list li { margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span>Space Command Center</div>
+    <a href="/deliverables/">← Back to Deliverables</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<div class="hero">
+  <div class="kicker">CONTENT STRATEGY · SOCIAL MEDIA · 2026-06-27</div>
+  <h1>IG Website Roast — Content Strategy</h1>
+  <p class="subtitle">Faceless, high-engagement long-form content format built on pointing-stick trends and the "Day X until" hook pattern.</p>
+</div>
+
+<!-- BIO -->
+<section>
+  <div class="section-label">01 — INSTAGRAM BIO</div>
+  <h2>Final Bio (129 chars, under 150 limit)</h2>
+  <div class="bio-box">
+    <div class="handle">@spacecoastmarketing</div>
+    your competitor's website shouldn't be<br>
+    why they're beating you.<br><br>
+    let's change that.<br><br>
+    🚀 brevard county, fl<br>
+    ↓ free website roast
+  </div>
+
+  <div class="card orange-left">
+    <h3>Why this bio works</h3>
+    <ul>
+      <li><strong>"your competitor's website shouldn't be why they're beating you"</strong> — Names the injustice, not just the problem. It's specific pain.</li>
+      <li><strong>"let's change that"</strong> — Grammatically correct call to action. "That" = the situation, not the competitor's site.</li>
+      <li><strong>"free website roast"</strong> — Platform-native language. "Roast" = entertainment. "Audit" = homework. IG demographic 35/under responds to roast.</li>
+      <li><strong>"brevard county"</strong> — Locals say "Brevard," not "Space Coast." More searchable, more authentic.</li>
+      <li><strong>Zero corporate jargon</strong> — No "solutions," "optimize," "visibility." Pure IG energy.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- THE FORMAT -->
+<section>
+  <div class="section-label">02 — THE FORMAT</div>
+  <h2>Faceless Website Roast Series</h2>
+
+  <h3>Core Mechanics</h3>
+  <ul>
+    <li><strong>Camera:</strong> Pointed forward at a screen (never at face)</li>
+    <li><strong>Pointer:</strong> Funny object used to gesture at errors on screen (spatula, toy dinosaur, back scratcher, banana, anything stupid)</li>
+    <li><strong>Voiceover:</strong> Your real voice — no AI voice. Authenticity is the whole point.</li>
+    <li><strong>Structure:</strong> Show 2-3 errors on target site → cut to your site showing the fix → repeat</li>
+  </ul>
+
+  <h3>The Hook</h3>
+  <p><strong>"Day X of roasting websites until there are no more bad websites"</strong></p>
+  <p>This "Day X until Y" format is a proven engagement flywheel. People follow series. They submit. They check back. The algorithm pushes serial content harder than one-offs.</p>
+
+  <div class="card green-left">
+    <h3>Why it works (5 reasons)</h3>
+    <ol>
+      <li><strong>Format is proven.</strong> Pointing stick + screen recording is already trending. Zero face, zero setup, just a funny object and voice.</li>
+      <li><strong>"Day X until Y" is engagement crack.</strong> People follow series. They submit. They check back. Every day = new algorithm push.</li>
+      <li><strong>It's a demo, not a pitch.</strong> You're not selling — you're showing. Viewer connects dots themselves. 10x more persuasive than "hire me."</li>
+      <li><strong>Feeds the bio.</strong> Bio says "free website roast" → content IS website roasts → viewer thinks "roast mine" → DM → lead.</li>
+      <li><strong>Infinite content supply.</strong> Bad websites will never run out.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- CRITICAL RULE -->
+<section>
+  <div class="section-label">03 — CRITICAL RULE</div>
+  <h2>Do NOT Roast Brevard Businesses</h2>
+
+  <div class="callout warn">
+    <div class="icon">⚠️</div>
+    <div>
+      <h4>Roast national randoms, big brands, funny niche sites — never local.</h4>
+      <p>The last thing you need is a local roofer seeing you dunk on his site and bad-mouthing you at the Chamber of Commerce. Keep it national/funny/absurd.</p>
+    </div>
+  </div>
+
+  <h3>Safe Targets</h3>
+  <ul>
+    <li>Big brands with broken mobile (always funny, always safe)</li>
+    <li>Niche e-commerce sites with terrible UX</li>
+    <li>Restaurant chains with unusable menus</li>
+    <li>Government websites (universal punching bag)</li>
+    <li>Old corporate sites that haven't been touched since 2008</li>
+  </ul>
+</section>
+
+<!-- CONTENT IDEAS -->
+<section>
+  <div class="section-label">04 — FIRST BATCH IDEAS</div>
+  <h2>10 Launch Roasts</h2>
+
+  <ol class="idea-list">
+    <li><strong>Day 1:</strong> A big restaurant chain with an unreadable mobile menu — show yours side by side. Hook: "Your menu is losing you money."</li>
+    <li><strong>Day 2:</strong> A local service business website from another state (safe distance) with no contact form above the fold.</li>
+    <li><strong>Day 3:</strong> Government website — municipal site from a random midwest town. Easy target.</li>
+    <li><strong>Day 4:</strong> E-commerce site with 8-second load time. Show LCP fail in real-time.</li>
+    <li><strong>Day 5:</strong> A dentist in California with a site from 2012. Before/after with your template.</li>
+    <li><strong>Day 6:</strong> "This website has NO mobile version in 2026." Find a desktop-only relic.</li>
+    <li><strong>Day 7:</strong> A real estate agent site with broken images everywhere.</li>
+    <li><strong>Day 8:</strong> "This law firm spent $8K on this." Find an overpriced, underperforming site.</li>
+    <li><strong>Day 9:</strong> CLS nightmare — point out every layout shift with increasingly ridiculous objects.</li>
+    <li><strong>Day 10:</strong> "Someone submitted their own website for a roast." (Make this one yourself to seed the trend — use a fake/placeholder site you built poorly on purpose.)</li>
+  </ol>
+
+  <div class="callout info">
+    <div class="icon">💡</div>
+    <div>
+      <h4>Pro move: Seed the submissions</h4>
+      <p>Around Day 7-8, mention "people have been DMing me their sites." Even if nobody has yet, saying it creates the behavior. Social proof is self-fulfilling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FUNNEL -->
+<section>
+  <div class="section-label">05 — THE FUNNEL</div>
+  <h2>Roast → Bio → DM → Lead</h2>
+
+  <p>Every video ends with the same CTA: <strong>"Want yours roasted? Link in bio."</strong></p>
+
+  <p>Bio drives to a landing page where they submit their URL. That page captures email. Email sequence sells the fix.</p>
+
+  <h3>Landing Page for /roast</h3>
+  <p>Create a page at <code>spacecoastmarketingagency.com/roast</code> that:</p>
+  <ul>
+    <li>H1: "We'll Roast Your Website (Lovingly)"</li>
+    <li>Simple form: URL + email</li>
+    <li>Disclaimers: "Brevard County businesses get the roast privately — we never roast local."</li>
+    <li>Below form: CTA to book a strategy call for those who want the fix NOW</li>
+  </ul>
+</section>
+
+<!-- EQUIPMENT -->
+<section>
+  <div class="section-label">06 — SETUP</div>
+  <h2>What You Need</h2>
+
+  <ul>
+    <li><strong>Phone camera</strong> — pointed at your screen. Nothing fancy.</li>
+    <li><strong>Funny pointer object</strong> — rotate through objects to keep it fresh (spatula, lightsaber, garden gnome, rubber chicken)</li>
+    <li><strong>Screen recording</strong> — capture the target site and your site for the cutaway.</li>
+    <li><strong>CapCut or DaVinci Resolve</strong> (free) for simple cuts.</li>
+    <li><strong>Zero production value</strong> — that's the point. Over-produced = try-hard. Raw = authentic.</li>
+  </ul>
+</section>
+
+<!-- METRICS -->
+<section>
+  <div class="section-label">07 — SUCCESS METRICS</div>
+  <h2>What to Track</h2>
+
+  <ul>
+    <li><strong>Views per roast</strong> — benchmark Day 1, aim for growth each week</li>
+    <li><strong>DMs received</strong> — how many people say "roast mine"</li>
+    <li><strong>/roast page submissions</strong> — actual leads into the funnel</li>
+    <li><strong>Follower growth</strong> — secondary metric, not the goal</li>
+    <li><strong>Call bookings</strong> — the only metric that pays</li>
+  </ul>
+
+  <div class="callout info">
+    <div class="icon">📊</div>
+    <div>
+      <h4>Realistic timeline</h4>
+      <p>Expect nothing for 20-30 days of daily posting. Day 45+ is where the compound effect kicks in. This is a 100-day play minimum. Same as the Hormozi Rule of 100 for outreach — volume + consistency.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Space Command Center · Space Coast Marketing · Generated 2026-06-27<br>
+  <a href="/deliverables/">← Back to Deliverables</a>
+</footer>
+
+</div>
+</body>
+</html>

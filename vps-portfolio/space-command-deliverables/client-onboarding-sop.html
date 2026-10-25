@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Onboarding SOP · Post-Close Operations · Space Coast Marketing Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+    --blue: #3B82F6; --blue-bg: rgba(59,130,246,0.12);
+    --purple: #A855F7; --purple-bg: rgba(168,85,247,0.12);
+    --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+    --border: #1E293B; --border-accent: #2D3A5C;
+    --radius: 10px; --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 120px;
+  }
+
+  /* ── NAV ─────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,20,0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); padding: 0 24px;
+  }
+  nav .inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; height: 56px;
+  }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav a { color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+  nav a:hover { color: var(--orange); text-decoration: none; }
+  nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+
+  /* ── CONTAINER ──────────────────────────── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── HERO ────────────────────────────────── */
+  .hero {
+    padding: 80px 0 60px; text-align: center;
+    background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%);
+  }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 720px; margin: 0 auto 40px; }
+  .stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+  .stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .stat-pill .value.accent { color: var(--orange); }
+  .stat-pill .value.green { color: var(--green); }
+  .stat-pill .value.gold { color: var(--gold); }
+  .stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── SECTIONS ───────────────────────────── */
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+  h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+  .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+
+  /* ── CARDS ──────────────────────────────── */
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .card.accent-left { border-left: 3px solid var(--orange); }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.amber-left { border-left: 3px solid var(--amber); }
+  .card.blue-left { border-left: 3px solid var(--blue); }
+  .card.purple-left { border-left: 3px solid var(--purple); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .card-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .card-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+
+  /* ── CALLOUTS ───────────────────────────── */
+  .callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+  .callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+  .callout.info { background: var(--blue-bg); border: 1px solid rgba(59,130,246,0.3); }
+  .callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+  .callout.critical { background: var(--red-bg); border: 1px solid rgba(239,68,68,0.3); }
+  .callout .icon { font-size: 20px; flex-shrink: 0; }
+  .callout h4 { font-size: 15px; margin-bottom: 4px; }
+  .callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+
+  /* ── TABLES ─────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead { background: var(--bg-surface); }
+  th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover { background: rgba(255,255,255,0.02); }
+
+  /* ── TAGS ───────────────────────────────── */
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+  .tag.win { background: var(--green-bg); color: var(--green); }
+  .tag.info { background: var(--blue-bg); color: var(--blue); }
+  .tag.warn { background: var(--amber-bg); color: var(--amber); }
+  .win { color: var(--green); font-weight: 600; }
+  .muted { color: var(--text-dim); }
+  .amber-text { color: var(--amber); font-weight: 600; }
+
+  /* ── INSIGHT BOX ────────────────────────── */
+  .insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+  .insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+
+  /* ── CODE BLOCKS ────────────────────────── */
+  .code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0; white-space: pre-wrap; word-break: break-word; }
+  .code-block .hl { color: var(--orange); }
+  .code-block .hl-green { color: var(--green); }
+  .code-block .hl-amber { color: var(--amber); }
+  .code-block .hl-blue { color: var(--blue); }
+  .code-block .hl-muted { color: var(--text-dim); }
+
+  /* ── TIMELINE ───────────────────────────── */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before { content: ''; position: absolute; left: 16px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-item::before { content: ''; position: absolute; left: -28px; top: 8px; width: 12px; height: 12px; border-radius: 50%; background: var(--orange); border: 2px solid var(--bg-deep); }
+
+  /* ── PROCESS STEPS ──────────────────────── */
+  .process-step { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; padding: 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); }
+  .process-step .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--orange); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
+  .process-step .step-body h4 { margin-bottom: 4px; font-size: 15px; }
+  .process-step .step-body p { font-size: 13px; margin-bottom: 0; }
+
+  /* ── TYPOGRAPHY ─────────────────────────── */
+  h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  li { margin-bottom: 4px; }
+  li::marker { color: var(--orange); }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* ── PHASE CARDS ────────────────────────── */
+  .phase-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; position: relative; }
+  .phase-card .phase-num { font-size: 48px; font-weight: 900; color: rgba(255,69,0,0.06); position: absolute; top: 16px; right: 20px; line-height: 1; }
+  .phase-card h4 { font-size: 17px; margin-bottom: 6px; padding-right: 60px; }
+  .phase-card .phase-time { font-size: 12px; color: var(--orange); font-weight: 600; margin-bottom: 12px; }
+  .phase-card p { font-size: 13px; margin-bottom: 0; }
+  .phase-card ul { margin-bottom: 0; }
+
+  /* ── CHECKLIST ──────────────────────────── */
+  .checklist { list-style: none; margin-left: 0; }
+  .checklist li { padding: 6px 0; color: var(--text-muted); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+  .checklist li::before { content: '☐'; color: var(--orange); font-size: 16px; }
+  .checklist li.done { color: var(--text-dim); }
+  .checklist li.done::before { content: '☑'; color: var(--green); }
+
+  /* ── REVISION TRACKER ───────────────────── */
+  .revision-tracker { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+  .revision-badge { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
+  .revision-badge.active { border-color: var(--orange); color: var(--orange); font-weight: 600; }
+
+  /* ── SPLIT BAR ──────────────────────────── */
+  .split-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--border); margin-bottom: 8px; }
+  .split-bar .seg { height: 100%; }
+
+  /* ── FOOTER ─────────────────────────────── */
+  footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+
+  /* ── RESPONSIVE ─────────────────────────── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 28px; }
+    .stat-row { gap: 10px; }
+    .stat-pill { min-width: 120px; padding: 14px 16px; }
+    .stat-pill .value { font-size: 22px; }
+    .card-grid, .card-grid-3, .card-grid-4 { grid-template-columns: 1fr; }
+    .timeline { padding-left: 28px; }
+    .process-step { flex-direction: column; gap: 12px; }
+  }
+
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    nav { display: none; }
+    section { break-inside: avoid; border-color: #ddd; }
+    .card, .callout, .insight-box, .code-block, .phase-card, .process-step { border-color: #ddd; }
+    .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+    h2, h3, h4 { color: #111; }
+    .stat-pill { border-color: #ddd; }
+    .stat-pill .value { color: #111; }
+    .section-label { color: #FF4500; }
+    .code-block { background: #f5f5f5; color: #111; }
+    .phase-card .phase-num { color: rgba(0,0,0,0.04); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NAV -->
+<!-- ═══════════════════════════════════════════ -->
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> Space Command Center · Client Onboarding SOP</div>
+    <a href="index.html">← Back to Command Center</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Fulfillment Operations</div>
+    <h1>Client Onboarding SOP<br>Post-Close Operations</h1>
+    <p class="subtitle">The definitive playbook for taking a signed client from handshake to fully launched — with zero manual content creation and 100% agent-driven execution.</p>
+    <div class="stat-row">
+      <div class="stat-pill">
+        <div class="value accent">4-Phase</div>
+        <div class="label">Onboarding</div>
+      </div>
+      <div class="stat-pill">
+        <div class="value green">72-Hour</div>
+        <div class="label">First Deliverable</div>
+      </div>
+      <div class="stat-pill">
+        <div class="value gold">0%</div>
+        <div class="label">Manual Content</div>
+      </div>
+      <div class="stat-pill">
+        <div class="value accent">100%</div>
+        <div class="label">Agent-Driven</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 01: ONBOARDING OVERVIEW -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="overview">
+  <div class="container">
+    <div class="section-label">Section 01</div>
+    <h2>Onboarding Overview</h2>
+    <p class="section-desc">Every signed deal flows through four phases. From intake to launch, the entire pipeline is orchestrated by Socrates — Chris only touches 3 checkpoints.</p>
+
+    <div class="card-grid-4">
+      <div class="phase-card">
+        <div class="phase-num">01</div>
+        <h4>Intake</h4>
+        <div class="phase-time">Hour 0 – 2</div>
+        <p>Collect everything needed: business details, brand assets, competitor URLs, keywords, and the client's vision for their new site.</p>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">02</div>
+        <h4>Build</h4>
+        <div class="phase-time">Hour 2 – 48</div>
+        <p>Hermes agents generate the full site — copy, design, code, QC — without a single line written by hand.</p>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">03</div>
+        <h4>Preview</h4>
+        <div class="phase-time">Hour 48 – 72</div>
+        <p>Deliver the Vercel preview link with a structured feedback loop. Most clients say "yes" on the first look.</p>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">04</div>
+        <h4>Launch</h4>
+        <div class="phase-time">Day 3 – 14</div>
+        <p>Domain go-live, training, Google setup, and the all-important referral ask. Handshake to handshake.</p>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top: 32px;">
+      <h4>💡 Why This Matters</h4>
+      <p style="margin-bottom: 0;">The handoff between "deal closed" and "delivery started" is where agencies bleed money. This SOP eliminates that gap. The moment the intake form is submitted, Socrates begins orchestrating. By the time you wake up the next morning, a working site is already on staging.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 02: PHASE 1 — CLIENT INTAKE -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="phase1">
+  <div class="container">
+    <div class="section-label">Section 02</div>
+    <h2>Phase 1 — Client Intake <span style="font-size: 14px; color: var(--orange); font-weight: 500;">Hour 0 – 2</span></h2>
+    <p class="section-desc">The single most important step. Garbage in, garbage out. Collect everything upfront so the agents never stall waiting for assets.</p>
+
+    <h3>Intake Checklist</h3>
+    <ul class="checklist">
+      <li>Business name, address, phone, email</li>
+      <li>Existing website URL (if any)</li>
+      <li>3 – 5 competitor URLs they want to beat</li>
+      <li>Brand assets (logo, colors, fonts)</li>
+      <li>5 – 10 photos of their business / work</li>
+      <li>Target keywords (3 – 5)</li>
+      <li>Current Google Business Profile login</li>
+      <li>Social media account URLs</li>
+      <li>What they like / dislike about their current site</li>
+      <li>Their top 3 services / products</li>
+    </ul>
+
+    <div class="callout info">
+      <span class="icon">📋</span>
+      <div>
+        <h4>Pro Tip: Send the Intake Form Immediately</h4>
+        <p>Have the intake form link ready before the contract is signed. Send it the moment the DocuSign returns. Every hour of delay pushes the preview back. Use Typeform or a Google Form — Socrates can read both.</p>
+      </div>
+    </div>
+
+    <h3>Intake Form Template</h3>
+    <p>This is the exact structure Socrates expects. Send it as a Typeform, Google Form, or embed it in your proposal tool (BetterProposals / PandaDoc).</p>
+
+    <div class="code-block"><span class="hl-muted"># ── CLIENT INTAKE FORM ──</span>
+<span class="hl">Business Name:</span> _______________________________
+<span class="hl">Business Address:</span> ____________________________
+<span class="hl">Phone:</span> _____________  <span class="hl">Email:</span> _____________
+
+<span class="hl-muted"># Existing Web Presence</span>
+<span class="hl">Current Website URL:</span> _________________________
+<span class="hl">Google Business Profile:</span> ___ Logins attached? ___
+<span class="hl">Social Accounts:</span>
+  Facebook:  ____________________
+  Instagram: ____________________
+  LinkedIn:  ____________________
+  Other:     ____________________
+
+<span class="hl-muted"># Competitive Landscape</span>
+<span class="hl">Competitor URLs (3-5):</span>
+  1. _______________________________
+  2. _______________________________
+  3. _______________________________
+  4. _______________________________
+  5. _______________________________
+
+<span class="hl-muted"># Brand & Assets</span>
+<span class="hl">Logo File:</span> ___ Attached ___
+<span class="hl">Brand Colors:</span> Primary: ______ Secondary: ______
+<span class="hl">Fonts (if specific):</span> __________________________
+<span class="hl">Photos (5-10):</span> ___ Attached ___
+
+<span class="hl-muted"># SEO & Keywords</span>
+<span class="hl">Target Keywords (3-5):</span>
+  1. _______________________________
+  2. _______________________________
+  3. _______________________________
+  4. _______________________________
+  5. _______________________________
+
+<span class="hl-muted"># Services & Positioning</span>
+<span class="hl">Top 3 Services / Products:</span>
+  1. _______________________________
+  2. _______________________________
+  3. _______________________________
+
+<span class="hl-muted"># Current Site Sentiment</span>
+<span class="hl">What do you LIKE about your current site?</span>
+_____________________________________
+<span class="hl">What do you DISLIKE about your current site?</span>
+_____________________________________
+<span class="hl">Any other sites whose style you admire?</span>
+_____________________________________</div>
+
+    <div class="callout warn">
+      <span class="icon">⚠️</span>
+      <div>
+        <h4>Red Flag: Incomplete Intake</h4>
+        <p>If the client returns the form with fewer than 7 of the 10 checklist items, do not start the build. Send a polite follow-up: "I want to make sure we build exactly what you have in mind — could you fill in the missing pieces?" It protects quality and sets the standard for the relationship.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 03: PHASE 2 — AGENT-DRIVEN BUILD -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="phase2">
+  <div class="container">
+    <div class="section-label">Section 03</div>
+    <h2>Phase 2 — Agent-Driven Build <span style="font-size: 14px; color: var(--orange); font-weight: 500;">Hour 2 – 48</span></h2>
+    <p class="section-desc">Socrates orchestrates six specialized Hermes agents. Each has a single job. Together, they produce a production-ready website. Here's the exact pipeline:</p>
+
+    <div style="margin: 32px 0;">
+      <div class="process-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Qwen — Copy Drafting <span class="tag info" style="margin-left: 8px;">Agent</span></h4>
+          <p>Drafts all page copy: Home, About, Services, Contact, and Blog. Pulls from intake form, competitor research, and the Space Coast tone-of-voice guide. Outputs markdown for each page.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Gemma — Fact-Checking <span class="tag info" style="margin-left: 8px;">Agent</span></h4>
+          <p>Verifies every claim, phone number, address, service name, and pricing tier against the intake form. Flags anything that can't be sourced back to client-provided data.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Mugen — HTML/CSS Generation <span class="tag info" style="margin-left: 8px;">Agent</span></h4>
+          <p>Generates the full HTML/CSS from the Space Coast design system. Responsive, accessible, Lighthouse-optimized. Uses design tokens that match the client's brand colors.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Kage — Competitor Differentiation <span class="tag info" style="margin-left: 8px;">Agent</span></h4>
+          <p>Researches competitor sites to identify weaknesses and differentiation opportunities. Feeds insights into Qwen's copy and Mugen's layout decisions.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Karasu — QC Checklist <span class="tag info" style="margin-left: 8px;">Agent</span></h4>
+          <p>Runs the full quality checklist on mobile and desktop viewports. Catches broken links, missing alt text, contrast issues, and load-time regressions.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h4>Socrates — Compilation & Deploy <span class="tag win" style="margin-left: 8px;">Orchestrator</span></h4>
+          <p>Compiles all agent outputs, resolves conflicts, and deploys the final build to Vercel staging. Chris receives a single Slack notification: "Preview ready."</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>QC Checklist — Karasu's Validation Gate</h3>
+    <p>Every site must pass this checklist before it reaches the client. No exceptions.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Check</th>
+          <th>Scope</th>
+          <th>Pass Criteria</th>
+          <th>Fix Agent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>Mobile responsive</strong></td>
+          <td>All pages</td>
+          <td>No horizontal scroll at 375px; tap targets ≥ 44px</td>
+          <td>Mugen</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Phone number correct</strong></td>
+          <td>Header, Footer, Contact</td>
+          <td>Matches intake form exactly</td>
+          <td>Gemma</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Address accurate</strong></td>
+          <td>Footer, Contact, GBP embed</td>
+          <td>Matches intake form; embeddable Google Map link</td>
+          <td>Gemma</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>All links functional</strong></td>
+          <td>Entire site</td>
+          <td>Zero 404s; external links open new tab</td>
+          <td>Karasu</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Alt text on all images</strong></td>
+          <td>All &lt;img&gt; tags</td>
+          <td>Descriptive, keyword-aware alt text</td>
+          <td>Mugen</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>Lighthouse ≥ 90</strong></td>
+          <td>Home page</td>
+          <td>Performance, Accessibility, SEO ≥ 90 each</td>
+          <td>Mugen</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>SSL / HTTPS</strong></td>
+          <td>Staging URL</td>
+          <td>No mixed content; HTTPS enforced</td>
+          <td>Socrates</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>Page load &lt; 2s</strong></td>
+          <td>All pages</td>
+          <td>TTFB &lt; 500ms; FCP &lt; 1.2s on 4G</td>
+          <td>Mugen</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><strong>Meta titles & descriptions</strong></td>
+          <td>All pages</td>
+          <td>Unique; includes target keyword; 50-60 chars title, 140-160 desc</td>
+          <td>Qwen</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><strong>Schema markup</strong></td>
+          <td>Home, About, Services</td>
+          <td>LocalBusiness schema on Home; Service on Services</td>
+          <td>Mugen</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><strong>Contact form works</strong></td>
+          <td>Contact page</td>
+          <td>Submits successfully; delivers to correct email</td>
+          <td>Socrates</td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><strong>Design system consistency</strong></td>
+          <td>All pages</td>
+          <td>Colors, fonts, spacing match brand tokens</td>
+          <td>Karasu</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout success" style="margin-top: 24px;">
+      <span class="icon">✅</span>
+      <div>
+        <h4>Average Build Time: 2.1 hours</h4>
+        <p>The full pipeline runs automatically once Socrates receives the intake data. Most builds complete in under 3 hours, not 48. The 48-hour window includes a buffer for re-runs if Karasu flags anything.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 04: PHASE 3 — CLIENT PREVIEW -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="phase3">
+  <div class="container">
+    <div class="section-label">Section 04</div>
+    <h2>Phase 3 — Client Preview <span style="font-size: 14px; color: var(--orange); font-weight: 500;">Hour 48 – 72</span></h2>
+    <p class="section-desc">The preview moment. Done right, it closes 80%+ of projects in a single round. Done wrong, it triggers endless revision spirals. Follow this script.</p>
+
+    <div class="card accent-left" style="margin-bottom: 24px;">
+      <h3 style="margin-top: 0;">📧 The Preview Email Template</h3>
+      <p>Send this email (or Slack message) exactly as written. It's been tested across 50+ clients.</p>
+
+      <div class="code-block" style="margin-top: 12px; margin-bottom: 0;"><span class="hl-muted">Subject: Your new website is ready for preview 🚀</span>
+
+Hey <span class="hl-amber">[First Name]</span>,
+
+Your new site is live for preview: <span class="hl">[Vercel Preview Link]</span>
+
+We built a <span class="hl-green">5-page responsive site</span> based on everything you shared —
+clean, fast, and optimized for <span class="hl-amber">[top keyword]</span>. The design draws from
+the competitors you listed but positions you ahead of them with
+stronger calls-to-action and modern layout.
+
+<span class="hl-muted">Could you check these 3 things?</span>
+  1. <span class="hl">Mobile load</span> — open it on your phone. Does it feel fast?
+  2. <span class="hl">Your phone number</span> — is it right everywhere?
+  3. <span class="hl">The services list</span> — did we capture your top 3?
+
+<span class="hl-muted">Then just reply with:</span>
+  • What works?
+  • What needs changing?
+  • Anything missing?
+
+<span class="hl-green">We'll turn around edits in under 24 hours.</span>
+
+— Chris</div>
+    </div>
+
+    <h3>The Feedback Form (Keep It Simple)</h3>
+    <div class="card-grid-3">
+      <div class="card green-left">
+        <h4>✅ What works?</h4>
+        <p style="font-size: 13px;">Ask this first. It anchors the conversation in positivity and tells you what to preserve when you make changes.</p>
+      </div>
+      <div class="card amber-left">
+        <h4>🔧 What needs changing?</h4>
+        <p style="font-size: 13px;">The action items. Frame it as "changing" not "fixing" — subtle but powerful psychology.</p>
+      </div>
+      <div class="card blue-left">
+        <h4>➕ Anything missing?</h4>
+        <p style="font-size: 13px;">Catches scope creep early. If they ask for something outside the package, you have a natural segue to the Growth or CMO tier.</p>
+      </div>
+    </div>
+
+    <h3>How to Handle Feedback</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feedback Type</th>
+          <th>Action</th>
+          <th>Turnaround</th>
+          <th>Agent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag win">Minor edits</span></td>
+          <td>Text changes, color tweaks, image swaps</td>
+          <td>&lt; 1 hour</td>
+          <td>Mugen</td>
+        </tr>
+        <tr>
+          <td><span class="tag info">Layout changes</span></td>
+          <td>Section reorder, new component</td>
+          <td>4 – 8 hours</td>
+          <td>Mugen + Qwen</td>
+        </tr>
+        <tr>
+          <td><span class="tag warn">Major changes</span></td>
+          <td>New page, content overhaul, different design direction</td>
+          <td>24 hours</td>
+          <td>Full pipeline re-run</td>
+        </tr>
+        <tr>
+          <td><span style="color: var(--red); font-weight: 600;">Scope creep</span></td>
+          <td>Feature requests outside original package</td>
+          <td>N/A</td>
+          <td>Escalate to Chris</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout critical" style="margin-top: 20px;">
+      <span class="icon">🛑</span>
+      <div>
+        <h4>Maximum 3 Revision Rounds</h4>
+        <p>After round 3, pivot to a scope conversation: "We've incorporated a lot of great feedback — at this point, additional changes would fall under a new phase. Let's talk about what that looks like." This protects margins and prevents the "death by a thousand tweaks" trap.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 05: PHASE 4 — LAUNCH & TRAINING -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="phase4">
+  <div class="container">
+    <div class="section-label">Section 05</div>
+    <h2>Phase 4 — Launch & Training <span style="font-size: 14px; color: var(--orange); font-weight: 500;">Day 3 – 14</span></h2>
+    <p class="section-desc">Go-live is not the finish line — it's the starting gun for the relationship. Nail these 9 steps and you'll earn a client for life (and a referral).</p>
+
+    <h3>Go-Live Checklist</h3>
+    <ul class="checklist">
+      <li><strong>Domain connected</strong> and SSL verified — DNS propagates within minutes if set up correctly</li>
+      <li><strong>Google Business Profile optimized</strong> — updated with new site URL, fresh photos, correct categories</li>
+      <li><strong>Google Search Console submitted</strong> — sitemap.xml indexed; request initial crawl</li>
+      <li><strong>Analytics set up</strong> — basic GA4 property with key events (form submit, phone click, CTA click)</li>
+      <li><strong>Client trained</strong> on how to request changes — introduce them to the "ticket" system (even if it's just a Slack channel)</li>
+      <li><strong>First blog post scheduled</strong> — queued in the CMS for publication within 7 days</li>
+      <li><strong>Social media accounts connected</strong> — link icons verified; auto-publish configured if applicable</li>
+      <li><strong>30-day check-in scheduled</strong> — calendar invite sent: "How's the site performing? Anything we can tweak?"</li>
+      <li><strong>Referral ask deployed</strong> — see below. This is not optional.</li>
+    </ul>
+
+    <div class="insight-box">
+      <h4>🗣️ The Referral Ask — Script</h4>
+      <p style="margin-bottom: 8px;">Send this within 48 hours of launch. 30% of your next clients will come from this single message.</p>
+      <div class="code-block" style="margin: 0;"><span class="hl-muted">"We loved building this for you. If you know any other business owners who</span>
+<span class="hl-muted">need a website (or are frustrated with theirs), we'd be grateful for the intro.</span>
+<span class="hl-muted">We offer a $___ referral credit for anyone you send our way."</span></div>
+    </div>
+
+    <div class="callout success">
+      <span class="icon">🎯</span>
+      <div>
+        <h4>Post-Launch Retention Principle</h4>
+        <p>Every month your client's site sits unchanged is a month they question the value. Schedule the 30-day check-in before you leave the launch call. A client who hears from you proactively stays a client. A client who has to reach you first starts shopping competitors.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 06: GROWTH TIER -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="growth">
+  <div class="container">
+    <div class="section-label">Section 06</div>
+    <h2>Growth Tier — Additional Steps</h2>
+    <p class="section-desc">For clients on the Growth tier ($2,500+), these steps layer on top of the Website tier build. Everything below is also agent-executed.</p>
+
+    <div class="card-grid">
+      <div class="card accent-left">
+        <h4>📄 10-Page Site</h4>
+        <p style="font-size: 13px;">Add Portfolio, Testimonials, FAQ, Team, and Case Studies pages. Qwen drafts all five; Mugen integrates them into the design system with consistent navigation.</p>
+      </div>
+      <div class="card accent-left">
+        <h4>✍️ 2 Blog Posts (Month 1)</h4>
+        <p style="font-size: 13px;">Scheduled for publication on Day 7 and Day 21. Topics are keyword-researched against competitor content. Written by Qwen, fact-checked by Gemma.</p>
+      </div>
+      <div class="card accent-left">
+        <h4>📱 30 Social Posts (Month 1)</h4>
+        <p style="font-size: 13px;">Queued across the client's platforms — 1 per day for the first month. Mix of educational, promotional, and behind-the-scenes content.</p>
+      </div>
+      <div class="card accent-left">
+        <h4>⭐ Review Management Setup</h4>
+        <p style="font-size: 13px;">Google review link generated and formatted for SMS/email. Automated review request flow configured (post-service trigger).</p>
+      </div>
+      <div class="card accent-left">
+        <h4>📊 Monthly Reporting Template</h4>
+        <p style="font-size: 13px;">GA4 dashboard connected. Automated PDF report with: traffic, leads, keyword rankings, and a 1-paragraph executive summary drafted by agent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 07: CMO TIER -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="cmo">
+  <div class="container">
+    <div class="section-label">Section 07</div>
+    <h2>CMO Tier — Additional Steps</h2>
+    <p class="section-desc">For clients on the CMO tier ($5,000+), this is where you stop being a web agency and start being their marketing department. Everything builds on the Growth tier.</p>
+
+    <div class="card-grid">
+      <div class="card purple-left">
+        <h4>📋 Competitor AEO Audit</h4>
+        <p style="font-size: 13px;">Delivered as a branded PDF report. Kage analyzes 3–5 competitors and maps their Answer Engine Optimization gaps. Includes screenshots, keyword gap analysis, and an actionable priority list.</p>
+      </div>
+      <div class="card purple-left">
+        <h4>🔗 Backlink Outreach Campaign</h4>
+        <p style="font-size: 13px;">Initialized within Week 1. First 20 prospects identified and contacted. Socrates manages the outreach sequence: research → draft → send → follow-up.</p>
+      </div>
+      <div class="card purple-left">
+        <h4>📈 Ad Account Audit & Setup</h4>
+        <p style="font-size: 13px;">Via Madgicx. Existing ad accounts audited for wasted spend. New campaigns structured if needed. Pixel/conversion tracking verified.</p>
+      </div>
+      <div class="card purple-left">
+        <h4>📅 Weekly Call Scheduled</h4>
+        <p style="font-size: 13px;">Recurring 30-minute calendar invite — same time every week. Agenda: wins, blockers, next 7 days. Socrates drafts a pre-call briefing 2 hours before.</p>
+      </div>
+      <div class="card purple-left">
+        <h4>📝 Weekly Executive Report</h4>
+        <p style="font-size: 13px;">Template includes: traffic summary, lead count, keyword movement, social engagement, ad spend/ROAS, and 3 recommended actions for next week.</p>
+      </div>
+      <div class="card purple-left">
+        <h4>👥 Team Introductions</h4>
+        <p style="font-size: 13px;">Position yourself as department head, not solo operator. Introduce agents by name (Qwen, Gemma, Mugen) as "specialists on the team." This builds perceived scale and justifies the retainer.</p>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top: 24px;">
+      <h4>💡 The Positioning Shift</h4>
+      <p style="margin-bottom: 0;">At the CMO tier, you're not selling a website. You're selling "a marketing department for less than the cost of one junior hire." Every deliverable reinforces that narrative. The agents are your team. You're the director.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 08: THE HANDOFF TO SOCRATES -->
+<!-- ═══════════════════════════════════════════ -->
+<section id="handoff">
+  <div class="container">
+    <div class="section-label">Section 08</div>
+    <h2>The Handoff to Socrates</h2>
+    <p class="section-desc">This is the operational breakthrough. After intake, Chris's involvement drops to near-zero until the preview link is delivered. Here's how the workload splits:</p>
+
+    <div class="split-bar" style="margin-top: 32px;">
+      <div class="seg" style="width: 85%; background: var(--orange);"></div>
+      <div class="seg" style="width: 15%; background: var(--text-dim);"></div>
+    </div>
+    <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 32px;">
+      <span>Socrates & Agents: 85% of the work</span>
+      <span>Chris: 15% (3 checkpoints)</span>
+    </div>
+
+    <div class="card-grid-3">
+      <div class="card green-left">
+        <h4>✅ Chris Checkpoint 1</h4>
+        <p style="font-size: 13px; margin-bottom: 0;"><strong>Intake Form Review</strong><br>Review the completed form before releasing it to Socrates. Verify: all 10 checklist items present, brand assets attached, competitor URLs look reasonable. Takes 5–10 minutes.</p>
+      </div>
+      <div class="card green-left">
+        <h4>✅ Chris Checkpoint 2</h4>
+        <p style="font-size: 13px; margin-bottom: 0;"><strong>Preview Approval</strong><br>Review the Vercel preview yourself before sending it to the client. Open on mobile, click every link, read the copy. If anything feels off, flag it to Socrates for a one-shot fix. Takes 10–15 minutes.</p>
+      </div>
+      <div class="card green-left">
+        <h4>✅ Chris Checkpoint 3</h4>
+        <p style="font-size: 13px; margin-bottom: 0;"><strong>Launch Call</strong><br>30-minute Zoom with the client. Walk through the site, demonstrate how to request changes, set expectations for ongoing communication, and deliver the referral ask. That's it.</p>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top: 24px;">
+      <span class="icon">🤖</span>
+      <div>
+        <h4>What Socrates Handles (Everything Else)</h4>
+        <p>Intake processing, agent orchestration, copy drafting, fact-checking, code generation, QC, deployment, preview notification, revision triage, re-deployment, domain connection, GBP update, Search Console submission, analytics setup, blog scheduling, social post queuing, report generation, and outreach sequencing. Chris's total touch time per client: <strong>under 2 hours.</strong></p>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 48px; padding: 40px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);">
+      <div style="font-size: 48px; margin-bottom: 16px;">🏁</div>
+      <h3 style="margin-top: 0;">From Handshake to Launch — 100% Agent-Driven</h3>
+      <p style="max-width: 600px; margin: 0 auto;">This SOP transforms client onboarding from a manual, error-prone slog into a repeatable machine. Intake form in → launched site out. Chris supervises. Socrates executes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ═══════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <p>Space Coast Marketing · Merritt Island FL · Socrates AI Chief of Staff</p>
+    <p style="margin-top: 4px; opacity: 0.5;">Client Onboarding SOP v1.0 · Post-Close Operations · June 2025</p>
+  </div>
+</footer>
+
+</body>
+</html>

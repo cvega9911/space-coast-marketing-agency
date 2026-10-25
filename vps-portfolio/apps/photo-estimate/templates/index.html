@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo-to-Estimate | Space Coast Marketing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">📸</span>
+                <span class="logo-text">Photo<span class="logo-accent">Estimate</span></span>
+            </div>
+            <nav class="header-nav">
+                <button class="btn btn-ghost" id="btnSavedEstimates" title="Saved Estimates">
+                    📋 <span class="nav-label">Saved</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="app-layout">
+        <!-- Saved Estimates Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">📋 Saved Estimates</h2>
+                <button class="btn btn-icon" id="btnCloseSidebar" title="Close">✕</button>
+            </div>
+            <div class="sidebar-list" id="savedEstimatesList">
+                <div class="sidebar-empty">
+                    <div class="sidebar-empty-icon">📭</div>
+                    <p>No saved estimates yet.</p>
+                    <p class="text-muted">Complete an estimate and click "Save" to store it here.</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Overlay for sidebar on mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Step Indicator -->
+            <div class="step-indicator" id="stepIndicator">
+                <div class="step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <span class="step-label">Trade</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Photo</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Analysis</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <span class="step-label">Estimate</span>
+                </div>
+            </div>
+
+            <!-- === STEP 1: TRADE SELECTION === -->
+            <section class="step-panel active" id="step1">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="card-title">Select Your Trade</h1>
+                        <p class="card-subtitle">Choose the type of work to estimate</p>
+                    </div>
+                    <div class="trade-grid" id="tradeGrid">
+                        <button class="trade-card" data-trade="roofing">
+                            <span class="trade-icon">🏠</span>
+                            <span class="trade-name">Roofing</span>
+                        </button>
+                        <button class="trade-card" data-trade="landscaping">
+                            <span class="trade-icon">🌿</span>
+                            <span class="trade-name">Landscaping</span>
+                        </button>
+                        <button class="trade-card" data-trade="painting">
+                            <span class="trade-icon">🎨</span>
+                            <span class="trade-name">Painting</span>
+                        </button>
+                        <button class="trade-card" data-trade="hvac">
+                            <span class="trade-icon">❄️</span>
+                            <span class="trade-name">HVAC</span>
+                        </button>
+                        <button class="trade-card" data-trade="fencing">
+                            <span class="trade-icon">🏗️</span>
+                            <span class="trade-name">Fencing</span>
+                        </button>
+                        <button class="trade-card" data-trade="plumbing">
+                            <span class="trade-icon">🔧</span>
+                            <span class="trade-name">Plumbing</span>
+                        </button>
+                        <button class="trade-card" data-trade="pest_control">
+                            <span class="trade-icon">🐜</span>
+                            <span class="trade-name">Pest Control</span>
+                        </button>
+                        <button class="trade-card" data-trade="remodeling">
+                            <span class="trade-icon">🛠️</span>
+                            <span class="trade-name">Remodeling</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- === STEP 2: PHOTO UPLOAD === -->
+            <section class="step-panel" id="step2">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="card-title">Upload Photos</h1>
+                        <p class="card-subtitle">
+                            Upload clear photos of the job site for 
+                            <strong id="selectedTradeLabel">Roofing</strong>
+                        </p>
+                    </div>
+                    <div class="client-name-field">
+                        <label class="field-label" for="clientName">Client Name</label>
+                        <input type="text" id="clientName" class="input" placeholder="Enter client or project name" autocomplete="off">
+                    </div>
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="upload-zone-content">
+                            <span class="upload-icon">📁</span>
+                            <p class="upload-text">Drag &amp; drop photos here</p>
+                            <p class="upload-hint">or click to browse</p>
+                            <p class="upload-formats">JPG, PNG, or WebP</p>
+                        </div>
+                        <input type="file" id="fileInput" class="file-input" accept=".jpg,.jpeg,.png,.webp" multiple>
+                    </div>
+                    <div class="upload-preview" id="uploadPreview" style="display:none;">
+                        <div class="preview-header">
+                            <span class="preview-count" id="previewCount">1 photo selected</span>
+                            <button class="btn btn-ghost btn-sm" id="btnClearPhotos">Clear</button>
+                        </div>
+                        <div class="preview-grid" id="previewGrid"></div>
+                    </div>
+                    <div class="upload-progress" id="uploadProgress" style="display:none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <p class="progress-text" id="progressText">Uploading...</p>
+                    </div>
+                    <div class="step-actions">
+                        <button class="btn btn-ghost" id="btnBackToTrade">← Back</button>
+                        <button class="btn btn-primary" id="btnAnalyze" disabled>Analyze Photos</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- === STEP 3: ANALYSIS === -->
+            <section class="step-panel" id="step3">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="card-title">Photo Analysis</h1>
+                        <p class="card-subtitle" id="analysisTradeLabel">Analyzing for Roofing</p>
+                    </div>
+                    <div class="analysis-loading" id="analysisLoading">
+                        <div class="scan-animation">
+                            <div class="scan-line"></div>
+                            <span class="scan-icon">🔍</span>
+                        </div>
+                        <p class="scan-text">Scanning photo<span class="dot-anim">...</span></p>
+                        <p class="scan-hint">AI is analyzing the image for damage and scope</p>
+                    </div>
+                    <div class="analysis-results" id="analysisResults" style="display:none;">
+                        <div class="result-card">
+                            <div class="result-row">
+                                <span class="result-label">Issue Detected</span>
+                                <span class="result-value" id="resultIssue">—</span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Severity</span>
+                                <span class="result-value">
+                                    <span class="severity-badge" id="resultSeverity">—</span>
+                                </span>
+                            </div>
+                            <div class="result-row">
+                                <span class="result-label">Estimated Scope</span>
+                                <span class="result-value" id="resultScope">—</span>
+                            </div>
+                            <div class="result-row result-row-block">
+                                <span class="result-label">Recommended Work</span>
+                                <p class="result-value result-description" id="resultDescription">—</p>
+                            </div>
+                        </div>
+                        <div class="preview-thumbnail" id="analysisThumbnail" style="display:none;">
+                            <img id="analysisThumbImg" src="" alt="Uploaded photo thumbnail">
+                        </div>
+                    </div>
+                    <div class="analysis-error" id="analysisError" style="display:none;">
+                        <div class="error-box">
+                            <span class="error-icon">⚠️</span>
+                            <p id="analysisErrorText">Analysis failed. Please try again.</p>
+                        </div>
+                    </div>
+                    <div class="step-actions">
+                        <button class="btn btn-ghost" id="btnBackToUpload">← Back</button>
+                        <button class="btn btn-primary" id="btnGenerateEstimate" style="display:none;">Generate Estimate</button>
+                        <button class="btn btn-ghost" id="btnRetryAnalysis" style="display:none;">Retry Analysis</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- === STEP 4: ESTIMATE === -->
+            <section class="step-panel" id="step4">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="card-title">Estimate</h1>
+                        <p class="card-subtitle" id="estimateTradeLabel">Roofing Estimate</p>
+                    </div>
+                    <div class="estimate-loading" id="estimateLoading">
+                        <div class="loading-spinner"></div>
+                        <p>Calculating estimate...</p>
+                    </div>
+                    <div class="estimate-results" id="estimateResults" style="display:none;">
+                        <div class="estimate-summary" id="estimateSummary">
+                            <h3 class="section-title">Scope of Work</h3>
+                            <p id="estimateScopeText"></p>
+                        </div>
+                        <div class="line-items">
+                            <h3 class="section-title">Line Item Breakdown</h3>
+                            <table class="line-item-table" id="lineItemTable">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th class="col-qty">Qty</th>
+                                        <th class="col-rate">Rate</th>
+                                        <th class="col-amount">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lineItemBody"></tbody>
+                                <tfoot>
+                                    <tr class="row-total">
+                                        <td colspan="3">Total Estimated Cost</td>
+                                        <td class="col-amount" id="totalCost">$0.00</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="estimate-notes">
+                            <label class="field-label" for="estimateNotes">Notes (optional)</label>
+                            <textarea id="estimateNotes" class="textarea" rows="3" placeholder="Add any additional notes for this estimate..."></textarea>
+                        </div>
+                        <div class="step-actions estimate-actions">
+                            <button class="btn btn-ghost" id="btnBackToAnalysis">← Back</button>
+                            <div class="actions-right">
+                                <button class="btn btn-secondary" id="btnPrintEstimate">🖨️ Print / PDF</button>
+                                <button class="btn btn-primary" id="btnSaveEstimate">💾 Save Estimate</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="estimate-error" id="estimateError" style="display:none;">
+                        <div class="error-box">
+                            <span class="error-icon">⚠️</span>
+                            <p id="estimateErrorText">Failed to generate estimate. Please try again.</p>
+                        </div>
+                        <button class="btn btn-ghost" id="btnRetryEstimate" style="margin-top:1rem;">Retry</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

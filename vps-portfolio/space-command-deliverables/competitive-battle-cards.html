@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Competitive Battle Cards · Brevard Agency Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+    --blue: #3B82F6; --blue-bg: rgba(59,130,246,0.12);
+    --purple: #A855F7; --purple-bg: rgba(168,85,247,0.12);
+    --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+    --border: #1E293B; --border-accent: #2D3A5C;
+    --radius: 10px; --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 120px;
+  }
+
+  /* ── NAV ─────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,20,0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); padding: 0 24px;
+  }
+  nav .inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; height: 56px;
+  }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+
+  /* ── CONTAINER ──────────────────────────── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── HERO ────────────────────────────────── */
+  .hero {
+    padding: 80px 0 60px; text-align: center;
+    background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%);
+  }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 720px; margin: 0 auto 40px; }
+  .stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+  .stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .stat-pill .value.accent { color: var(--orange); }
+  .stat-pill .value.green { color: var(--green); }
+  .stat-pill .value.gold { color: var(--gold); }
+  .stat-pill .value.purple { color: var(--purple); }
+  .stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── SECTIONS ───────────────────────────── */
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+  h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+  .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+
+  /* ── CARDS ──────────────────────────────── */
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .card.accent-left { border-left: 3px solid var(--orange); }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.amber-left { border-left: 3px solid var(--amber); }
+  .card.blue-left { border-left: 3px solid var(--blue); }
+  .card.purple-left { border-left: 3px solid var(--purple); }
+  .card.red-left { border-left: 3px solid var(--red); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .card-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+  /* ── CALLOUTS ───────────────────────────── */
+  .callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+  .callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+  .callout.info { background: var(--blue-bg); border: 1px solid rgba(59,130,246,0.3); }
+  .callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+  .callout.critical { background: var(--red-bg); border: 1px solid rgba(239,68,68,0.3); }
+  .callout .icon { font-size: 20px; flex-shrink: 0; }
+  .callout h4 { font-size: 15px; margin-bottom: 4px; }
+  .callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+
+  /* ── TABLES ─────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead { background: var(--bg-surface); }
+  th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover { background: rgba(255,255,255,0.02); }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── TAGS ───────────────────────────────── */
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .tag.win { background: var(--green-bg); color: var(--green); }
+  .tag.loss { background: var(--red-bg); color: var(--red); }
+  .tag.warn { background: var(--amber-bg); color: var(--amber); }
+  .tag.info { background: var(--blue-bg); color: var(--blue); }
+  .tag.purple { background: var(--purple-bg); color: var(--purple); }
+  .win { color: var(--green); font-weight: 600; }
+  .loss { color: var(--red); font-weight: 600; }
+  .muted { color: var(--text-dim); }
+  .amber-text { color: var(--amber); font-weight: 600; }
+
+  /* ── INSIGHT BOX ────────────────────────── */
+  .insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+  .insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+
+  /* ── CODE BLOCKS ────────────────────────── */
+  .code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0; white-space: pre-wrap; word-break: break-word; }
+  .code-block .hl { color: var(--orange); }
+  .code-block .hl-green { color: var(--green); }
+  .code-block .hl-amber { color: var(--amber); }
+  .code-block .hl-blue { color: var(--blue); }
+  .code-block .hl-muted { color: var(--text-dim); }
+  .code-block .hl-purple { color: var(--purple); }
+
+  /* ── BATTLE CARD ────────────────────────── */
+  .battle-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .battle-card .bc-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-surface);
+  }
+  .battle-card .bc-header .icon-badge {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .battle-card .bc-header .icon-badge.thryv { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); }
+  .battle-card .bc-header .icon-badge.scorpion { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); }
+  .battle-card .bc-header .icon-badge.freelancer { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); }
+  .battle-card .bc-header .icon-badge.diy { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3); }
+  .battle-card .bc-header h3 { margin: 0; font-size: 20px; }
+  .battle-card .bc-header .threat-level { font-size: 13px; font-weight: 600; margin-left: auto; }
+  .battle-card .bc-body { padding: 24px; }
+  .battle-card .bc-body .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .battle-card .bc-body .compare-col {
+    padding: 20px;
+    border-radius: var(--radius-sm);
+  }
+  .battle-card .bc-body .compare-col.theirs {
+    background: rgba(239,68,68,0.06);
+    border: 1px solid rgba(239,68,68,0.15);
+  }
+  .battle-card .bc-body .compare-col.ours {
+    background: rgba(34,197,94,0.06);
+    border: 1px solid rgba(34,197,94,0.15);
+  }
+  .battle-card .bc-body .compare-col .col-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;
+  }
+  .battle-card .bc-body .compare-col.theirs .col-label { color: var(--red); }
+  .battle-card .bc-body .compare-col.ours .col-label { color: var(--green); }
+  .battle-card .bc-body .compare-col h4 {
+    font-size: 15px; margin-bottom: 6px;
+  }
+  .battle-card .bc-body .compare-col p {
+    font-size: 13px; color: var(--text-muted); margin-bottom: 0;
+  }
+  .battle-card .bc-body .weakness-list {
+    list-style: none; margin: 0 0 20px 0; padding: 0;
+  }
+  .battle-card .bc-body .weakness-list li {
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    margin-bottom: 8px;
+    font-size: 13px;
+    display: flex; align-items: flex-start; gap: 10px;
+    color: var(--text-muted);
+  }
+  .battle-card .bc-body .weakness-list li .weak-icon {
+    color: var(--red); font-weight: 700; flex-shrink: 0;
+  }
+  .battle-card .bc-body .advantage-list {
+    list-style: none; margin: 0 0 20px 0; padding: 0;
+  }
+  .battle-card .bc-body .advantage-list li {
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    background: rgba(34,197,94,0.06);
+    border: 1px solid rgba(34,197,94,0.12);
+    margin-bottom: 8px;
+    font-size: 13px;
+    display: flex; align-items: flex-start; gap: 10px;
+    color: var(--text-muted);
+  }
+  .battle-card .bc-body .advantage-list li .adv-icon {
+    color: var(--green); font-weight: 700; flex-shrink: 0;
+  }
+
+  .bc-body .killer-line {
+    background: linear-gradient(135deg, rgba(255,69,0,0.1), rgba(240,160,48,0.08));
+    border: 1px solid rgba(255,69,0,0.25);
+    border-radius: var(--radius-sm);
+    padding: 20px 24px;
+    margin-top: 20px;
+    position: relative;
+  }
+  .bc-body .killer-line .kl-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--orange); margin-bottom: 8px;
+  }
+  .bc-body .killer-line p {
+    font-size: 15px; font-weight: 600; color: var(--text); margin: 0; font-style: italic; line-height: 1.6;
+  }
+
+  /* ── UNFAIR ADVANTAGE CARD ──────────────── */
+  .advantage-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .advantage-card .adv-num {
+    font-size: 40px; font-weight: 900; color: var(--orange); opacity: 0.15; line-height: 1; margin-bottom: -8px;
+    font-family: var(--font-mono);
+  }
+  .advantage-card h4 { font-size: 16px; margin-bottom: 8px; color: #fff; }
+  .advantage-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; flex-grow: 1; }
+  .advantage-card .adv-tag-row { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* ── TYPOGRAPHY ─────────────────────────── */
+  h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  li { margin-bottom: 4px; }
+  li::marker { color: var(--orange); }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* ── PRICING COMPARISON TABLE ───────────── */
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+  .pricing-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+  .pricing-card .pc-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;
+  }
+  .pricing-card.theirs .pc-label { color: var(--red); }
+  .pricing-card.ours .pc-label { color: var(--green); }
+  .pricing-card .pc-price {
+    font-size: 36px; font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 4px;
+  }
+  .pricing-card .pc-unit { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+  .pricing-card .pc-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── POSITIONING STATEMENT ──────────────── */
+  .positioning-statement {
+    background: linear-gradient(135deg, rgba(255,69,0,0.06), rgba(168,85,247,0.06));
+    border: 2px solid var(--border-accent);
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+    margin: 20px 0;
+  }
+  .positioning-statement h3 { margin-top: 0; color: var(--orange); font-size: 14px; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; }
+  .positioning-statement .oneliner {
+    font-size: 20px; font-weight: 700; color: #fff; line-height: 1.5; max-width: 800px; margin: 0 auto;
+  }
+
+  /* ── SALES TIP CARD ─────────────────────── */
+  .sales-tip {
+    display: flex; gap: 16px; padding: 20px 24px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    align-items: flex-start;
+  }
+  .sales-tip .tip-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; flex-shrink: 0;
+  }
+  .sales-tip .tip-content h4 { margin: 0 0 4px 0; font-size: 14px; }
+  .sales-tip .tip-content p { margin: 0; font-size: 13px; color: var(--text-muted); }
+
+  /* ── SCRIPT BLOCK ───────────────────────── */
+  .script-block {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .script-block .line {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(30,41,59,0.5);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .script-block .line:last-child { border-bottom: none; }
+  .script-block .line .speaker {
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    min-width: 68px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .script-block .line .speaker.you { color: var(--orange); }
+  .script-block .line .speaker.note { color: var(--text-dim); font-style: italic; }
+  .script-block .line .words { color: var(--text); }
+  .script-block .line .words.note-text { color: var(--text-dim); font-style: italic; }
+
+  /* ── FOOTER ─────────────────────────────── */
+  footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+
+  /* ── RESPONSIVE ─────────────────────────── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 28px; }
+    .stat-row { gap: 10px; }
+    .stat-pill { min-width: 120px; padding: 14px 16px; }
+    .stat-pill .value { font-size: 22px; }
+    .card-grid, .card-grid-3 { grid-template-columns: 1fr; }
+    .battle-card .bc-body .compare-row { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .positioning-statement .oneliner { font-size: 16px; }
+    .advantage-card .adv-num { font-size: 28px; }
+  }
+
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    nav { display: none; }
+    section { break-inside: avoid; border-color: #ddd; }
+    .card, .callout, .insight-box, .code-block, .battle-card, .advantage-card, .sales-tip, .positioning-statement, .pricing-card { border-color: #ddd; background: #fafafa; }
+    .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+    h2, h3, h4 { color: #111; }
+    .stat-pill { border-color: #ddd; }
+    .stat-pill .value { color: #111; }
+    .section-label { color: #FF4500; }
+    .code-block { background: #f5f5f5; color: #111; }
+    .battle-card .bc-header { background: #f0f0f0; }
+    .killer-line { background: #fff5f0; }
+    .battle-card .bc-body .compare-col.theirs { background: #fff5f5; }
+    .battle-card .bc-body .compare-col.ours { background: #f5fff5; }
+    .battle-card .bc-body .weakness-list li, .battle-card .bc-body .advantage-list li, .sales-tip { background: #fafafa; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NAV -->
+<!-- ═══════════════════════════════════════════ -->
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> Space Command Center · Competitive Battle Cards</div>
+    <div class="badge">DELIVERABLE · COMPETITIVE INTELLIGENCE</div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Competitive Intelligence</div>
+    <h1>Competitive Battle Cards<br>Brevard Agency Intelligence</h1>
+    <p class="subtitle">A comprehensive competitive intelligence dossier mapping every competitor in the Brevard County marketing landscape. Includes battle cards, unfair advantages, positioning statements, and sales scripts designed to turn competitive conversations into closed deals — without ever badmouthing the competition.</p>
+    <div class="stat-row">
+      <div class="stat-pill"><div class="value accent">4</div><div class="label">Key Competitors</div></div>
+      <div class="stat-pill"><div class="value gold">5</div><div class="label">Unfair Advantages</div></div>
+      <div class="stat-pill"><div class="value green">Thryv</div><div class="label">Experience</div></div>
+      <div class="stat-pill"><div class="value purple">Local Market</div><div class="label">Dominance</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 01: THE COMPETITIVE LANDSCAPE -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">01 · The Competitive Landscape</div>
+    <h2>Where You Sit — And Why It Matters</h2>
+    <p class="section-desc">Understanding the Brevard County marketing ecosystem is the first step to dominating it. Here's who's out there, what they're doing, and why exactly zero of them can do what you do.</p>
+
+    <div class="card accent-left" style="margin-bottom:24px">
+      <h3 style="margin-top:0">The Brevard Marketing Ecosystem</h3>
+      <p>Brevard County is dominated by <strong>Thryv</strong> — the national, publicly-traded business software company that sells an all-in-one SaaS platform. They have name recognition and deep pockets, but their product requires the business owner to do all the work. Then there are a handful of <strong>boutique agencies</strong> like Scorpion (national, enterprise-focused) and a few small local shops. Finally, the market is saturated with <strong>freelancers</strong> — solo operators charging low rates but delivering inconsistent quality with zero scalability.</p>
+      <p style="margin-bottom:0">Here's the reality: <strong>no one in Brevard County</strong> is doing AI-powered, locally-run marketing that combines the quality of an agency with the speed and personal touch of a local operator. No one is running frontier AI models on local hardware to generate content and audits. No one is talking about AEO (Answer Engine Optimization). No one offers a 72-hour preview guarantee. You occupy a unique, defensible position — and these battle cards are designed to help you communicate that in every sales conversation.</p>
+    </div>
+
+    <div class="card-grid-3">
+      <div class="card green-left">
+        <h4 style="margin-top:0">Tier 1 — Direct Competitors</h4>
+        <p style="margin-bottom:6px"><strong>Thryv, Scorpion</strong></p>
+        <p style="margin-bottom:0;font-size:13px">National players with big budgets. They go after the same local business market. Their weakness: impersonal, expensive, and slow.</p>
+      </div>
+      <div class="card amber-left">
+        <h4 style="margin-top:0">Tier 2 — Indirect Competitors</h4>
+        <p style="margin-bottom:6px"><strong>Local Agencies, Freelancers</strong></p>
+        <p style="margin-bottom:0;font-size:13px">They compete on price and local relationships. Their weakness: no AI capabilities, no scalability, inconsistent quality.</p>
+      </div>
+      <div class="card purple-left">
+        <h4 style="margin-top:0">Tier 3 — Silent Competitor</h4>
+        <p style="margin-bottom:6px"><strong>DIY / Wix / Squarespace</strong></p>
+        <p style="margin-bottom:0;font-size:13px">The "I can do it myself" mindset. Their weakness: massive time investment, amateur results, no strategic thinking behind the output.</p>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>🧠 The Strategic Insight</h4>
+      <p style="margin-bottom:0">You're not competing in a crowded lane. You're creating a <em>new</em> lane: locally-embedded, AI-augmented marketing with agency quality at freelancer speed. The battle cards below are designed to help you articulate this difference without ever sounding like you're trashing the competition. When a prospect brings up a competitor, you don't attack — you <em>diagnose</em>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 02: BATTLE CARD — THRYV -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">02 · Battle Card — Primary Competitor</div>
+    <h2>Thryv</h2>
+    <p class="section-desc">Thryv is your #1 competitor in Brevard County. They have brand recognition, a large sales force, and a publicly-traded company behind them. But their product is software — not service. And you know their weaknesses from the inside.</p>
+
+    <div class="battle-card">
+      <div class="bc-header">
+        <div class="icon-badge thryv">🏢</div>
+        <h3>Thryv — The All-in-One Software Trap</h3>
+        <div class="threat-level"><span class="tag warn">HIGH THREAT</span></div>
+      </div>
+      <div class="bc-body">
+        <!-- Pitch Comparison -->
+        <div class="compare-row">
+          <div class="compare-col theirs">
+            <div class="col-label">THEIR PITCH</div>
+            <h4>"All-in-One Business Software"</h4>
+            <p>Complicated platform, steep learning curve. Requires the business owner to learn software, manage content, send invoices, run campaigns — all while running their actual business. Comes with contracts and surprise fees.</p>
+          </div>
+          <div class="compare-col ours">
+            <div class="col-label">YOUR PITCH</div>
+            <h4>"Done-for-You Marketing"</h4>
+            <p>Simple, flat-rate, no contracts. You handle everything — website, content, AI visibility, strategy. The business owner focuses on their business; you focus on making them visible. Cancel anytime, zero penalty.</p>
+          </div>
+        </div>
+
+        <!-- Pricing Comparison -->
+        <div class="pricing-grid">
+          <div class="pricing-card theirs">
+            <div class="pc-label">THRYV PRICING</div>
+            <div class="pc-price">$199–$499+</div>
+            <div class="pc-unit">per month</div>
+            <div class="pc-desc">Software access only. You still have to do all the work yourself. Contracts required. Cancellation fees.</div>
+          </div>
+          <div class="pricing-card ours">
+            <div class="pc-label">YOUR PRICING</div>
+            <div class="pc-price">$149–$1,500</div>
+            <div class="pc-unit">flat rate or monthly</div>
+            <div class="pc-desc">Done-for-you execution. Website, content, strategy, AI optimization — we do it all. No contracts. Cancel anytime.</div>
+          </div>
+        </div>
+
+        <!-- Key Weaknesses -->
+        <h4 style="margin-top:24px;margin-bottom:12px">Thryv Weaknesses — Your Ammunition</h4>
+        <ul class="weakness-list">
+          <li><span class="weak-icon">✕</span> <span><strong>Software requires the owner to DO the work.</strong> Thryv sells you tools. You sell outcomes. The business owner didn't sign up to become a part-time marketer.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>Expensive, long-term contracts.</strong> Thryv locks clients into annual agreements with cancellation fees. You offer month-to-month with zero commitment.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>Generic, templated output.</strong> Thryv's "marketing automation" produces cookie-cutter content that looks like everyone else's. Your AI stack produces original, strategy-backed content.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>No AI search optimization.</strong> Thryv has no AEO capability. They optimize for Google (barely). AI search engines ignore Thryv-built sites completely.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>Zero local presence.</strong> Thryv is headquartered in Texas. They don't know Brevard County, don't live here, and can't build local relationships the way you can.</span></li>
+        </ul>
+
+        <!-- The Thryv Experience Weapon -->
+        <div class="callout success">
+          <div class="icon">🎯</div>
+          <div>
+            <h4>Your Thryv Experience Is a Weapon</h4>
+            <p>You sold Thryv. You know their limitations inside and out — the clunky interface, the hidden fees, the support tickets that go unanswered for weeks, the features they promise but never deliver. When a prospect mentions they've used Thryv or are considering it, this knowledge becomes your single most powerful sales tool. You're not speculating — you're informing from direct experience.</p>
+          </div>
+        </div>
+
+        <!-- Killer Line -->
+        <div class="killer-line">
+          <div class="kl-label">💀 KILLER LINE</div>
+          <p>"I used to sell Thryv. I know exactly what it does and doesn't do. That's why I built something better."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Diagnostic Framing Script -->
+    <h3 style="margin-top:40px">Diagnostic Framing for Thryv Conversations</h3>
+    <p style="color:var(--text-muted);margin-bottom:16px">Never lead with the killer line. Wait for the prospect to bring up Thryv first. Then use diagnostic framing to position your advantage.</p>
+
+    <div class="script-block">
+      <div class="line">
+        <span class="speaker note">IF THEY SAY</span>
+        <span class="words note-text">"We're using Thryv right now."</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Oh interesting — I actually know Thryv really well. I used to sell it. How's it working for you so far? Be honest."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">NOTE</span>
+        <span class="words note-text">Let them complain. They almost always will. The software is clunky and they know it.</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"That's exactly the feedback I hear from most Thryv users. Here's the thing — Thryv gives you great tools, but tools still require someone to use them. What we do is different: we become the person using the tools for you. You focus on your business, we focus on the marketing. No software to learn, no campaigns to manage."</span>
+      </div>
+    </div>
+
+    <div class="script-block" style="margin-top:12px">
+      <div class="line">
+        <span class="speaker note">IF THEY SAY</span>
+        <span class="words note-text">"We're considering Thryv."</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Thryv is a solid platform — I actually sold it for a while, so I know it inside and out. Here's what I'd encourage you to think about: Thryv gives you the software, but you still have to do all the execution yourself — write the posts, manage the campaigns, update the website. If you've got time for that, it can work. But if you'd rather focus on running your business while someone else handles the marketing, that's where we come in. We do the work, not just provide the tools."</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 03: BATTLE CARD — SCORPION -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">03 · Battle Card — National Competitor</div>
+    <h2>Scorpion</h2>
+    <p class="section-desc">Scorpion is a national digital marketing agency with significant ad spend and an enterprise focus. They work with large clients across the country — but Brevard businesses are just another account number to them.</p>
+
+    <div class="battle-card">
+      <div class="bc-header">
+        <div class="icon-badge scorpion">🦂</div>
+        <h3>Scorpion — Big Agency, Bigger Blind Spots</h3>
+        <div class="threat-level"><span class="tag info">MEDIUM THREAT</span></div>
+      </div>
+      <div class="bc-body">
+        <div class="compare-row">
+          <div class="compare-col theirs">
+            <div class="col-label">THEIR APPROACH</div>
+            <h4>"Enterprise Marketing at Scale"</h4>
+            <p>National agency with big ad budgets. Works primarily with larger, multi-location businesses. Template-driven campaigns. Slow turnaround times — weeks, not days. Your Brevard business is a rounding error on their revenue report.</p>
+          </div>
+          <div class="compare-col ours">
+            <div class="col-label">YOUR APPROACH</div>
+            <h4>"Local, Fast, Personal"</h4>
+            <p>You live in Brevard County. You know the market, the neighborhoods, the industries. 72-hour preview guarantee. Personal relationship with every client. They're not an account number — they're your neighbor.</p>
+          </div>
+        </div>
+
+        <h4 style="margin-top:24px;margin-bottom:12px">Scorpion Weaknesses</h4>
+        <ul class="weakness-list">
+          <li><span class="weak-icon">✕</span> <span><strong>Impersonal and templated.</strong> Scorpion serves thousands of clients. Brevard businesses get the same playbook as a dental practice in Boise. No local nuance, no personal touch.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>Slow turnaround.</strong> Enterprise agencies move at enterprise speed. Change requests take weeks. By the time they respond, your client's opportunity has passed.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>High minimums.</strong> Scorpion typically requires $2,000+/month commitments. Most Brevard small businesses are priced out before the conversation starts.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>No AI search expertise.</strong> Like Thryv, Scorpion optimizes for traditional SEO. They have no answer engine optimization capability and no local frontier AI stack.</span></li>
+        </ul>
+
+        <div class="killer-line">
+          <div class="kl-label">💀 KILLER LINE</div>
+          <p>"Scorpion treats Brevard businesses like they're in Anywhere, USA. We live here."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="script-block" style="margin-top:20px">
+      <div class="line">
+        <span class="speaker note">IF THEY MENTION</span>
+        <span class="words note-text">Scorpion or another national agency</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Scorpion does good work — they're a big agency with a lot of resources. The feedback we hear from clients who've worked with them is that it often feels very corporate — slow response times, templated strategies that don't account for local market dynamics. That's why we keep things local. When you call me, you get me — not a ticket number. And we can turn around a preview in 72 hours, not 72 business days."</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 04: BATTLE CARD — FREELANCERS -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">04 · Battle Card — Indirect Competitor</div>
+    <h2>Local Freelancers & Small Agencies</h2>
+    <p class="section-desc">The Brevard market is full of solo operators — freelance designers, part-time marketers, one-person web shops. They compete on price and local relationships, but they can't scale and don't have the technology stack to compete at the level you operate.</p>
+
+    <div class="battle-card">
+      <div class="bc-header">
+        <div class="icon-badge freelancer">👤</div>
+        <h3>Freelancers — Low Price, Low Ceiling</h3>
+        <div class="threat-level"><span class="tag info">LOW-MEDIUM THREAT</span></div>
+      </div>
+      <div class="bc-body">
+        <div class="compare-row">
+          <div class="compare-col theirs">
+            <div class="col-label">THEIR OFFERING</div>
+            <h4>"I'll Build You a Website"</h4>
+            <p>Low rates — often $500 or less. One person handling everything (when they're available). No strategic layer. No AI capabilities. Deliverable is usually just a website, not a marketing system.</p>
+          </div>
+          <div class="compare-col ours">
+            <div class="col-label">YOUR OFFERING</div>
+            <h4>"I'll Build You a Marketing Department"</h4>
+            <p>Agency-quality output backed by an AI stack that scales infinitely. Strategy, execution, AI visibility, AEO audits — the full marketing function, not just a deliverable.</p>
+          </div>
+        </div>
+
+        <h4 style="margin-top:24px;margin-bottom:12px">Freelancer Weaknesses</h4>
+        <ul class="weakness-list">
+          <li><span class="weak-icon">✕</span> <span><strong>One-person bandwidth.</strong> When the freelancer gets sick, goes on vacation, or gets overwhelmed, your project stops. No redundancy, no team backup.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>Can't scale.</strong> A freelancer can handle maybe 10–15 clients before quality drops. Your AI-augmented workflow scales efficiently without degrading output.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>No AI capabilities.</strong> Freelancers use Canva, WordPress, and Google. They don't run frontier models locally. They can't do AEO audits. They're operating in 2019 while you're operating in 2026.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>No AEO knowledge.</strong> Most freelancers don't know what Answer Engine Optimization is. They optimize for Google rankings — which is only half the battle.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>Inconsistent quality.</strong> Without a system, output varies wildly. One project might be great; the next might be rushed. You deliver consistent, systematized quality every time.</span></li>
+        </ul>
+
+        <div class="killer-line">
+          <div class="kl-label">💀 KILLER LINE</div>
+          <p>"A freelancer can build you a website. We build you a marketing department."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 05: BATTLE CARD — DIY -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">05 · Battle Card — Silent Competitor</div>
+    <h2>DIY / Wix / Squarespace</h2>
+    <p class="section-desc">The silent competitor — the prospect who convinces themselves "I can just do it myself." They're not wrong that Wix exists. They are wrong about what it actually costs them in time, quality, and opportunity.</p>
+
+    <div class="battle-card">
+      <div class="bc-header">
+        <div class="icon-badge diy">🔧</div>
+        <h3>DIY — The Most Dangerous Competitor (Because They're Invisible)</h3>
+        <div class="threat-level"><span class="tag warn">HIGH THREAT</span></div>
+      </div>
+      <div class="bc-body">
+        <div class="compare-row">
+          <div class="compare-col theirs">
+            <div class="col-label">THE DIY MINDSET</div>
+            <h4>"I Can Figure It Out"</h4>
+            <p>$20/month for Wix. Drag and drop. Templates available. "How hard can it be?" The answer: hard enough that most DIY sites look amateur, load slowly, and convert at 0.2% — if at all.</p>
+          </div>
+          <div class="compare-col ours">
+            <div class="col-label">THE PROFESSIONAL REALITY</div>
+            <h4>"You Run Your Business. We Run the Marketing."</h4>
+            <p>Professional design. SEO-structured. AI-optimized. Fast-loading. Actually converts visitors into customers. And you don't lose 40 hours of your life wrestling with a drag-and-drop builder.</p>
+          </div>
+        </div>
+
+        <h4 style="margin-top:24px;margin-bottom:12px">DIY Weaknesses — The Hidden Costs</h4>
+        <ul class="weakness-list">
+          <li><span class="weak-icon">✕</span> <span><strong>Massive time investment.</strong> The average business owner spends 30–50 hours building a DIY website — and it still looks mediocre. That's time they could have spent generating revenue.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>Amateur results.</strong> Templates look like templates. Customers can tell. A DIY site signals "small-time operation" — even if the business isn't.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>No strategy behind it.</strong> A website without SEO, without conversion optimization, without AEO structure is just a digital business card. It doesn't bring in customers — it just exists.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>No AI visibility.</strong> DIY platforms don't structure content for AI search engines. ChatGPT and Perplexity will never recommend a Wix site over a professionally optimized one.</span></li>
+          <li><span class="weak-icon">✕</span> <span><strong>Ongoing maintenance burden.</strong> Updates, security, backups, plugin conflicts — the DIY approach creates a never-ending to-do list that the business owner didn't sign up for.</span></li>
+        </ul>
+
+        <div class="killer-line">
+          <div class="kl-label">💀 KILLER LINE</div>
+          <p>"You didn't become a dentist to build websites. Let us handle the marketing so you can handle the patients."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>🧠 The DIY Objection Is Really About Value, Not Capability</h4>
+      <p style="margin-bottom:0">When a prospect says "I can do it myself," they're not saying they're a better marketer than you. They're saying they don't yet understand the value of professional marketing. Your job isn't to argue — it's to reframe the conversation around what their time is actually worth. "How much revenue does one hour of your time generate? Now multiply that by the 40 hours you'd spend building a site. That's the real cost of DIY."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 06: 5 UNFAIR ADVANTAGES -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">06 · Your 5 Unfair Advantages</div>
+    <h2>A Socratic Breakdown of Why You Win</h2>
+    <p class="section-desc">These are the moats. The things no competitor — not Thryv, not Scorpion, not any freelancer in Brevard — can match. When a prospect asks "Why should I choose you?", each of these is a close.</p>
+
+    <div class="card-grid-3" style="margin-bottom:16px">
+      <!-- Advantage 1 -->
+      <div class="advantage-card">
+        <div class="adv-num">01</div>
+        <h4>Thryv Insider Knowledge</h4>
+        <p>You didn't just compete against Thryv — you sold it. You know their product limitations, their pricing tricks, their support failures, and exactly where their software falls short. This is intelligence no competitor in Brevard County has. When a prospect is considering Thryv, you don't guess at their weaknesses — you know them firsthand.</p>
+        <div class="adv-tag-row">
+          <span class="tag win">EXCLUSIVE INTEL</span>
+          <span class="tag warn">SALES WEAPON</span>
+        </div>
+      </div>
+
+      <!-- Advantage 2 -->
+      <div class="advantage-card">
+        <div class="adv-num">02</div>
+        <h4>Local Brevard Presence</h4>
+        <p>You live in Merritt Island. You know the Space Coast — the industries, the neighborhoods, the people. Thryv is in Texas. Scorpion is in California. Freelancers might be local but they don't have your depth of market understanding. When you talk to a Brevard business owner, you're talking to a neighbor — not a sales rep from out of state.</p>
+        <div class="adv-tag-row">
+          <span class="tag win">RELATIONSHIP MOAT</span>
+          <span class="tag info">TRUST BUILDER</span>
+        </div>
+      </div>
+
+      <!-- Advantage 3 -->
+      <div class="advantage-card">
+        <div class="adv-num">03</div>
+        <h4>AI Stack Nobody Else Has</h4>
+        <p>Mac Mini M4 Pro running local frontier models. This isn't ChatGPT in a browser tab — this is enterprise-grade AI running on dedicated hardware in your office. You can generate content, run diagnostics, and produce audits at a speed and quality level that no competitor in Brevard can match. They're using SaaS tools. You're running the models locally.</p>
+        <div class="adv-tag-row">
+          <span class="tag win">TECHNOLOGY MOAT</span>
+          <span class="tag purple">HARDWARE EDGE</span>
+        </div>
+      </div>
+
+      <!-- Advantage 4 -->
+      <div class="advantage-card">
+        <div class="adv-num">04</div>
+        <h4>AEO Audit Capability</h4>
+        <p>Answer Engine Optimization — the practice of optimizing content so AI search engines (ChatGPT, Perplexity, Google SGE) recommend your business. No Brevard agency even knows what AEO is. You can walk into any sales conversation with a real-time audit showing exactly which AI platforms ignore the prospect and why. That's a power position nobody else occupies.</p>
+        <div class="adv-tag-row">
+          <span class="tag win">CATEGORY CREATOR</span>
+          <span class="tag info">FIRST MOVER</span>
+        </div>
+      </div>
+
+      <!-- Advantage 5 -->
+      <div class="advantage-card">
+        <div class="adv-num">05</div>
+        <h4>72-Hour Preview Guarantee</h4>
+        <p>You deliver a complete preview of the work within 72 hours of a client saying yes. If they don't love it, they don't pay. Zero risk for the client. This is structurally impossible for agencies like Scorpion (who take weeks) and Thryv (who sell software, not deliverables). It neutralizes the #1 fear every prospect has: "What if I pay and I don't like what I get?"</p>
+        <div class="adv-tag-row">
+          <span class="tag win">RISK ELIMINATOR</span>
+          <span class="tag green">TRUST BUILDER</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="icon">⚔️</div>
+      <div>
+        <h4>The Stacking Effect</h4>
+        <p>Any one of these advantages is strong. All five together create a competitive position that's effectively unassailable. A competitor might match on price. They might match on speed. They can't match on local presence AND AI capability AND Thryv intelligence AND AEO knowledge AND a risk-free preview — all at once. When you stack them, you don't just win deals — you make the competition irrelevant.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 07: THE POSITIONING STATEMENT -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">07 · The Positioning Statement</div>
+    <h2>Your One-Liner</h2>
+    <p class="section-desc">Every great company has a positioning statement that fits in a single sentence. This is yours. Memorize it. Use it in pitches, on your website, in proposals, and whenever someone asks "So what do you do?"</p>
+
+    <div class="positioning-statement">
+      <h3>The Space Coast Marketing Positioning Statement</h3>
+      <p class="oneliner">"Space Coast Marketing is the only Brevard agency that combines local relationship management with AI-powered execution — delivering agency-quality work at freelancer speed, with a 72-hour preview guarantee and zero contracts."</p>
+    </div>
+
+    <div class="card accent-left" style="margin-top:20px">
+      <h4 style="margin-top:0">Why This Position Works</h4>
+      <p style="margin-bottom:8px"><strong>1. "Only Brevard agency"</strong> — Category of one. You're not competing in a crowded field; you're defining a new category.</p>
+      <p style="margin-bottom:8px"><strong>2. "Local relationship management"</strong> — Signals you're not a faceless national vendor. You're a neighbor.</p>
+      <p style="margin-bottom:8px"><strong>3. "AI-powered execution"</strong> — Differentiates from every traditional agency and freelancer. You have technology they don't.</p>
+      <p style="margin-bottom:8px"><strong>4. "Agency-quality work at freelancer speed"</strong> — Resolves the classic tradeoff. Prospects think they have to choose between quality and speed. You deliver both.</p>
+      <p style="margin-bottom:8px"><strong>5. "72-hour preview guarantee"</strong> — The risk reversal. Makes the decision to try you trivial.</p>
+      <p style="margin-bottom:0"><strong>6. "Zero contracts"</strong> — The final objection killer. No lock-in, no commitment, no fear.</p>
+    </div>
+
+    <div class="insight-box">
+      <h4>🧠 When to Use the Positioning Statement</h4>
+      <p style="margin-bottom:0">This isn't your elevator pitch opener — it's your closer. Use a shorter, curiosity-driven intro first ("We help Brevard businesses show up where their customers are actually searching — which isn't Google anymore"). Then, once they're engaged, the full positioning statement lands with the weight of everything they've already learned. It should feel like the natural summary of the conversation, not a rehearsed tagline.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 08: HOW TO USE BATTLE CARDS IN SALES -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">08 · How to Use Battle Cards in Sales</div>
+    <h2>The Art of Competitive Conversation</h2>
+    <p class="section-desc">Battle cards are weapons — and like any weapon, they're most effective when used with precision, not aggression. These rules govern how to deploy competitive intelligence in sales conversations without ever looking like you're attacking the competition.</p>
+
+    <div class="sales-tip">
+      <div class="tip-num">1</div>
+      <div class="tip-content">
+        <h4>Never Mention a Competitor Unless the Prospect Brings Them Up First</h4>
+        <p>Volunteering competitive comparisons unprompted makes you look defensive and insecure. Wait for the prospect to say "We're using Thryv" or "We talked to Scorpion." Then you're responding, not attacking.</p>
+      </div>
+    </div>
+
+    <div class="sales-tip">
+      <div class="tip-num">2</div>
+      <div class="tip-content">
+        <h4>Use Diagnostic Framing, Not Direct Criticism</h4>
+        <p>Never say "Thryv is terrible." Instead, say "A lot of our clients previously used Thryv. The feedback we consistently hear is that the software requires the business owner to do all the work. That's why we built a model where we do the work for you." You're not trashing the competitor — you're diagnosing a problem and presenting the solution.</p>
+      </div>
+    </div>
+
+    <div class="sales-tip">
+      <div class="tip-num">3</div>
+      <div class="tip-content">
+        <h4>The Script: "[Competitor] is a solid [product/agency]. The feedback we hear from clients who've used them is [weakness]. That's why we [your advantage]."</h4>
+        <p>This three-part structure — acknowledge, diagnose, differentiate — keeps you positioned as an expert rather than a critic. You're not saying they're bad; you're saying they serve a different need, and here's what makes your approach different.</p>
+      </div>
+    </div>
+
+    <div class="sales-tip">
+      <div class="tip-num">4</div>
+      <div class="tip-content">
+        <h4>When They Mention Thryv: Your Insider Knowledge Is the Close</h4>
+        <p>The moment a prospect says "Thryv," the conversation shifts. You now have something no other salesperson in Brevard has: firsthand experience selling that exact product. Lead with curiosity ("How's it working for you?"), listen to their frustrations, then deploy your insider knowledge naturally. "I actually sold Thryv for a while — here's what I learned about where it excels and where it doesn't."</p>
+      </div>
+    </div>
+
+    <div class="sales-tip">
+      <div class="tip-num">5</div>
+      <div class="tip-content">
+        <h4>Never Badmouth — Always Reframe</h4>
+        <p>The fastest way to lose a deal is to trash a competitor the prospect chose or is considering. If they chose Thryv, criticizing Thryv is criticizing their decision-making. Instead, frame it as evolution: "Thryv was the right choice when the market looked different. But AI search has changed the game, and what worked two years ago isn't working now. Here's what's changed..." You're not saying they made a bad choice — you're saying the battlefield shifted.</p>
+      </div>
+    </div>
+
+    <div class="sales-tip">
+      <div class="tip-num">6</div>
+      <div class="tip-content">
+        <h4>Let the AEO Audit Do the Talking</h4>
+        <p>The most devastating competitive weapon you have doesn't require you to say anything negative. When you show a prospect their AEO audit — and they see their competitors being recommended by AI while they're invisible — the data makes your case for you. You don't need to say Scorpion's SEO is outdated. The audit shows the prospect's site isn't being picked up by AI, while a professionally optimized site would be. The facts do the selling.</p>
+      </div>
+    </div>
+
+    <div class="card amber-left" style="margin-top:24px">
+      <h4 style="margin-top:0">⚠️ The Golden Rule of Battle Cards</h4>
+      <p style="margin-bottom:0">You win deals by being the better option — not by making the competition look worse. Prospects can smell insecurity from a mile away. When you're confident in your positioning, you don't need to tear anyone down. Let your advantages speak for themselves. The battle cards are here to give you the <em>language</em> and the <em>logic</em> — use them with the confidence of someone who knows they've already won.</p>
+    </div>
+
+    <div class="insight-box" style="margin-top:20px">
+      <h4>🧠 The Meta-Principle</h4>
+      <p style="margin-bottom:0">Behind every competitive question is an unasked question: <strong>"Why should I trust you instead of them?"</strong> The prospect isn't asking for a feature comparison — they're asking for a reason to believe. Your battle cards answer that question not by attacking competitors, but by making it obvious why your approach is fundamentally different, fundamentally better, and fundamentally lower-risk. Trust is built through competence, not combat.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ═══════════════════════════════════════════ -->
+<footer>
+  <a href="index.html" style="display:inline-block;margin-bottom:12px">← Back to Space Command Center Index</a><br>
+  Space Coast Marketing · Merritt Island, FL · Socrates AI Chief of Staff<br>
+  Competitive Battle Cards · Brevard Agency Intelligence · June 26, 2026<br>
+  <span style="color:var(--text-dim);font-size:11px">Battle cards are competitive intelligence tools for internal sales use. Information is based on publicly available data and firsthand experience. Market conditions, competitor offerings, and pricing are subject to change. Use diagnostic framing in all sales conversations.</span>
+</footer>
+
+</body>
+</html>

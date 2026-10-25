@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Visibility Audit · Space Coast Marketing</title>
+<style>
+  :root {
+    --orange: #FF4500;
+    --orange-glow: #FF6B35;
+    --navy: #1B2B4B;
+    --navy-light: #243456;
+    --black: #0A0A14;
+    --card-bg: #111122;
+    --surface: #161630;
+    --white: #F5F5F0;
+    --sage: #5E6F5D;
+    --text: #E2E8F0;
+    --text-muted: #94A3B8;
+    --text-dim: #64748B;
+    --border: #1E293B;
+    --green: #22C55E;
+    --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .page-wrapper {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  /* ── Header ──────────────────────────── */
+  .brand {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .brand .logo {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .brand .logo .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+    box-shadow: 0 0 8px var(--orange);
+  }
+  .brand .tagline {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--sage);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── Card ────────────────────────────── */
+  .audit-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px;
+  }
+
+  .audit-card h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .audit-card .subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+
+  /* ── What You Get ────────────────────── */
+  .what-you-get {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .what-you-get h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--orange);
+    margin-bottom: 14px;
+  }
+  .what-you-get ul {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+  .what-you-get li {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .what-you-get li .check {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--green-bg);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+  .what-you-get li strong { color: var(--text); }
+
+  /* ── Form ────────────────────────────── */
+  .audit-form { display: grid; gap: 18px; }
+
+  .field-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .field-group label .required {
+    color: var(--orange);
+    margin-left: 2px;
+  }
+  .field-group label .optional {
+    color: var(--text-dim);
+    font-weight: 400;
+    font-size: 11px;
+    margin-left: 6px;
+  }
+  .field-group input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  .field-group input:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255,69,0,0.1);
+  }
+  .field-group input::placeholder {
+    color: var(--text-dim);
+  }
+
+  /* ── Submit ──────────────────────────── */
+  .submit-btn {
+    width: 100%;
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 14px 24px;
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 4px;
+  }
+  .submit-btn:hover {
+    background: var(--orange-glow);
+  }
+  .submit-btn:active {
+    transform: scale(0.98);
+  }
+
+  .micro-copy {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--sage);
+    margin-top: 12px;
+  }
+
+  /* ── Trust strip ─────────────────────── */
+  .trust-strip {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+  .trust-strip span { display: flex; align-items: center; gap: 6px; }
+  .trust-strip .icon { font-size: 14px; }
+
+  /* ── AEO Badge ───────────────────────── */
+  .aeo-badge {
+    background: linear-gradient(135deg, rgba(255,69,0,0.1), rgba(255,107,53,0.05));
+    border: 1px solid rgba(255,69,0,0.2);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .aeo-badge .aeo-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .aeo-badge strong { color: var(--orange); }
+
+  /* ── Success state ───────────────────── */
+  .success-state {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .success-state .icon-big {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  .success-state h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .success-state p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .success-state .next-steps {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    text-align: left;
+    margin-top: 20px;
+  }
+  .success-state .next-steps h4 {
+    color: var(--orange);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  /* ── Responsive ──────────────────────── */
+  @media (max-width: 480px) {
+    .audit-card { padding: 24px; }
+    .audit-card h1 { font-size: 22px; }
+    .trust-strip { flex-direction: column; gap: 12px; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- Brand header -->
+  <div class="brand">
+    <div class="logo"><span class="dot"></span> Space Coast Marketing</div>
+    <div class="tagline">Merritt Island, FL · Local Visibility Experts</div>
+  </div>
+
+  <!-- Audit card -->
+  <div class="audit-card" id="form-card">
+
+    <h1>Get Your Free Visibility Audit</h1>
+    <p class="subtitle">See exactly where your business shows up — and where you're invisible — across Google, ChatGPT, Gemini, and local search. Compared against your top competitor. Personalized. Delivered in 48 hours. No obligation.</p>
+
+    <!-- AEO differentiation badge -->
+    <div class="aeo-badge">
+      <span class="aeo-icon">🔍</span>
+      <span>This isn't a generic SEO report. We analyze <strong>Google + ChatGPT + Gemini + local search</strong> visibility — the places your customers actually search. Most Brevard agencies don't even know what AEO is. <strong>Your competitor's AI visibility is your biggest threat.</strong></span>
+    </div>
+
+    <!-- What's included -->
+    <div class="what-you-get">
+      <h3>Your Audit Includes</h3>
+      <ul>
+        <li><span class="check">✓</span> <strong>Google search visibility</strong> — rankings, gaps, quick wins</li>
+        <li><span class="check">✓</span> <strong>AI search visibility</strong> — ChatGPT, Gemini, Perplexity analysis</li>
+        <li><span class="check">✓</span> <strong>Competitor benchmark</strong> — side-by-side vs your #1 local competitor</li>
+        <li><span class="check">✓</span> <strong>Technical issues</strong> — mobile speed, schema gaps, GBP optimization</li>
+        <li><span class="check">✓</span> <strong>Top 3 opportunities</strong> — ranked by impact, with specific fixes</li>
+      </ul>
+    </div>
+
+    <!-- Form -->
+    <form class="audit-form" id="audit-form" onsubmit="handleSubmit(event)">
+      <div class="field-group">
+        <label for="website">Website URL <span class="required">*</span></label>
+        <input type="url" id="website" name="website" placeholder="https://yourbusiness.com" required>
+      </div>
+      <div class="field-group">
+        <label for="business">Business Name <span class="required">*</span></label>
+        <input type="text" id="business" name="business" placeholder="Your Business Name" required>
+      </div>
+      <div class="field-group">
+        <label for="email">Your Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" placeholder="you@business.com" required>
+      </div>
+      <div class="field-group">
+        <label for="phone">Phone Number <span class="optional">— optional</span></label>
+        <input type="tel" id="phone" name="phone" placeholder="(321) 555-0123">
+      </div>
+
+      <button type="submit" class="submit-btn">Get My Free Visibility Audit →</button>
+
+      <p class="micro-copy">Delivered in 48 hours · No obligation · Personalized to your business</p>
+    </form>
+
+    <!-- Trust strip -->
+    <div class="trust-strip">
+      <span><span class="icon">⏱️</span> 72-Hour Preview Guarantee</span>
+      <span><span class="icon">🔓</span> No Contracts Ever</span>
+      <span><span class="icon">📍</span> Merritt Island, FL</span>
+    </div>
+
+  </div>
+
+  <!-- Success state (hidden by default) -->
+  <div class="audit-card" id="success-card" style="display:none;">
+    <div class="success-state">
+      <div class="icon-big">🚀</div>
+      <h2>Audit Request Received!</h2>
+      <p>We're analyzing <strong id="success-business">your business</strong> now.</p>
+      <p>You'll receive your personalized visibility audit within <strong>48 hours</strong> at <strong id="success-email">your email</strong>.</p>
+
+      <div class="next-steps">
+        <h4>What Happens Next</h4>
+        <p style="font-size:13px;margin-bottom:8px"><strong>1.</strong> We scan your website + Google Business Profile + AI search visibility</p>
+        <p style="font-size:13px;margin-bottom:8px"><strong>2.</strong> We benchmark you against your top local competitor</p>
+        <p style="font-size:13px;margin-bottom:8px"><strong>3.</strong> You receive a detailed report with specific, ranked recommendations</p>
+        <p style="font-size:13px;margin-bottom:0"><strong>4.</strong> If you want us to fix the gaps, we'll talk. If not, you keep the audit — no strings.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const form = document.getElementById('audit-form');
+    const business = document.getElementById('business').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const website = document.getElementById('website').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+
+    // Set success state values
+    document.getElementById('success-business').textContent = business || 'your business';
+    document.getElementById('success-email').textContent = email || 'the email you provided';
+
+    // Swap cards
+    document.getElementById('form-card').style.display = 'none';
+    document.getElementById('success-card').style.display = 'block';
+
+    // === INTEGRATION POINT ===
+    // Replace this with your actual backend endpoint.
+    // Options:
+    //   1. POST to Airtable webhook
+    //   2. POST to n8n webhook → Airtable + Slack notification
+    //   3. POST to your Flask backend
+    //   4. POST to Google Sheets via Apps Script
+    //
+    // Example:
+    // fetch('https://hooks.airtable.com/workflows/v1/...', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ website, business, email, phone })
+    // });
+
+    console.log('Audit requested:', { website, business, email, phone });
+  }
+</script>
+
+</body>
+</html>

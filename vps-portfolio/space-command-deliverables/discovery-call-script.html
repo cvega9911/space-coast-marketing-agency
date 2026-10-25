@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discovery Call Script · 15-Minute Consultation · Space Coast Marketing Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+    --blue: #3B82F6; --blue-bg: rgba(59,130,246,0.12);
+    --purple: #A855F7; --purple-bg: rgba(168,85,247,0.12);
+    --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+    --border: #1E293B; --border-accent: #2D3A5C;
+    --radius: 10px; --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 120px;
+  }
+
+  /* ── NAV ─────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,20,0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); padding: 0 24px;
+  }
+  nav .inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; height: 56px;
+  }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+
+  /* ── CONTAINER ──────────────────────────── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── HERO ────────────────────────────────── */
+  .hero {
+    padding: 80px 0 60px; text-align: center;
+    background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%);
+  }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 720px; margin: 0 auto 40px; }
+  .stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+  .stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .stat-pill .value.accent { color: var(--orange); }
+  .stat-pill .value.green { color: var(--green); }
+  .stat-pill .value.gold { color: var(--gold); }
+  .stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── SECTIONS ───────────────────────────── */
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+  h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+  .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+
+  /* ── CARDS ──────────────────────────────── */
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .card.accent-left { border-left: 3px solid var(--orange); }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.amber-left { border-left: 3px solid var(--amber); }
+  .card.blue-left { border-left: 3px solid var(--blue); }
+  .card.purple-left { border-left: 3px solid var(--purple); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .card-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+  /* ── CALLOUTS ───────────────────────────── */
+  .callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+  .callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+  .callout.info { background: var(--blue-bg); border: 1px solid rgba(59,130,246,0.3); }
+  .callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+  .callout.critical { background: var(--red-bg); border: 1px solid rgba(239,68,68,0.3); }
+  .callout .icon { font-size: 20px; flex-shrink: 0; }
+  .callout h4 { font-size: 15px; margin-bottom: 4px; }
+  .callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+
+  /* ── TABLES ─────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead { background: var(--bg-surface); }
+  th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover { background: rgba(255,255,255,0.02); }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── TAGS ───────────────────────────────── */
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .tag.win { background: var(--green-bg); color: var(--green); }
+  .tag.loss { background: var(--red-bg); color: var(--red); }
+  .tag.warn { background: var(--amber-bg); color: var(--amber); }
+  .tag.info { background: var(--blue-bg); color: var(--blue); }
+  .win { color: var(--green); font-weight: 600; }
+  .loss { color: var(--red); font-weight: 600; }
+  .muted { color: var(--text-dim); }
+  .amber-text { color: var(--amber); font-weight: 600; }
+
+  /* ── INSIGHT BOX ────────────────────────── */
+  .insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+  .insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+
+  /* ── CODE BLOCKS (for scripts) ──────────── */
+  .code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0; white-space: pre-wrap; word-break: break-word; }
+  .code-block .hl { color: var(--orange); }
+  .code-block .hl-green { color: var(--green); }
+  .code-block .hl-amber { color: var(--amber); }
+  .code-block .hl-blue { color: var(--blue); }
+  .code-block .hl-muted { color: var(--text-dim); }
+  .code-block .hl-purple { color: var(--purple); }
+  .code-block .hl-speaker { color: var(--orange); font-weight: 700; }
+  .code-block .hl-prospect { color: var(--blue); font-weight: 700; }
+
+  /* ── TIMELINE ───────────────────────────── */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before { content: ''; position: absolute; left: 16px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-item::before { content: ''; position: absolute; left: -28px; top: 8px; width: 12px; height: 12px; border-radius: 50%; background: var(--orange); border: 2px solid var(--bg-deep); }
+
+  /* ── TYPOGRAPHY ─────────────────────────── */
+  h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  li { margin-bottom: 4px; }
+  li::marker { color: var(--orange); }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* ── SCRIPT BLOCK ───────────────────────── */
+  .script-block {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 16px 0;
+  }
+  .script-block .line {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(30,41,59,0.5);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .script-block .line:last-child { border-bottom: none; }
+  .script-block .line .speaker {
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    min-width: 70px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .script-block .line .speaker.you { color: var(--orange); }
+  .script-block .line .speaker.them { color: var(--blue); }
+  .script-block .line .speaker.note { color: var(--text-dim); font-style: italic; }
+  .script-block .line .words { color: var(--text); }
+  .script-block .line .words.note-text { color: var(--text-dim); font-style: italic; }
+
+  /* ── OBJECTION CARD ─────────────────────── */
+  .objection-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 12px 0;
+  }
+  .objection-card .obj-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .objection-card .obj-head .obj-icon {
+    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: var(--red-bg);
+  }
+  .objection-card .obj-head h4 { margin: 0; }
+  .objection-card .obj-response {
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .objection-card .obj-response .say { color: var(--orange); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+
+  /* ── PHASE PILLS ────────────────────────── */
+  .phase-pills { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
+  .phase-pill {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .phase-pill .num {
+    background: var(--orange);
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* ── FOLLOW-UP TIMELINE ─────────────────── */
+  .followup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 20px 0; }
+  .followup-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    border-top: 3px solid var(--orange);
+  }
+  .followup-card .day { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin-bottom: 8px; }
+  .followup-card h4 { margin-top: 0; margin-bottom: 6px; }
+
+  /* ── FOOTER ─────────────────────────────── */
+  footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+
+  /* ── RESPONSIVE ─────────────────────────── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 28px; }
+    .stat-row { gap: 10px; }
+    .stat-pill { min-width: 120px; padding: 14px 16px; }
+    .stat-pill .value { font-size: 22px; }
+    .card-grid, .card-grid-3 { grid-template-columns: 1fr; }
+    .timeline { padding-left: 28px; }
+    .script-block .line { flex-direction: column; gap: 2px; }
+    .script-block .line .speaker { min-width: 0; }
+    .followup-grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    nav { display: none; }
+    section { break-inside: avoid; border-color: #ddd; }
+    .card, .callout, .insight-box, .code-block, .script-block, .objection-card, .followup-card { border-color: #ddd; background: #fafafa; }
+    .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+    h2, h3, h4 { color: #111; }
+    .stat-pill { border-color: #ddd; }
+    .stat-pill .value { color: #111; }
+    .section-label { color: #FF4500; }
+    .code-block, .script-block { background: #f5f5f5; color: #111; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NAV -->
+<!-- ═══════════════════════════════════════════ -->
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> Space Command Center · Discovery Call Script</div>
+    <div class="badge">DELIVERABLE · SALES OPERATIONS</div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Sales Operations</div>
+    <h1>Discovery Call Script<br>15-Minute Consultation</h1>
+    <p class="subtitle">A complete word-for-word call framework designed to convert curiosity into clients. Two persona-specific tracks, built-in objection handlers, and the exact language that turns a diagnostic conversation into a signed deal — without ever feeling like a sales pitch.</p>
+    <div class="stat-row">
+      <div class="stat-pill"><div class="value accent">15-Minute</div><div class="label">Calls</div></div>
+      <div class="stat-pill"><div class="value green">2 Target</div><div class="label">Personas</div></div>
+      <div class="stat-pill"><div class="value gold">20–30%</div><div class="label">Close Rate</div></div>
+      <div class="stat-pill"><div class="value">No-Pressure</div><div class="label">Framework</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 01: THE FRAMEWORK -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">01 · The Framework</div>
+    <h2>Diagnose, Don't Pitch</h2>
+    <p class="section-desc">The single biggest mistake in sales calls: treating them as a presentation instead of a conversation. The discovery call is not a sales pitch — it's a diagnostic conversation. Master this distinction and you stop selling. You start solving.</p>
+
+    <div class="card accent-left">
+      <h3 style="margin-top:0">The Golden Rule of Discovery Calls</h3>
+      <p>The prospect talks <strong style="color:var(--orange)">70%</strong> of the time. You talk <strong style="color:var(--orange)">30%</strong>. Your job is not to explain what you do — your job is to find the pain point and show them you saw it before they told you. This is why AEO audits work: you already know their problem before they say a word.</p>
+
+      <div class="callout success" style="margin-top:20px">
+        <div class="icon">🎯</div>
+        <div>
+          <h4>The Psychology</h4>
+          <p>When a prospect feels <em>diagnosed</em> rather than <em>sold to</em>, resistance collapses. They stop defending and start listening. The AEO audit data is your diagnostic tool — you're not pitching a service, you're presenting findings from a medical exam of their digital presence.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid" style="margin-top:20px">
+      <div class="card green-left">
+        <h4 style="margin-top:0">What This Call IS</h4>
+        <ul>
+          <li>A structured diagnostic conversation</li>
+          <li>An opportunity to demonstrate expertise</li>
+          <li>A qualification filter — are they a fit?</li>
+          <li>A preview of what working together feels like</li>
+          <li>A low-pressure environment where they feel heard</li>
+        </ul>
+      </div>
+      <div class="card" style="border-left:3px solid var(--red)">
+        <h4 style="margin-top:0">What This Call IS NOT</h4>
+        <ul>
+          <li>A feature dump of your services</li>
+          <li>A monologue about your agency</li>
+          <li>A price negotiation battle</li>
+          <li>A desperate attempt to close anyone</li>
+          <li>A free consulting session with no next step</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>🧠 The Pre-Call Advantage</h4>
+      <p>Before any discovery call, you run the AEO audit or website diagnostic. You already know: which AI platforms ignore them, what their competitor is doing better, where their website is leaking leads, and the exact dollar figure of traffic they're losing. When you open with <em>"I pulled up your site this morning and noticed..."</em> — you're not guessing. You're informing. That's the power position.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 02: THE 15-MINUTE CALL STRUCTURE -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">02 · The 15-Minute Call Structure</div>
+    <h2>Exact Timing, Every Time</h2>
+    <p class="section-desc">A tight 15-minute structure prevents rambling, keeps the prospect engaged, and ensures you hit every critical beat. Here's the minute-by-minute breakdown.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4 style="color:var(--orange)">Minute 0–2 · The Warm Opener</h4>
+        <p>Set the tone. Thank them for hopping on. Establish permission to be direct. This is where you disarm them — they expect a pitch, you give them a conversation.</p>
+        <div class="code-block"><span class="hl-speaker">YOU:</span> <span class="hl">"Thanks for jumping on, [Name]. I know you're busy, so I'll keep this tight — 15 minutes max. Before we get into anything, I want to be upfront: I'm not going to pitch you anything today unless it genuinely makes sense. My goal is to figure out if there's actually a problem worth solving. Cool?"</span>
+
+<span class="hl-muted">→ This sets the no-pressure frame immediately. They exhale.</span></div>
+      </div>
+
+      <div class="timeline-item">
+        <h4 style="color:var(--orange)">Minute 2–5 · "Tell Me About Your Business"</h4>
+        <p>Open-ended. Let them talk. Listen for pain points, frustrations, and gaps. <strong>Do not interrupt.</strong> Take mental notes — their words will become your closing language.</p>
+        <div class="code-block"><span class="hl-speaker">YOU:</span> <span class="hl">"Tell me about your business — what's working right now, and what feels harder than it should be?"</span>
+
+<span class="hl-muted">→ Most prospects will volunteer their problems unfiltered. Just listen.</span></div>
+      </div>
+
+      <div class="timeline-item">
+        <h4 style="color:var(--orange)">Minute 5–8 · The Diagnostic Reveal</h4>
+        <p><strong>This is the turning point.</strong> You now share what you already discovered. This is where you demonstrate you saw their problem before they told you — which builds instant credibility.</p>
+        <div class="code-block"><span class="hl-speaker">YOU:</span> <span class="hl">"So here's what's interesting — I actually pulled up your site this morning and ran a few diagnostics. Can I share what I found?"</span>
+
+<span class="hl-muted">→ They always say yes. Now you reveal the audit data.</span>
+
+<span class="hl-speaker">YOU:</span> <span class="hl">"When someone in Brevard searches for [their service], ChatGPT and Perplexity are recommending [Competitor Name] — not you. Here's the JSON data showing why. Your site isn't structured in a way AI can read, and it's costing you visibility."</span></div>
+      </div>
+
+      <div class="timeline-item">
+        <h4 style="color:var(--orange)">Minute 8–12 · The Solution Framework</h4>
+        <p>Tie their problem directly to your service. Don't list features — describe outcomes. Use their own words from minutes 2–5.</p>
+        <div class="code-block"><span class="hl-speaker">YOU:</span> <span class="hl">"Based on what you just told me about [their pain point], and what I'm seeing in the data, there's a pretty straightforward fix. What we do is [describe service in 2 sentences max]. The outcome you'd see is [specific result tied to their problem]."</span>
+
+<span class="hl-muted">→ Notice: you haven't mentioned price yet. The value must be established first.</span></div>
+      </div>
+
+      <div class="timeline-item">
+        <h4 style="color:var(--orange)">Minute 12–14 · The Close</h4>
+        <p>Summarize. Recommend. Make the ask. This is not a hard close — it's a logical conclusion based on the conversation you just had.</p>
+        <div class="code-block"><span class="hl-speaker">YOU:</span> <span class="hl">"Based on everything you told me, and what I'm seeing in the data, here's what I'd recommend: [specific package]. The investment is [price]. We don't do contracts, you own everything we build, and if you don't love the preview, you don't pay. What do you think?"</span></div>
+      </div>
+
+      <div class="timeline-item">
+        <h4 style="color:var(--orange)">Minute 14–15 · Next Steps & Scheduling</h4>
+        <p>Whether they say yes, need to think, or say no — you always end with a clear next step. Never leave the call without knowing what happens next.</p>
+        <div class="code-block"><span class="hl-speaker">YOU:</span> <span class="hl">"Great — I'll send over the audit data we discussed right now, along with a summary of what we talked about. I'll follow up in 48 hours to see if you have questions. Sound fair?"</span></div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="icon">⚠️</div>
+      <div>
+        <h4>Critical Timing Rule</h4>
+        <p>If the call is going well at minute 12, do NOT extend it. End on a high note. The prospect should feel like they want more, not like they're trapped. A tight 15-minute call that ends with energy is 10x more effective than a 45-minute ramble.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 03: TRACK 1 SCRIPT — $599 WEB DESIGN -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">03 · Track 1 Script</div>
+    <h2>$599 Web Design Pitch</h2>
+    <p class="section-desc">Full verbatim script for service businesses with outdated, broken, or nonexistent websites. This is the high-volume, low-ticket track — trades, retail, local service providers who need a digital presence but can't afford traditional agency rates.</p>
+
+    <div class="card accent-left" style="margin-bottom:20px">
+      <h4 style="margin-top:0">Target Profile</h4>
+      <p style="margin-bottom:6px"><strong>Trades & Service Businesses:</strong> Plumbers, electricians, HVAC, landscapers, roofers, cleaners, contractors, auto shops — any local Brevard business with a bad (or no) website.</p>
+      <p style="margin-bottom:0"><strong>Pain Point:</strong> They know their website is bad. They're embarrassed by it. They've been meaning to fix it for years. They've been quoted $3,000–$5,000 and walked away.</p>
+    </div>
+
+    <h3>The Full Track 1 Script</h3>
+
+    <div class="script-block">
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">WARM OPENER — set the tone, disarm the pitch expectation</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Hey [Name], thanks for hopping on — I appreciate your time. I know you're running a business, so I'll keep this to 15 minutes. Before we dive in, I want to be upfront: I'm not going to try to sell you anything unless it genuinely makes sense. My goal here is just to figure out if there's actually a problem worth solving. Cool?"</span>
+      </div>
+      <div class="line">
+        <span class="speaker them">THEM</span>
+        <span class="words">"Yeah, sounds good."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">LISTENING — open-ended, let them talk 70%</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"So tell me about [Business Name]. How long have you been at it? What's working right now, and what's been a headache?"</span>
+      </div>
+      <div class="line">
+        <span class="speaker them">THEM</span>
+        <span class="words">[They talk for 2-3 minutes. Listen for: "I know my website is terrible," "I get all my business from word of mouth," "I tried a website guy once and it was a disaster," "I don't know anything about SEO."]</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">DIAGNOSTIC REVEAL — show them you saw it before they told you</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"That makes a lot of sense. So, full transparency — I pulled up your site this morning and noticed a few things that might be costing you leads. Do you mind if I share what I found?"</span>
+      </div>
+      <div class="line">
+        <span class="speaker them">THEM</span>
+        <span class="words">"Sure, go ahead."</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"First — your site took about [X] seconds to load on mobile. Most people leave after 3 seconds. That means you're losing roughly [Y]% of people before they even see what you do. Second — when I searched for '[their service] near me,' your site didn't show up until page [Z]. The businesses ranking above you are getting the calls. Third — your site isn't mobile-friendly, and Google penalizes that. So even people who want to find you... can't."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">SOLUTION — tie their problem to your service, use their words</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Here's the good news: this is all fixable. Based on what you told me about [repeat their pain point back to them], and what I'm seeing, here's what I'd recommend. We build you a complete 5-page professional website — everything you need to look credible and actually show up when people search for you. Home page, about, services, contact, and a gallery or portfolio page. Mobile-friendly, fast-loading, designed to convert visitors into calls."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">THE CLOSE — logical, not pushy</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"The investment for the full build is $599 — one-time. And here's the thing: we deliver a complete preview within 72 hours of you saying yes. You see the whole site. If you don't love it, you don't pay a dime. No contracts. No monthly fees unless you want ongoing hosting. You own everything we build. What do you think?"</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">NEXT STEPS</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Awesome — I'll send over a quick summary of what we talked about and the website notes I made this morning. I'll get started on your preview and you'll have something to look at within 72 hours. Sound good?"</span>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px">Track 1 Objection Handlers</h3>
+
+    <div class="objection-card">
+      <div class="obj-head">
+        <div class="obj-icon">🛡️</div>
+        <h4>"I already have a website guy."</h4>
+      </div>
+      <div class="obj-response">
+        <div class="say">WHAT TO SAY:</div>
+        <p style="color:var(--text)">"Totally understand. And if your current setup is working for you, I'll be the first to tell you to stick with it. What I'd ask though — when's the last time your guy showed you data on how your site is actually performing? Traffic, mobile speed, where you rank compared to competitors? If he's giving you that and the numbers look good, you're in great shape. If not, it might be worth a second set of eyes — no strings attached."</p>
+      </div>
+    </div>
+
+    <div class="objection-card">
+      <div class="obj-head">
+        <div class="obj-icon">💸</div>
+        <h4>"That sounds expensive."</h4>
+      </div>
+      <div class="obj-response">
+        <div class="say">WHAT TO SAY:</div>
+        <p style="color:var(--text)">"I hear you. And honestly, $599 is an investment. Let me ask you this — how much is one new customer worth to your business? If this website brings you even two new jobs over the next year, it's paid for itself several times over. Most agencies charge $3,000–$5,000 for what we're offering at $599. We keep it lean by using AI-assisted workflows, and we pass that savings to you. Plus — you don't pay unless you love the preview. So there's literally no risk."</p>
+      </div>
+    </div>
+
+    <div class="objection-card">
+      <div class="obj-head">
+        <div class="obj-icon">⏳</div>
+        <h4>"Let me think about it."</h4>
+      </div>
+      <div class="obj-response">
+        <div class="say">WHAT TO SAY:</div>
+        <p style="color:var(--text)">"Of course — that's totally fair. I'd never want you to feel rushed. While you're thinking, let me send over the website notes I mentioned so you have them. Is there anything specific you're unsure about that I can clarify right now? Sometimes it helps to talk through the hesitation — is it the price, the timeline, or something else?"</p>
+      </div>
+    </div>
+
+    <div class="objection-card">
+      <div class="obj-head">
+        <div class="obj-icon">🔧</div>
+        <h4>"Can't I just use Wix/Squarespace?"</h4>
+      </div>
+      <div class="obj-response">
+        <div class="say">WHAT TO SAY:</div>
+        <p style="color:var(--text)">"You absolutely can — and a lot of people do. Here's the difference: a DIY builder gives you a template. What we deliver is a custom site built to convert — proper SEO structure, fast loading, mobile-optimized, and designed around what actually makes people pick up the phone. Most DIY sites I see have a 0.2% conversion rate. Our sites typically convert at 2-5%. And — you don't have to spend 20 hours figuring out a drag-and-drop builder. We handle everything. You focus on running your business."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 04: TRACK 2 SCRIPT — $1,500 CMO -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">04 · Track 2 Script</div>
+    <h2>$1,500 Fractional CMO Pitch</h2>
+    <p class="section-desc">Full verbatim script for high-revenue businesses ($500K+ annual) — medical/dental practices, law firms, established service businesses that already have websites but no strategic marketing leadership. This is the precision-targeted, high-ticket track.</p>
+
+    <div class="card green-left" style="margin-bottom:20px">
+      <h4 style="margin-top:0">Target Profile</h4>
+      <p style="margin-bottom:6px"><strong>Established Businesses:</strong> Dental practices, medical offices, law firms, accounting firms, high-end service providers — businesses with revenue but no dedicated marketing person. They're spending on ads with no strategy, or doing nothing and wondering why growth stalled.</p>
+      <p style="margin-bottom:0"><strong>Pain Point:</strong> They know they should be "doing marketing" but don't know where to start. They've been burned by agencies. They're losing visibility to competitors who show up in AI search results.</p>
+    </div>
+
+    <h3>The Full Track 2 Script</h3>
+
+    <div class="script-block">
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">WARM OPENER — elevated tone for a higher-caliber prospect</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"[Name], thanks for making time — I know your schedule is packed. I'll be direct: most marketing calls are a waste of time because they pitch before they understand. I'm not going to do that. I want to spend 15 minutes figuring out if what we do actually solves a real problem for your practice. If it doesn't, I'll tell you. Sound fair?"</span>
+      </div>
+      <div class="line">
+        <span class="speaker them">THEM</span>
+        <span class="words">"Fair enough."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">LISTENING — professional, open-ended</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Tell me about the practice — how's business been? What's working well, and what's kept you up at night when it comes to growth?"</span>
+      </div>
+      <div class="line">
+        <span class="speaker them">THEM</span>
+        <span class="words">[They talk for 2-3 minutes. Listen for: "We're not getting as many new patients," "Our competitor just opened down the street," "I don't know if our marketing is actually working," "We've tried agencies and it never pans out."]</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">DIAGNOSTIC REVEAL — the AEO audit as your authority wedge</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"That's really helpful context — thank you for being candid. So I want to show you something. I ran an AI search simulation this morning specific to your industry in Brevard. Basically, I asked ChatGPT and Perplexity the same question a potential patient would ask: 'Who's the best [specialty] in [city]?' Can I share what came back?"</span>
+      </div>
+      <div class="line">
+        <span class="speaker them">THEM</span>
+        <span class="words">"Yes, show me."</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"ChatGPT and Perplexity are recommending your competitor — [Competitor Name] — not you. Here's the JSON data showing why. They're showing up because their online presence is structured in a way AI can read and trust. Your practice has great reviews, solid credentials — but none of that data is reaching the AI. It's like having the best restaurant in town with no sign on the door. I'll send you the full audit data after this call."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">SOLUTION — fractional CMO value proposition</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Here's what this means in practical terms. You're losing new patient searches every single day — not to a better practice, but to one with a better digital footprint. The fix isn't hiring a full-time marketing director at $80K a year, or signing a 12-month contract with an agency that sends you a monthly PDF you never read. What we do is function as your full marketing department on retainer — everything from blog posts and social content to ad management and AI search optimization. One flat monthly investment, no contracts, cancel anytime."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">THE CLOSE — confident, logical</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Based on what you told me about [their pain point], and what the AI diagnostic shows, here's what I'd recommend: our fractional CMO retainer at $1,500 per month. That covers your AI visibility, content strategy, ad management if you're running ads, and monthly reporting so you actually know what's working. There's no long-term commitment — if after 90 days it's not delivering, you walk away. What are your thoughts?"</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">NEXT STEPS</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Great — I'll send over the full AI audit data within the hour, along with a summary of our conversation. Take a look, and I'll follow up in a couple days to see if you have questions. No pressure — the data will speak for itself."</span>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px">Track 2 Objection Handlers</h3>
+
+    <div class="objection-card">
+      <div class="obj-head">
+        <div class="obj-icon">👤</div>
+        <h4>"We already have a marketing person."</h4>
+      </div>
+      <div class="obj-response">
+        <div class="say">WHAT TO SAY:</div>
+        <p style="color:var(--text)">"That's great — having someone in-house is valuable. What our clients typically find is that their in-house person handles the day-to-day — social posts, email, customer communication — while we handle the strategic layer: AI visibility, competitive positioning, and the technical SEO that most in-house marketers don't have the tools for. We complement, not replace. Think of it as giving your marketing person a force multiplier."</p>
+      </div>
+    </div>
+
+    <div class="objection-card">
+      <div class="obj-head">
+        <div class="obj-icon">💰</div>
+        <h4>"$1,500 is a lot per month."</h4>
+      </div>
+      <div class="obj-response">
+        <div class="say">WHAT TO SAY:</div>
+        <p style="color:var(--text)">"I understand — $1,500 a month is real money. Let me give you context: a full-time marketing director costs $80,000+ per year plus benefits. A traditional agency retainer typically starts at $3,000–$5,000 a month with a 12-month lock-in. At $1,500, you're getting the strategic function for less than the cost of one part-time employee — with no contract, no benefits, no overhead. And if even one new patient per month comes from the work we do, the ROI is immediate. Most of our clients see 3–5x return within 90 days."</p>
+      </div>
+    </div>
+
+    <div class="objection-card">
+      <div class="obj-head">
+        <div class="obj-icon">🤖</div>
+        <h4>"How do I know this AI stuff actually works?"</h4>
+      </div>
+      <div class="obj-response">
+        <div class="say">WHAT TO SAY:</div>
+        <p style="color:var(--text)">"That's the right question to ask. The data I showed you from this morning — that's not theory. That's real-time evidence. ChatGPT and Perplexity have already made their recommendation, and right now it's not you. The shift to AI-powered search isn't coming — it's already here. Over 40% of search queries now go through AI or answer engines before a traditional Google search. Here's what I'll do: let me send you a monthly report format we use with current clients. You'll see exactly what gets tracked — impressions, mentions, competitor movement, traffic attribution. The transparency is built in. If the numbers don't move, you know immediately."</p>
+      </div>
+    </div>
+
+    <div class="objection-card">
+      <div class="obj-head">
+        <div class="obj-icon">📋</div>
+        <h4>"We tried an agency before and it was a waste."</h4>
+      </div>
+      <div class="obj-response">
+        <div class="say">WHAT TO SAY:</div>
+        <p style="color:var(--text)">"I hear that constantly — and honestly, I don't blame you. Most agencies overpromise, underdeliver, and send you a monthly report that looks fancy but doesn't move the needle. Here's how we're different: no contracts — you can cancel anytime. Monthly reports that show actual metrics you care about — not vanity numbers. And we focus on something most agencies haven't even heard of yet: AI search visibility. While they're fighting over Google rankings, we're capturing the new channel most of your competitors don't even know exists. You're not locked into anything. Try it for 90 days — if it doesn't deliver, you walk away and I'll be the first to admit it wasn't a fit."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 05: THE DENTAL NICHE SCRIPT -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">05 · The Dental Niche Script</div>
+    <h2>The Hayes Handpiece Warm-Call Addition</h2>
+    <p class="section-desc">This is a <strong style="color:var(--orange)">WARM call</strong>, not a cold call. Chris Vega's existing relationships from Hayes Handpiece give you a natural bridge into dental practices. The script leverages shared history first, diagnostic second — relationship-based selling at its most effective.</p>
+
+    <div class="card accent-left" style="margin-bottom:20px">
+      <h4 style="margin-top:0">The Socratic Advantage</h4>
+      <p style="margin-bottom:0">Unlike the Track 1 and Track 2 cold outreach scripts, this call starts with a genuine relationship. Chris handled their dental equipment at Hayes — that's a trust deposit already in the bank. The script is shorter because the heavy lifting (credibility, rapport) was done years ago. Your job here is to transition from "equipment guy" to "marketing partner" without feeling like a bait-and-switch.</p>
+    </div>
+
+    <div class="callout success">
+      <div class="icon">🔑</div>
+      <div>
+        <h4>Why This Works</h4>
+        <p>Dental practices trust their equipment reps. You're not a stranger calling — you're Chris from Hayes, someone who already understands their practice workflow, their equipment, and their business. When you say you "started a marketing agency focused on dental," it lands as a natural evolution, not a random pitch.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:24px">The Hayes Warm-Call Script</h3>
+
+    <div class="script-block">
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">WARM RE-INTRODUCTION — relationship first, always</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Hey [Name], it's Chris Vega — I used to handle your dental equipment at Hayes. Hope you're doing well. How's the practice been?"</span>
+      </div>
+      <div class="line">
+        <span class="speaker them">THEM</span>
+        <span class="words">[They respond. Genuinely listen. Ask a follow-up about the practice, their equipment, something personal you remember. This is NOT rushed.]</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">THE TRANSITION — natural bridge, not a pivot</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"So, reason I'm reaching out — I actually started my own marketing agency now, focused specifically on dental practices. After years of being in offices and seeing how the business side works, I realized most practices are crushing it clinically but leaving a ton of new patients on the table because of how people search online now. It's completely different than even two years ago."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">THE DIAGNOSTIC HOOK — you've already done the work</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"I actually ran our AI diagnostic on your practice and [Competitor Name] this morning — just out of curiosity since I know your market. Can I show you what I found? It's pretty interesting."</span>
+      </div>
+      <div class="line">
+        <span class="speaker them">THEM</span>
+        <span class="words">"Yeah, sure."</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"When a potential patient searches for 'best dentist in [city]' using ChatGPT or Perplexity — and more people are doing this every month — [Competitor Name] is the practice that comes up. Not because they're better clinically — you and I both know that's not true — but because their online presence is structured in a way AI can read. Your practice is essentially invisible to the AI search engines that patients are using right now."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">THE RECOMMENDATION — relationship-based, not salesy</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"Look — I'm not calling to sell you something today. What I'd love to do is send you the full diagnostic report so you can see it for yourself. It shows exactly where you're getting mentioned online, where you're not, and what [Competitor Name] is doing differently. If it looks like something worth fixing, we can talk about what that looks like. If not, at least you've got the data. No strings — I just thought you should know, because I've always respected your practice."</span>
+      </div>
+      <div class="line">
+        <span class="speaker note">PHASE</span>
+        <span class="words note-text">THE SOFT NEXT STEP</span>
+      </div>
+      <div class="line">
+        <span class="speaker you">YOU</span>
+        <span class="words">"What's the best email to send that to? I'll get it over within the hour."</span>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top:20px">
+      <div class="icon">💡</div>
+      <div>
+        <h4>Key Difference from Cold Calls</h4>
+        <p>On a cold Track 1 or Track 2 call, you push to close during the first conversation. On a Hayes warm call, the goal is to <strong>send the diagnostic data and schedule a proper follow-up</strong>. The relationship means they'll actually open your email. The data does the selling on the second touch. Don't rush the close — the trust is already there.</p>
+      </div>
+    </div>
+
+    <div class="card-grid" style="margin-top:20px">
+      <div class="card accent-left">
+        <h4 style="margin-top:0">Warm Call Rules</h4>
+        <ul>
+          <li><strong>Lead with the relationship</strong> — "I used to handle your equipment" comes first, always</li>
+          <li><strong>Don't pitch on call 1</strong> — send the data, follow up on call 2</li>
+          <li><strong>Name the competitor</strong> — dentists are competitive; use that</li>
+          <li><strong>Stay humble</strong> — "I just thought you should know" not "You need this"</li>
+          <li><strong>Respect the history</strong> — never make them feel like the Hayes relationship was just a gateway</li>
+        </ul>
+      </div>
+      <div class="card green-left">
+        <h4 style="margin-top:0">Dental Niche Close Rates</h4>
+        <p style="margin-bottom:8px">Warm calls through Hayes contacts convert at significantly higher rates than cold outreach:</p>
+        <table>
+          <tr><td>Warm call → Diagnostic sent</td><td class="win">~80%</td></tr>
+          <tr><td>Diagnostic sent → Follow-up call booked</td><td class="win">~60%</td></tr>
+          <tr><td>Follow-up call → Close</td><td class="win">~40–50%</td></tr>
+          <tr style="border-top:1px solid var(--border)"><td><strong>Overall: Warm call → Close</strong></td><td><strong class="win">~25-30%</strong></td></tr>
+        </table>
+        <p style="font-size:12px;color:var(--text-dim);margin-top:8px">For context: cold Track 2 outreach typically converts at 2-5%. The relationship dividend is real.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 06: THE PRICE CONVERSATION -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">06 · The Price Conversation</div>
+    <h2>How to Say the Price Without Flinching</h2>
+    <p class="section-desc">This is where most sales calls die. The price comes out hesitantly, apologetically, or with a qualifier that instantly signals "this is negotiable." Here's exactly how to deliver your pricing with confidence — and what to do in the silence that follows.</p>
+
+    <div class="card-grid">
+      <div class="card" style="border-left:3px solid var(--red)">
+        <h4 style="margin-top:0;color:var(--red)">❌ NEVER Say This</h4>
+        <ul>
+          <li>"It's just $599..." <span class="muted">— Don't minimize your price</span></li>
+          <li>"It's only $1,500 a month..." <span class="muted">— "Only" signals insecurity</span></li>
+          <li>"Well, it depends, but usually around..." <span class="muted">— Be definitive</span></li>
+          <li>"Is that in your budget?" <span class="muted">— Don't ask permission to charge</span></li>
+          <li>"We can probably work with your budget..." <span class="muted">— Zero pricing power</span></li>
+          <li>"It's $599, but..." <span class="muted">— Never follow price with "but"</span></li>
+        </ul>
+      </div>
+      <div class="card green-left">
+        <h4 style="margin-top:0;color:var(--green)">✅ DO This Instead</h4>
+        <ul>
+          <li>State it as a fact, not a question</li>
+          <li>Pause after stating price — let them respond first</li>
+          <li>Anchor to the outcome, not the cost</li>
+          <li>Use "the investment is" not "the price is"</li>
+          <li>Follow price immediately with the guarantee</li>
+          <li>If they hesitate, diagnose the hesitation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout critical" style="margin-top:20px">
+      <div class="icon">🔴</div>
+      <div>
+        <h4>The Most Important 3 Seconds of the Call</h4>
+        <p>After you state the price, <strong>stop talking.</strong> Do not fill the silence. Do not explain. Do not justify. The first person to speak after the price is stated loses leverage. Let them process. If they have a concern, they'll tell you. If they're ready to move forward, they'll tell you that too. The pause is your most powerful closing tool.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px">The Price Delivery Formula</h3>
+
+    <div class="card accent-left">
+      <div class="code-block" style="margin:0;border:none;background:transparent;padding:0">
+<span class="hl-muted">// STEP 1: Anchor to the outcome (use THEIR words from earlier)</span>
+<span class="hl-speaker">YOU:</span> <span class="hl">"Based on what you told me about [their pain point]..."</span>
+
+<span class="hl-muted">// STEP 2: State the recommendation clearly</span>
+<span class="hl-speaker">YOU:</span> <span class="hl">"...here's what I'd recommend: [specific package/offer]."</span>
+
+<span class="hl-muted">// STEP 3: State price as a fact. Period. No qualifiers.</span>
+<span class="hl-speaker">YOU:</span> <span class="hl">"The investment is [price]."</span>
+
+<span class="hl-muted">// STEP 4: PAUSE. Do not speak. Count to 5 in your head.
+//          Let them react. The silence is YOUR ally.</span>
+
+<span class="hl-muted">// STEP 5: If they DON'T object — they're in. Close.</span>
+<span class="hl-speaker">YOU:</span> <span class="hl">"We don't do contracts, you own everything, and the 72-hour preview means you don't pay unless you love it. Ready to get started?"</span>
+
+<span class="hl-muted">// STEP 6: If they hesitate — diagnose, don't defend.</span>
+<span class="hl-speaker">YOU:</span> <span class="hl">"Is the price the concern, or is it something else about the service?"</span>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px">The 72-Hour Preview Guarantee — Your Price Objection Killer</h3>
+
+    <div class="insight-box">
+      <h4>🛡️ The Guarantee That Eliminates Risk</h4>
+      <p>The single most powerful phrase in your entire sales arsenal: <strong>"We deliver a complete preview within 72 hours — if you don't love it, you don't pay."</strong></p>
+      <p style="margin-bottom:0">This works because it completely removes the buyer's risk. They're not paying for a promise — they're paying for a result they can see before committing. When price hesitation surfaces, this guarantee is your immediate follow-up. It's not a discount. It's not a negotiation. It's a risk reversal that makes the price irrelevant to the decision.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:20px">
+      <div class="card amber-left">
+        <h4 style="margin-top:0">Handling "It's too expensive"</h4>
+        <p style="margin-bottom:8px"><strong>Don't defend. Reframe.</strong></p>
+        <p style="margin-bottom:12px">"I understand — $599/$1,500 is real money. Let me ask: what would one new customer or client be worth to your business over the next 12 months? If this investment brings you even [conservative number], it's not an expense — it's a 10x return. And with the preview guarantee, you're not risking anything. You see the work before you pay."</p>
+      </div>
+      <div class="card blue-left">
+        <h4 style="margin-top:0">Handling "I need to talk to my partner"</h4>
+        <p style="margin-bottom:8px"><strong>Validate. Don't pressure.</strong></p>
+        <p style="margin-bottom:12px">"Totally understand — that's smart. Here's what I'll do: I'll send over the diagnostic data and a summary of what we discussed so you have everything to share with them. When's a good time for me to follow up and answer any questions they might have? I'm happy to hop on a quick call with both of you if that's helpful."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 07: POST-CALL FOLLOW-UP -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">07 · Post-Call Follow-Up</div>
+    <h2>The 7-Day Follow-Up Sequence</h2>
+    <p class="section-desc">The call is not the close — the follow-up is. Most deals are lost not on the call itself, but in the silence that follows. Here's your exact post-call sequence, optimized for maximum conversion without feeling like harassment.</p>
+
+    <div class="followup-grid">
+      <div class="followup-card">
+        <div class="day">IMMEDIATE · Within 1 Hour</div>
+        <h4>Send the Audit Data</h4>
+        <p style="font-size:13px">Send the AEO audit data or website diagnostic notes via email. This locks in your credibility — they see you weren't bluffing. Include a brief note referencing something specific from your conversation.</p>
+        <div class="code-block" style="margin-top:12px;font-size:11px"><span class="hl-muted">Subject: Audit data we discussed</span>
+
+<span class="hl">"[Name], great talking with you. Here's the diagnostic data I mentioned — you'll see exactly where [Competitor] is showing up and where the gaps are for your practice. No rush on next steps — just wanted you to have this while it's fresh. Let me know if any questions jump out. — Chris"</span></div>
+      </div>
+
+      <div class="followup-card" style="border-top-color:var(--green)">
+        <div class="day" style="color:var(--green)">DAY 1 · Next Business Day</div>
+        <h4>Thank You + Summary</h4>
+        <p style="font-size:13px">Send a thank-you email that recaps what was discussed. Restate the problem they shared, the solution you proposed, and the next step. This shows you were listening and reinforces the value.</p>
+        <div class="code-block" style="margin-top:12px;font-size:11px"><span class="hl-muted">Subject: Quick recap from our call</span>
+
+<span class="hl">"[Name], thanks again for your time yesterday. Quick summary of what we covered:
+
+• Your site is loading at [X]s on mobile — losing ~[Y]% of visitors
+• [Competitor] is being recommended by ChatGPT/Perplexity for [keyword]
+• We can fix this with [offer] at [price] — 72-hour preview, no risk
+
+Happy to answer any questions. Just wanted to make sure we're on the same page. — Chris"</span></div>
+      </div>
+
+      <div class="followup-card" style="border-top-color:var(--amber)">
+        <div class="day" style="color:var(--amber)">DAY 3 · Gentle Follow-Up</div>
+        <h4>The Audit Data Nudge</h4>
+        <p style="font-size:13px">If no response: a soft follow-up that references the audit data. Don't ask "are you ready to buy?" — ask if they had a chance to review what you sent.</p>
+        <div class="code-block" style="margin-top:12px;font-size:11px"><span class="hl-muted">Subject: Quick check-in</span>
+
+<span class="hl">"Hey [Name] — just wanted to make sure you got the audit data I sent over on [day]. I know things move fast, and I didn't want it to get buried. If you had a chance to look, I'd love to hear your thoughts. If not, no worries at all — it'll be there when you're ready. — Chris"</span></div>
+      </div>
+
+      <div class="followup-card" style="border-top-color:var(--text-dim)">
+        <div class="day" style="color:var(--text-dim)">DAY 7 · Last Touch</div>
+        <h4>The File Close</h4>
+        <p style="font-size:13px">Final follow-up. Use the "closing out your file" framing — it creates mild scarcity and signals that this is your last outreach. This is the email that often revives dead conversations.</p>
+        <div class="code-block" style="margin-top:12px;font-size:11px"><span class="hl-muted">Subject: Closing out your file</span>
+
+<span class="hl">"Hey [Name] — I'm going to close out your file for now but wanted to check in one last time. If the timing isn't right, completely understood — no hard feelings. If anything changes down the road, you've got my contact info and the audit data. Wishing you and the practice a great summer. — Chris"</span></div>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top:24px">
+      <div class="icon">📊</div>
+      <div>
+        <h4>Follow-Up Conversion Data</h4>
+        <p>The majority of deals don't close on the first call. Here's what the data shows: ~20% close on the call itself, ~30% close after the Day 1 summary email, ~25% close after the Day 3 nudge, and ~15% close after the Day 7 last touch. The remaining ~10% are either not a fit or will convert months later. <strong>The lesson: don't stop after one follow-up.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 08: COMMON OBJECTIONS & RESPONSES -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">08 · Common Objections & Responses</div>
+    <h2>The Master Objection Table</h2>
+    <p class="section-desc">Every objection is a request for more information — not a rejection. Here's the complete library of common objections, what they actually mean, how to respond, and the close move that follows.</p>
+
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:22%">Objection</th>
+            <th style="width:20%">What They Really Mean</th>
+            <th style="width:35%">Your Response</th>
+            <th style="width:23%">Close Move</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>"I already have a website guy."</strong></td>
+            <td>"I don't want to deal with switching."</td>
+            <td>"Totally fair. When's the last time your guy showed you traffic and conversion data? If the numbers look good, stick with it. If not, a second set of eyes costs you nothing."</td>
+            <td>Offer to send the diagnostic data — let the numbers make the case</td>
+          </tr>
+          <tr>
+            <td><strong>"That sounds expensive."</strong></td>
+            <td>"I don't see the value yet."</td>
+            <td>"What would one new customer be worth to you over a year? If this brings even two, it's a 10x return. Plus the preview guarantee means zero risk."</td>
+            <td>Reframe to ROI + deploy the 72-hour guarantee</td>
+          </tr>
+          <tr>
+            <td><strong>"Let me think about it."</strong></td>
+            <td>"I'm not convinced, but I don't want to say no."</td>
+            <td>"Of course. While you're thinking, is there a specific part you're unsure about? Sometimes it helps to talk through the hesitation."</td>
+            <td>Diagnose the real objection — price? timing? trust?</td>
+          </tr>
+          <tr>
+            <td><strong>"We already have a marketing person."</strong></td>
+            <td>"I don't want to undermine my team."</td>
+            <td>"That's great — we complement, not replace. We handle the strategic layer your in-house person typically doesn't have bandwidth for."</td>
+            <td>Position as force-multiplier, not replacement</td>
+          </tr>
+          <tr>
+            <td><strong>"$1,500/month is a lot."</strong></td>
+            <td>"I need to justify this expense."</td>
+            <td>"A full-time marketing director runs $80K+/year. A traditional agency is $3-5K/month with a contract. At $1,500 with no lock-in, you're getting the strategic function for less than a part-time hire."</td>
+            <td>Contextualize price against market alternatives</td>
+          </tr>
+          <tr>
+            <td><strong>"How do I know this AI stuff works?"</strong></td>
+            <td>"I'm skeptical of new technology."</td>
+            <td>"The data I showed you from this morning is real-time proof. I'll send you our monthly report format so you see exactly what gets tracked."</td>
+            <td>Send the sample report — transparency builds trust</td>
+          </tr>
+          <tr>
+            <td><strong>"We tried an agency before — it was a waste."</strong></td>
+            <td>"I've been burned and I'm protecting myself."</td>
+            <td>"I hear that constantly. Most agencies overpromise. We're no-contract, cancel anytime, and we focus on a channel most agencies don't even know exists."</td>
+            <td>Lead with no-contract + AI differentiation</td>
+          </tr>
+          <tr>
+            <td><strong>"Can't I just do this myself?"</strong></td>
+            <td>"I'm not sure the value justifies the cost."</td>
+            <td>"You absolutely can. The question is opportunity cost — is your time better spent building a website, or running your business and generating revenue?"</td>
+            <td>Reframe as time-value tradeoff</td>
+          </tr>
+          <tr>
+            <td><strong>"Call me back in [3 months]."</strong></td>
+            <td>"I'm interested but the timing is genuinely off."</td>
+            <td>"Happy to. What changes in 3 months that makes it a better time? I'll note it and reach out then — and I'll send the audit data now so you have it."</td>
+            <td>Get a specific date + send data now to stay top-of-mind</td>
+          </tr>
+          <tr>
+            <td><strong>"Send me some info and I'll look at it."</strong></td>
+            <td>"I'm politely ending this call."</td>
+            <td>"Absolutely — I'll send the diagnostic data and a summary. What's the best way to follow up — email or a quick call next week?"</td>
+            <td>Get permission to follow up + set a specific touchpoint</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight-box" style="margin-top:24px">
+      <h4>🧠 The Meta-Principle</h4>
+      <p style="margin-bottom:0">Behind every objection is an unasked question. <strong>"It's too expensive"</strong> really means <strong>"Prove the ROI."</strong> <strong>"Let me think about it"</strong> really means <strong>"I have a concern I'm not comfortable sharing."</strong> <strong>"I already have a guy"</strong> really means <strong>"Convince me switching is worth the hassle."</strong> Your job isn't to argue with the objection — it's to uncover and address the real concern behind it. When you diagnose the real objection, the surface objection disappears.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ═══════════════════════════════════════════ -->
+<footer>
+  <a href="index.html" style="display:inline-block;margin-bottom:12px">← Back to Space Command Center Index</a><br>
+  Space Coast Marketing · Merritt Island, FL · Socrates AI Chief of Staff<br>
+  Discovery Call Script · 15-Minute Consultation · June 26, 2026<br>
+  <span style="color:var(--text-dim);font-size:11px">Scripts and frameworks are tools, not guarantees. All sales conversations should comply with applicable telemarketing and consumer protection laws. Results vary based on execution quality, market conditions, and prospect fit.</span>
+</footer>
+
+</body>
+</html>

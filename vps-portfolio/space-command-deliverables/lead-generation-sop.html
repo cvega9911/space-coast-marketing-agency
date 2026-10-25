@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Generation SOP · Brevard County Prospecting · Space Coast Marketing Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+    --blue: #3B82F6; --blue-bg: rgba(59,130,246,0.12);
+    --purple: #A855F7; --purple-bg: rgba(168,85,247,0.12);
+    --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+    --border: #1E293B; --border-accent: #2D3A5C;
+    --radius: 10px; --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 120px;
+  }
+
+  /* ── NAV ─────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,20,0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); padding: 0 24px;
+  }
+  nav .inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; height: 56px;
+  }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+
+  /* ── CONTAINER ──────────────────────────── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── HERO ────────────────────────────────── */
+  .hero {
+    padding: 80px 0 60px; text-align: center;
+    background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%);
+  }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 720px; margin: 0 auto 40px; }
+  .stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+  .stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .stat-pill .value.accent { color: var(--orange); }
+  .stat-pill .value.green { color: var(--green); }
+  .stat-pill .value.gold { color: var(--gold); }
+  .stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── SECTIONS ───────────────────────────── */
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+  h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+  .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+
+  /* ── CARDS ──────────────────────────────── */
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .card.accent-left { border-left: 3px solid var(--orange); }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.amber-left { border-left: 3px solid var(--amber); }
+  .card.blue-left { border-left: 3px solid var(--blue); }
+  .card.purple-left { border-left: 3px solid var(--purple); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .card-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .card-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+
+  /* ── CALLOUTS ───────────────────────────── */
+  .callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+  .callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+  .callout.info { background: var(--blue-bg); border: 1px solid rgba(59,130,246,0.3); }
+  .callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+  .callout.critical { background: var(--red-bg); border: 1px solid rgba(239,68,68,0.3); }
+  .callout .icon { font-size: 20px; flex-shrink: 0; }
+  .callout h4 { font-size: 15px; margin-bottom: 4px; }
+  .callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+
+  /* ── TABLES ─────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead { background: var(--bg-surface); }
+  th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover { background: rgba(255,255,255,0.02); }
+
+  /* ── TAGS ───────────────────────────────── */
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .tag.win { background: var(--green-bg); color: var(--green); }
+  .tag.loss { background: var(--red-bg); color: var(--red); }
+  .tag.warn { background: var(--amber-bg); color: var(--amber); }
+  .tag.info { background: var(--blue-bg); color: var(--blue); }
+  .win { color: var(--green); font-weight: 600; }
+  .loss { color: var(--red); font-weight: 600; }
+  .muted { color: var(--text-dim); }
+  .amber-text { color: var(--amber); font-weight: 600; }
+
+  /* ── INSIGHT BOX ────────────────────────── */
+  .insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+  .insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+
+  /* ── CODE BLOCKS ────────────────────────── */
+  .code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0; white-space: pre-wrap; word-break: break-word; }
+  .code-block .hl { color: var(--orange); }
+  .code-block .hl-green { color: var(--green); }
+  .code-block .hl-amber { color: var(--amber); }
+  .code-block .hl-blue { color: var(--blue); }
+  .code-block .hl-muted { color: var(--text-dim); }
+
+  /* ── SCORING VISUAL ──────────────────────── */
+  .score-range { display: flex; align-items: center; gap: 12px; margin: 12px 0; }
+  .score-badge { font-weight: 700; font-size: 13px; padding: 6px 14px; border-radius: 20px; min-width: 90px; text-align: center; }
+  .score-badge.cmo { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+  .score-badge.web { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(59,130,246,0.3); }
+  .score-badge.dep { background: rgba(100,116,139,0.15); color: var(--text-dim); border: 1px solid rgba(100,116,139,0.3); }
+
+  /* ── SOURCE ICON ROW ────────────────────── */
+  .source-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
+  .source-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; transition: border-color 0.2s; }
+  .source-card:hover { border-color: var(--orange); }
+  .source-card .source-icon { font-size: 32px; margin-bottom: 8px; }
+  .source-card h4 { font-size: 14px; margin-bottom: 4px; }
+  .source-card p { font-size: 12px; margin-bottom: 0; }
+
+  /* ── TYPOGRAPHY ─────────────────────────── */
+  h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  li { margin-bottom: 4px; }
+  li::marker { color: var(--orange); }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* ── PROBABILITY BARS ───────────────────── */
+  .prob-bar { height: 8px; border-radius: 4px; background: var(--border); margin: 8px 0; overflow: hidden; }
+  .prob-bar .fill { height: 100%; border-radius: 4px; }
+  .prob-bar .fill.green-bar { background: var(--green); }
+  .prob-bar .fill.amber-bar { background: var(--amber); }
+  .prob-bar .fill.red-bar { background: var(--red); }
+
+  /* ── FOOTER ─────────────────────────────── */
+  footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+
+  /* ── RESPONSIVE ─────────────────────────── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 28px; }
+    .stat-row { gap: 10px; }
+    .stat-pill { min-width: 120px; padding: 14px 16px; }
+    .stat-pill .value { font-size: 22px; }
+    .card-grid, .card-grid-3, .card-grid-4 { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    nav { display: none; }
+    section { break-inside: avoid; border-color: #ddd; }
+    .card, .callout, .insight-box, .code-block { border-color: #ddd; }
+    .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+    h2, h3, h4 { color: #111; }
+    .stat-pill { border-color: #ddd; }
+    .stat-pill .value { color: #111; }
+    .section-label { color: #FF4500; }
+    .code-block { background: #f5f5f5; color: #111; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NAV -->
+<!-- ═══════════════════════════════════════════ -->
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> Space Command Center · Lead Generation SOP</div>
+    <div class="badge">DELIVERABLE 04 · PROSPECTING</div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Prospecting Operations</div>
+    <h1>Lead Generation SOP<br>Brevard County Prospecting</h1>
+    <p class="subtitle">A complete standard operating procedure for sourcing, scoring, and segmenting 200 qualified local business leads across Brevard County. Five distinct lead sources, two targeting tracks, one systematic approach — designed to be executed manually now and automated by Socrates later.</p>
+    <div class="stat-row">
+      <div class="stat-pill"><div class="value accent">200</div><div class="label">Leads / Target</div></div>
+      <div class="stat-pill"><div class="value green">2-Track</div><div class="label">Segmentation</div></div>
+      <div class="stat-pill"><div class="value gold">5</div><div class="label">Lead Sources</div></div>
+      <div class="stat-pill"><div class="value">100<small style="font-size:16px">%</small></div><div class="label">Local Brevard</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 01: LEAD GENERATION PHILOSOPHY -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">Section 01</div>
+    <h2>Lead Generation Philosophy</h2>
+    <p class="section-desc">The foundation that drives every sourcing decision. This isn't about volume — it's about precision targeting of businesses most likely to convert.</p>
+
+    <div class="card-grid-3">
+      <div class="card accent-left">
+        <h4 style="margin-top:0">🎯 Quality Over Quantity</h4>
+        <p>200 well-vetted leads beats 2,000 random businesses scraped from a directory. Every lead in our pipeline has been manually reviewed for fit, revenue potential, and digital maturity. We'd rather have 50 perfect-fit prospects than 500 tire-kickers.</p>
+      </div>
+      <div class="card green-left">
+        <h4 style="margin-top:0">📍 Brevard County Only</h4>
+        <p>We are hyper-local by design. Target cities: <strong>Merritt Island, Melbourne, Cocoa Beach, Rockledge, Viera, Satellite Beach, Titusville, Palm Bay, Cape Canaveral, Indian Harbour Beach.</strong> No Orlando, no Daytona — we dominate our backyard first.</p>
+      </div>
+      <div class="card blue-left">
+        <h4 style="margin-top:0">🔀 Two-Track Segmentation</h4>
+        <p><strong>Web Design Track ($599):</strong> Low-quality website, decent business, needs a modern online presence. <strong>CMO Track ($1,500):</strong> High-revenue business with bad (or no) digital presence — they need strategy, not just a website.</p>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>🧠 Lead Scoring Formula</h4>
+      <p style="margin-bottom:0">Every lead is scored on three dimensions before entering the pipeline: <strong>Website Quality Score (1–10)</strong> — mobile responsiveness, design era, load speed, content quality. <strong>Revenue Estimate</strong> — inferred from location, employee count, review volume, vehicle fleet size, physical footprint. <strong>Digital Maturity</strong> — do they have a Google Business Profile? Social media? Are they running ads? This triage prevents wasting time on businesses that can't afford us or don't need us.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 02: GOOGLE MAPS SCRAPING -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">Section 02</div>
+    <h2>Lead Source 1 — Google Maps Scraping</h2>
+    <p class="section-desc">Google Maps is the richest source of local business data. Every business with a physical location is here, and many are severely under-optimized.</p>
+
+    <div class="card-grid">
+      <div class="card accent-left">
+        <h4 style="margin-top:0">🔍 Search Categories</h4>
+        <p>Run these searches with a location qualifier appended. Rotate through categories weekly to avoid duplication:</p>
+        <ul>
+          <li><strong>"plumber near me"</strong> + location: Melbourne FL</li>
+          <li><strong>"dentist Melbourne FL"</strong> or "dentist near me"</li>
+          <li><strong>"roofing contractor Brevard County"</strong></li>
+          <li><strong>"electrician Cocoa Beach"</strong></li>
+          <li><strong>"HVAC repair Titusville"</strong></li>
+          <li><strong>"landscaping company Viera FL"</strong></li>
+          <li><strong>"divorce attorney Brevard County"</strong></li>
+          <li><strong>"auto repair shop Merritt Island"</strong></li>
+        </ul>
+      </div>
+      <div class="card green-left">
+        <h4 style="margin-top:0">📋 What to Extract</h4>
+        <p>For every business in the search results, capture these fields:</p>
+        <ul>
+          <li><strong>Business Name</strong> — exact name as listed</li>
+          <li><strong>Address</strong> — full street address + ZIP</li>
+          <li><strong>Phone Number</strong> — primary listed number</li>
+          <li><strong>Website URL</strong> — if listed on GBP</li>
+          <li><strong>Google Rating</strong> — star rating (1.0–5.0)</li>
+          <li><strong>Review Count</strong> — total number of reviews</li>
+          <li><strong>Category</strong> — primary Google category</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card amber-left" style="margin-top:20px">
+      <h4 style="margin-top:0">🎯 Targeting Heuristics</h4>
+      <div class="card-grid" style="margin-top:12px">
+        <div>
+          <p><strong>Sweet Spot:</strong> Businesses with <strong>&lt; 20 reviews</strong>. These are under-optimized — their competitors are outranking them, and they likely don't have a review generation system. Perfect for our GBP optimization upsell.</p>
+        </div>
+        <div>
+          <p><strong>Filter Out:</strong> Chains and franchises (no corporate red tape — we want independent business owners who can say yes). National brands with 100+ locations. Businesses without a website at all (can't assess digital maturity).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="icon">💡</div>
+      <div><h4>Serper API Method (for Socrates automation)</h4><p>When the Mac Mini arrives, Socrates will use the Serper API with <code>gl=us&location=Brevard+County+Florida</code> to pull the top 20 results per category automatically. Until then: open Google Maps in a browser, run each search, and manually copy results into the tracking spreadsheet.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 03: YELP BUSINESS DIRECTORY -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">Section 03</div>
+    <h2>Lead Source 2 — Yelp Business Directory</h2>
+    <p class="section-desc">Yelp provides richer category filtering and review data than Google Maps. It's especially good for service businesses where reputation is the primary buying signal.</p>
+
+    <div class="card-grid">
+      <div class="card accent-left">
+        <h4 style="margin-top:0">🔍 How to Search Yelp</h4>
+        <ol>
+          <li>Go to <strong>yelp.com</strong> and enter a category (e.g., "Plumbing")</li>
+          <li>Set location to a Brevard city: <strong>Melbourne, FL</strong> or <strong>Cocoa Beach, FL</strong></li>
+          <li>Sort by <strong>"Highest Rated"</strong> or <strong>"Most Reviewed"</strong></li>
+          <li>Scroll through results, skipping chains and franchises</li>
+        </ol>
+        <p style="margin-bottom:0;font-size:12px;color:var(--text-dim)">Pro tip: Yelp's "Nearby" tab shows businesses clustered geographically — useful for identifying commercial pockets.</p>
+      </div>
+      <div class="card blue-left">
+        <h4 style="margin-top:0">📋 Data to Capture</h4>
+        <ul>
+          <li><strong>Business Name</strong> and <strong>Category</strong></li>
+          <li><strong>Yelp Rating</strong> (1.0–5.0 stars)</li>
+          <li><strong>Review Count</strong> on Yelp</li>
+          <li><strong>Website URL</strong> (if linked from Yelp)</li>
+          <li><strong>Phone Number</strong></li>
+          <li><strong>Price Range</strong> ($, $$, $$$, $$$$)</li>
+          <li><strong>Hours of Operation</strong> (signals active business)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>🎯 The Yelp Sweet Spot: 3.5–4.0 Stars</h4>
+      <p style="margin-bottom:0">Businesses with 3.5–4.0 stars are <strong>good but not great</strong>. They're competent enough to stay in business, but their online reputation is costing them customers. These are the highest-converting prospects — they already know reviews matter, they just need help managing them. Avoid businesses below 3.0 stars: that's a reputation crisis, not a marketing problem, and fixing it is a different (and much harder) engagement.</p>
+    </div>
+
+    <div class="callout warn">
+      <div class="icon">⚠️</div>
+      <div><h4>Red Flag</h4><p>Businesses with fewer than 5 total Yelp reviews are likely too small or too new to be viable prospects. They haven't proven market traction yet. Save these for a later phase when you're running Facebook ads to cold audiences.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 04: CHAMBER OF COMMERCE DIRECTORIES -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">Section 04</div>
+    <h2>Lead Source 3 — Chamber of Commerce Directories</h2>
+    <p class="section-desc">Chamber member directories are publicly available goldmines. Businesses that join their local chamber are established, community-minded, and have a marketing budget — they're already paying annual dues, so they're not allergic to spending money on business growth.</p>
+
+    <div class="card-grid-4">
+      <div class="card accent-left">
+        <h4 style="margin-top:0">🏖️ Cocoa Beach Regional</h4>
+        <p style="font-size:13px">Covers Cocoa Beach, Cape Canaveral, and the beachside communities. Strong in hospitality, retail, and tourism-adjacent services.</p>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:0">🔗 cocoabeachchamber.com</p>
+      </div>
+      <div class="card green-left">
+        <h4 style="margin-top:0">🏙️ Melbourne Regional</h4>
+        <p style="font-size:13px">Largest chamber in Brevard. Covers Melbourne, West Melbourne, Palm Bay. Heavy on professional services, healthcare, and tech.</p>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:0">🔗 melbourneregionalchamber.com</p>
+      </div>
+      <div class="card blue-left">
+        <h4 style="margin-top:0">🚀 Titusville Area</h4>
+        <p style="font-size:13px">Space Coast-adjacent. Covers Titusville and north Brevard. Strong aerospace and industrial membership base.</p>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:0">🔗 titusville.org</p>
+      </div>
+      <div class="card purple-left">
+        <h4 style="margin-top:0">🌴 Greater Palm Bay</h4>
+        <p style="font-size:13px">Fastest-growing area in Brevard. Covers Palm Bay and southern Brevard. Mix of trades, retail, and growing professional sector.</p>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:0">🔗 greaterpalmbaychamber.com</p>
+      </div>
+    </div>
+
+    <div class="callout success" style="margin-top:24px">
+      <div class="icon">✅</div>
+      <div>
+        <h4>Why Chamber Leads Convert</h4>
+        <p>Chamber member directories almost always include <strong>website URLs, phone numbers, and business descriptions</strong>. These are legitimate, established businesses — no shell companies, no fly-by-night operations. The chamber membership itself signals that the owner cares about their business reputation and community standing. When you reach out, you can open with: <em>"I saw you're a member of the Melbourne Chamber — I work with several chamber members in the area..."</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 05: FACEBOOK GROUP -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">Section 05</div>
+    <h2>Lead Source 4 — Facebook Group (Warm Leads)</h2>
+    <p class="section-desc">Your 850-member local Facebook group is a warm lead engine hiding in plain sight. These people already know you, trust you, and engage with your content. They are the lowest-hanging fruit in the entire pipeline.</p>
+
+    <div class="card-grid">
+      <div class="card accent-left">
+        <h4 style="margin-top:0">📢 The Free Audit Post</h4>
+        <p>Post this once every 2–3 weeks in your group. Make it genuine — no pitch, pure value:</p>
+        <div class="code-block"><span class="hl-muted">// Facebook Group Post Template</span>
+<span class="hl">"I've got some free time this weekend and I want to give back to the group.</span>
+
+I'll do <span class="hl-green">3 free website audits</span> for local business owners in here. I'll look at:
+• Mobile responsiveness & load speed
+• SEO basics (title tags, headers, meta)
+• Google Business Profile consistency
+• Quick wins you can implement yourself
+
+Drop your website link below or DM me. <span class="hl-amber">No pitch, no sales call — just a quick audit with actionable notes.</span>
+
+First 3 to comment get it."</div>
+      </div>
+      <div class="card green-left">
+        <h4 style="margin-top:0">🔎 Member Profiling</h4>
+        <p>Between audit posts, proactively scan your group:</p>
+        <ul>
+          <li>Check member profiles for <strong>business pages</strong> linked</li>
+          <li>Look for members who <strong>post about their business</strong> in the group</li>
+          <li>Note members who <strong>engage regularly</strong> (likes, comments) — they're warm</li>
+          <li>Search the group for keywords: "looking for," "recommend," "anyone know a..."</li>
+        </ul>
+        <p style="font-size:13px;margin-bottom:0">Every person asking for a recommendation is a business owner's neighbor — and possibly a prospect themselves.</p>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>✉️ The DM Script — Group Owner Advantage</h4>
+      <p style="margin-bottom:0">When you identify a business owner in your group, you have a natural opening that cold outreach can't replicate:</p>
+      <div class="code-block"><span class="hl">"Hey [Name], I run the [Group Name] group. I noticed you own [Business Name] — I've seen your posts in the group and I appreciate your contributions.</span>
+
+<span class="hl-amber">I actually do websites and digital marketing for local businesses here in Brevard. Would you be open to a quick, no-pressure audit of your current site? I can send over a few notes — no pitch, just honest feedback."</span></div>
+      <p style="font-size:13px;color:var(--text-dim);margin-top:12px">This works because: (1) you're not a stranger — you're the group owner, (2) you opened with appreciation, (3) you offered value first. Conversion rate on these DMs is significantly higher than cold email or cold call.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 06: COMPETITOR CLIENT LISTS -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">Section 06</div>
+    <h2>Lead Source 5 — Competitor Client Lists</h2>
+    <p class="section-desc">The smartest lead source in the playbook: businesses that already pay for marketing. They're pre-qualified, budget-approved, and often underserved by their current provider.</p>
+
+    <div class="card-grid-3">
+      <div class="card accent-left">
+        <h4 style="margin-top:0">🔎 Agency Portfolio Mining</h4>
+        <p>Check these competitors' portfolio/client pages:</p>
+        <ul>
+          <li><strong>Thryv</strong> — massive SMB client base, many on templated sites</li>
+          <li><strong>Scorpion</strong> — legal/medical focus, premium pricing</li>
+          <li><strong>RevLocal</strong> — franchise-heavy but has independents</li>
+          <li><strong>Local Brevard agencies</strong> — check their "Our Work" pages</li>
+        </ul>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:0">Look for outdated designs in their portfolio — these clients are paying but not getting modern work. That's your opening.</p>
+      </div>
+      <div class="card blue-left">
+        <h4 style="margin-top:0">🕵️ Client Logo Recon</h4>
+        <p>Many agencies list client logos or testimonials on their site. For each client:</p>
+        <ol>
+          <li>Visit the client's actual website</li>
+          <li>Check if it looks modern (or if it's been neglected)</li>
+          <li>Run a quick PageSpeed test in Chrome DevTools</li>
+          <li>Check their Google Business Profile for review recency</li>
+        </ol>
+        <p style="font-size:13px;margin-bottom:0">If the site looks like 2016 and the agency is charging premium rates, that business owner is a warm prospect for a better alternative.</p>
+      </div>
+      <div class="card amber-left">
+        <h4 style="margin-top:0">✉️ The Poaching Approach</h4>
+        <p>When reaching out to competitor clients, never badmouth their current provider. Instead:</p>
+        <p style="font-size:13px"><em>"I came across your site through [Agency Name]'s portfolio — I do similar work locally. I noticed a few quick improvements that could boost your conversion rate. Happy to share them — no strings."</em></p>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:0">You're not selling against the competitor — you're offering a second opinion. The prospect draws their own conclusions.</p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="icon">🎯</div>
+      <div><h4>Why This Works So Well</h4><p>These businesses have already crossed the biggest hurdle: <strong>they've decided to pay for marketing.</strong> They have a budget, they understand the value, and they're not starting from zero. The only question is whether they're getting what they pay for. If their current provider is delivering templated, outdated work while charging $800+/month, your $1,500 CMO package with genuine strategy and modern execution is an easy upgrade conversation.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 07: LEAD SCORING & SEGMENTATION -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">Section 07</div>
+    <h2>Lead Scoring &amp; Segmentation</h2>
+    <p class="section-desc">Every lead gets a numeric score before it enters any outreach sequence. This isn't subjective — it's a weighted formula that removes guesswork and ensures consistent pipeline quality.</p>
+
+    <h3>Scoring Rubric</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Factor</th>
+          <th>Weight</th>
+          <th>Score 1–10</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Website Quality</strong></td>
+          <td class="amber-text">30%</td>
+          <td>Mobile, speed, design year</td>
+          <td>Score low = they need us more. A score of 2/10 on website quality with high revenue = CMO lock.</td>
+        </tr>
+        <tr>
+          <td><strong>Revenue Potential</strong></td>
+          <td class="amber-text">25%</td>
+          <td>Infer from location, reviews, vehicles</td>
+          <td>Physical footprint, fleet size, review volume, office location all signal revenue. A dentist in a medical plaza &gt; a landscaper working from home.</td>
+        </tr>
+        <tr>
+          <td><strong>Digital Maturity</strong></td>
+          <td class="amber-text">20%</td>
+          <td>GBP, social, ads?</td>
+          <td>Do they have a claimed GBP? Are they posting on Facebook? Running any ads? More digital maturity = they already value online presence.</td>
+        </tr>
+        <tr>
+          <td><strong>Category Fit</strong></td>
+          <td class="amber-text">15%</td>
+          <td>Dentist &gt; landscaper for CMO</td>
+          <td>High-ticket services (legal, medical, dental, roofing, HVAC) score higher. Low-margin businesses (lawn care, cleaning) can still work but lean Web Design Track.</td>
+        </tr>
+        <tr>
+          <td><strong>Warmth</strong></td>
+          <td class="amber-text">10%</td>
+          <td>Connection, referral, group member</td>
+          <td>Existing connection through chamber, Facebook group, or referral adds points. Warm leads convert 3–5x better than cold.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:32px">Score → Track Mapping</h3>
+
+    <div class="card-grid-3">
+      <div class="card purple-left">
+        <div class="score-range">
+          <span class="score-badge cmo">70–100</span>
+          <span style="font-size:13px;color:var(--text-muted)">CMO Track · $1,500</span>
+        </div>
+        <p style="font-size:13px;margin-bottom:0">High-revenue business, poor digital presence, strong category fit. These are your <strong>priority prospects</strong>. They need strategy, SEO, ads management, and ongoing optimization — not just a website. Pitch the full-stack CMO package.</p>
+        <div class="prob-bar" style="margin-top:12px"><div class="fill green-bar" style="width:65%"></div></div>
+        <p style="font-size:11px;color:var(--text-dim);margin-top:4px">Estimated close rate: ~15-20% with proper outreach</p>
+      </div>
+      <div class="card blue-left">
+        <div class="score-range">
+          <span class="score-badge web">40–69</span>
+          <span style="font-size:13px;color:var(--text-muted)">Web Design Track · $599</span>
+        </div>
+        <p style="font-size:13px;margin-bottom:0">Decent business, bad website, lower revenue or narrow category. They need a modern site and basic GBP optimization. This is a <strong>volume play</strong> — ship sites efficiently, upsell to CMO later when they see results.</p>
+        <div class="prob-bar" style="margin-top:12px"><div class="fill amber-bar" style="width:40%"></div></div>
+        <p style="font-size:11px;color:var(--text-dim);margin-top:4px">Estimated close rate: ~10-15% with proper outreach</p>
+      </div>
+      <div class="card" style="border-left: 3px solid var(--text-dim);">
+        <div class="score-range">
+          <span class="score-badge dep">&lt; 40</span>
+          <span style="font-size:13px;color:var(--text-dim)">Deprioritize</span>
+        </div>
+        <p style="font-size:13px;margin-bottom:0">Low revenue, poor category fit, no digital presence at all, or unresponsive. These aren't dead leads — they're <strong>future pipeline</strong>. Revisit in 6 months or when you're running automated outreach at scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 08: EXCEL / AIRTABLE STRUCTURE -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">Section 08</div>
+    <h2>The Excel / Airtable Structure</h2>
+    <p class="section-desc">Every lead lives in a single tracking system. Consistency is non-negotiable — if it's not in the tracker, it doesn't exist. Below is the canonical template.</p>
+
+    <h3>Canonical Column Template</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Column Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Business Name</strong></td><td>Text</td><td>Exact legal or DBA name as listed</td></tr>
+        <tr><td>2</td><td><strong>Category</strong></td><td>Single Select</td><td>Plumber, Dentist, Roofer, Attorney, HVAC, etc.</td></tr>
+        <tr><td>3</td><td><strong>Phone</strong></td><td>Phone</td><td>Primary business phone number</td></tr>
+        <tr><td>4</td><td><strong>Website</strong></td><td>URL</td><td>Full URL to their current website</td></tr>
+        <tr><td>5</td><td><strong>Website Score</strong></td><td>Number (1–10)</td><td>Quality rating based on mobile, speed, design</td></tr>
+        <tr><td>6</td><td><strong>Revenue Est</strong></td><td>Single Select</td><td>Low / Medium / High (inferred from signals)</td></tr>
+        <tr><td>7</td><td><strong>Track</strong></td><td>Single Select</td><td>CMO ($1,500) / Web Design ($599) / Deprioritized</td></tr>
+        <tr><td>8</td><td><strong>Status</strong></td><td>Single Select</td><td>New / Contacted / Meeting Scheduled / Proposal Sent / Won / Lost</td></tr>
+        <tr><td>9</td><td><strong>Notes</strong></td><td>Long Text</td><td>Freeform: lead source, connection details, owner name, red flags</td></tr>
+        <tr><td>10</td><td><strong>Lead Source</strong></td><td>Single Select</td><td>Google Maps / Yelp / Chamber / Facebook Group / Competitor</td></tr>
+        <tr><td>11</td><td><strong>Date Added</strong></td><td>Date</td><td>Auto-populated — when the lead entered the system</td></tr>
+        <tr><td>12</td><td><strong>Last Contacted</strong></td><td>Date</td><td>Most recent outreach date (for follow-up cadence)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout info" style="margin-top:24px">
+      <div class="icon">📋</div>
+      <div>
+        <h4>Airtable Over Excel (When Ready)</h4>
+        <p>Start in Excel or Google Sheets — it's fast, familiar, and free. Once you're past 50 leads, migrate to Airtable. Airtable gives you: filtered views by track (CMO vs Web), Kanban board for pipeline stages, form view for quick data entry, and API access for Socrates integration. The column structure above is designed to be Airtable-native from day one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 09: SOCRATIC AUTOMATION NOTE -->
+<!-- ═══════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">Section 09</div>
+    <h2>Socratic Automation Note</h2>
+    <p class="section-desc">This entire SOP is designed for manual execution today — but it's architected to be fully automated once the Mac Mini M4 Pro is online and Socrates is operational.</p>
+
+    <div class="card-grid">
+      <div class="card accent-left">
+        <h4 style="margin-top:0">🤖 The Automated Pipeline</h4>
+        <p style="font-size:13px">Once Socrates is running on the Mac Mini, the entire lead generation process becomes hands-off:</p>
+        <ol style="font-size:13px">
+          <li><strong>Serper API</strong> pulls the top 20 results per category with Brevard County location parameters</li>
+          <li><strong>Gemma 3 (local)</strong> scores each website's quality from scraped HTML — evaluating mobile responsiveness, design era indicators, load performance signals</li>
+          <li><strong>Results auto-populate Airtable</strong> via the Airtable API — scored, segmented, and ready for review</li>
+          <li><strong>Chris reviews and cherry-picks</strong> the top 50 prospects for manual outreach</li>
+        </ol>
+      </div>
+      <div class="card green-left">
+        <h4 style="margin-top:0">⏳ Manual Phase (Current)</h4>
+        <p style="font-size:13px">Until the Mac arrives, everything runs manually:</p>
+        <ul style="font-size:13px">
+          <li>Google Maps searches done in-browser</li>
+          <li>Yelp searches done manually per category</li>
+          <li>Chamber directories visited and scraped by hand</li>
+          <li>Website quality scored manually using the 1–10 rubric</li>
+          <li>Data entered into Google Sheets (migrate to Airtable later)</li>
+        </ul>
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:0">Estimated manual effort: 4–6 hours to build the initial 200-lead list. Worth every minute — this is the fuel for the entire agency engine.</p>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>🚀 The Automation Multiplier</h4>
+      <p style="margin-bottom:0">The beauty of this approach: the manual work you do now <strong>directly trains the automation</strong>. Your scoring decisions, your category prioritization, your filtering heuristics — all of it becomes the training data and prompt engineering for Socrates. Every hour you spend manually prospecting today is an hour of automation you won't have to build tomorrow. The SOP is the blueprint; the manual reps are the calibration data.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ═══════════════════════════════════════════ -->
+<footer>
+  <a href="index.html" style="display:inline-block;margin-bottom:12px">← Back to Space Command Center Index</a><br>
+  Space Coast Marketing · Merritt Island, FL · 321-328-5307<br>
+  Socrates AI Chief of Staff · Deliverable 04 — Lead Generation SOP · June 26, 2026<br>
+  <span style="color:var(--text-dim);font-size:11px">All lead generation strategies should comply with applicable data privacy regulations (CCPA, CAN-SPAM, etc.). Chamber directory data is publicly available. Always respect website terms of service when scraping. Revenue estimates are inferred from publicly visible signals and should not be considered financial data.</span>
+</footer>
+
+</body>
+</html>

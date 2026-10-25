@@ -1,0 +1,16 @@
+[Unit]
+Description=Health Check Flask App
+After=network.target
+
+[Service]
+User=jarvis
+WorkingDirectory=/home/jarvis/health-check
+EnvironmentFile=/home/jarvis/health-check/.env
+ExecStart=/home/jarvis/.agent-reach-venv/bin/python3 /home/jarvis/health-check/app.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

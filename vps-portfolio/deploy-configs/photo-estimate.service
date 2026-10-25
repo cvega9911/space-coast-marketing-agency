@@ -1,0 +1,16 @@
+[Unit]
+Description=Photo-to-Estimate Flask App
+After=network.target
+
+[Service]
+User=jarvis
+WorkingDirectory=/home/jarvis/photo-estimate
+EnvironmentFile=/home/jarvis/photo-estimate/.env
+ExecStart=/home/jarvis/.agent-reach-venv/bin/python3 /home/jarvis/photo-estimate/app.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

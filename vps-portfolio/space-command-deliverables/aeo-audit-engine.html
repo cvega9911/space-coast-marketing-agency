@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEO Audit Engine · AI Search Visibility Intelligence · Space Coast Marketing Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0A0A14;
+    --bg-card: #111122;
+    --bg-surface: #161630;
+    --navy: #1B2B4B;
+    --orange: #FF4500;
+    --orange-glow: #FF6B35;
+    --gold: #F0A030;
+    --green: #22C55E;
+    --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444;
+    --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B;
+    --amber-bg: rgba(245,158,11,0.12);
+    --blue: #3B82F6;
+    --blue-bg: rgba(59,130,246,0.12);
+    --purple: #A855F7;
+    --purple-bg: rgba(168,85,247,0.12);
+    --text: #E2E8F0;
+    --text-muted: #94A3B8;
+    --text-dim: #64748B;
+    --border: #1E293B;
+    --border-accent: #2D3A5C;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 120px;
+  }
+
+  /* ── NAV ─────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,20,0.85);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+  nav .inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  nav .logo {
+    font-weight: 700; font-size: 15px; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav .links { display: flex; gap: 24px; font-size: 13px; }
+  nav .links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  nav .links a:hover { color: var(--text); }
+  nav .badge {
+    background: var(--green-bg); color: var(--green);
+    font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* ── LAYOUT ──────────────────────────────── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── HERO ────────────────────────────────── */
+  .hero {
+    padding: 80px 0 60px;
+    text-align: center;
+    background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%);
+  }
+  .hero .kicker {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .subtitle {
+    font-size: 18px; color: var(--text-muted); max-width: 720px; margin: 0 auto 40px;
+  }
+
+  /* stat pills */
+  .stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat-pill {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px 28px; min-width: 160px;
+    text-align: center;
+  }
+  .stat-pill .value {
+    font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1;
+  }
+  .stat-pill .value.accent { color: var(--orange); }
+  .stat-pill .value.green { color: var(--green); }
+  .stat-pill .value.gold { color: var(--gold); }
+  .stat-pill .value.blue { color: var(--blue); }
+  .stat-pill .value.purple { color: var(--purple); }
+  .stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── SECTIONS ─────────────────────────────── */
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px;
+    color: #fff;
+  }
+  .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 720px; }
+
+  /* ── CARDS ────────────────────────────────── */
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px;
+  }
+  .card.accent-left { border-left: 3px solid var(--orange); }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.amber-left { border-left: 3px solid var(--amber); }
+  .card.blue-left { border-left: 3px solid var(--blue); }
+  .card.purple-left { border-left: 3px solid var(--purple); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+  h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+  h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+  p { color: var(--text-muted); font-size: 14px; margin-bottom: 12px; }
+  p.small { font-size: 12px; }
+
+  /* ── TABLES ───────────────────────────────── */
+  .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    background: var(--bg-surface); color: var(--text-muted);
+    font-weight: 600; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 12px 16px; text-align: left; white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 12px 16px; border-bottom: 1px solid rgba(30,41,59,0.5); color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  td.win { color: var(--green); font-weight: 600; }
+  td.loss { color: var(--red); font-weight: 600; }
+  td.neutral { color: var(--amber); font-weight: 600; }
+  td.mono { font-family: var(--font-mono); font-size: 12px; }
+  td.muted { color: var(--text-muted); }
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px;
+    font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .tag.win { background: var(--green-bg); color: var(--green); }
+  .tag.loss { background: var(--red-bg); color: var(--red); }
+  .tag.neutral { background: var(--amber-bg); color: var(--amber); }
+
+  /* ── PIPELINE / FLOW STEPS ────────────────── */
+  .pipeline {
+    display: flex; flex-direction: column; gap: 0;
+    margin: 24px 0;
+  }
+  .pipeline-step {
+    display: flex; gap: 20px; padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .pipeline-step:last-child { border-bottom: none; }
+  .pipeline-num {
+    flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px;
+  }
+  .pipeline-num.stage-a { background: var(--blue-bg); color: var(--blue); }
+  .pipeline-num.stage-b { background: var(--purple-bg); color: var(--purple); }
+  .pipeline-content h4 { margin-bottom: 4px; font-size: 16px; color: #fff; }
+  .pipeline-content .meta {
+    font-size: 11px; color: var(--text-dim); margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .pipeline-content p { margin-bottom: 8px; }
+
+  /* ── CALLOUT ──────────────────────────────── */
+  .callout {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px; margin: 24px 0;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .callout .icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .callout.warn { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.06); }
+  .callout.info { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.06); }
+  .callout.good { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.06); }
+  .callout.amber { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.06); }
+  .callout p { font-size: 13px; margin-bottom: 0; }
+
+  /* ── CODE BLOCK ───────────────────────────── */
+  .code-block {
+    background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 20px; font-family: var(--font-mono); font-size: 12px;
+    line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .code-block .c1 { color: var(--text-dim); }
+  .code-block .c2 { color: var(--green); }
+  .code-block .c3 { color: var(--gold); }
+  .code-block .c4 { color: var(--orange); }
+  .code-block .c5 { color: var(--blue); }
+  .code-block .c6 { color: var(--purple); }
+  .code-label {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 4px;
+  }
+
+  /* ── BADGE ROW ────────────────────────────── */
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .badge-pill {
+    font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px;
+    border: 1px solid var(--border); color: var(--text-muted);
+  }
+
+  /* ── KEY INSIGHT BOX ──────────────────────── */
+  .insight-box {
+    background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05));
+    border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius);
+    padding: 24px; margin: 20px 0;
+  }
+  .insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+
+  /* ── COMPARISON TABLE ─────────────────────── */
+  .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  @media (max-width: 640px) { .comparison-grid { grid-template-columns: 1fr; } }
+  .comparison-col {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px;
+  }
+  .comparison-col.winner { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.03); }
+  .comparison-col.loser { border-color: rgba(239,68,68,0.2); background: rgba(239,68,68,0.02); }
+  .comparison-col h4 { margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .comparison-col .check { color: var(--green); }
+  .comparison-col .cross { color: var(--red); }
+  .comparison-col .item {
+    padding: 6px 0; font-size: 13px; color: var(--text-muted);
+    border-bottom: 1px solid rgba(30,41,59,0.3);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .comparison-col .item:last-child { border-bottom: none; }
+
+  /* ── NUMBERED LIST ────────────────────────── */
+  .num-list { list-style: none; counter-reset: numlist; padding: 0; }
+  .num-list li {
+    counter-increment: numlist; padding: 12px 0 12px 36px;
+    position: relative; border-bottom: 1px solid rgba(30,41,59,0.4);
+    color: var(--text-muted); font-size: 14px;
+  }
+  .num-list li:last-child { border-bottom: none; }
+  .num-list li::before {
+    content: counter(numlist);
+    position: absolute; left: 0; top: 10px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--orange); color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── FOOTER ───────────────────────────────── */
+  footer {
+    max-width: 1100px; margin: 0 auto; padding: 32px 24px;
+    border-top: 1px solid var(--border); text-align: center;
+    color: var(--text-dim); font-size: 12px;
+  }
+  footer a { color: var(--orange); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── DIVIDER ──────────────────────────────── */
+  .divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* ── PRINT ────────────────────────────────── */
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    nav { display: none; }
+    section { break-inside: avoid; border-color: #ddd; }
+    .card, .table-wrap, .callout, .insight-box, .code-block { border-color: #ddd; }
+    .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+    h2, h3, h4 { color: #111; }
+    .stat-pill { border-color: #ddd; }
+    .stat-pill .value { color: #111; }
+    .section-label { color: #FF4500; }
+  }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 28px; }
+    .stat-row { gap: 10px; }
+    .stat-pill { min-width: 120px; padding: 14px 16px; }
+    nav .links { display: none; }
+    .comparison-grid { grid-template-columns: 1fr; }
+    .pipeline-step { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> AEO Audit Engine</div>
+    <div class="links">
+      <a href="#what-is-aeo">What Is AEO?</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#stage-a">Citation Simulation</a>
+      <a href="#stage-b">Schema Audit</a>
+      <a href="#skeleton">Code</a>
+      <a href="#sales">Sales</a>
+      <a href="#tweaks">Socratic Tweaks</a>
+    </div>
+    <div class="badge">COMPETITIVE INTELLIGENCE</div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Competitive Intelligence</div>
+    <h1>AEO Audit Engine<br>AI Search Visibility Intelligence</h1>
+    <p class="subtitle">A dual-model audit system that simulates how AI search engines see your clients — and exposes exactly what's missing. Built on Qwen + Gemma, designed for closing.</p>
+    <div class="stat-row">
+      <div class="stat-pill"><div class="value accent">2-Stage</div><div class="label">Audit Pipeline</div></div>
+      <div class="stat-pill"><div class="value blue">Dual-Model</div><div class="label">Qwen + Gemma</div></div>
+      <div class="stat-pill"><div class="value gold">Entity Graph</div><div class="label">Analysis</div></div>
+      <div class="stat-pill"><div class="value green">Citation</div><div class="label">Simulation</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION 01: WHAT IS AEO? ═══════════════ -->
+<section id="what-is-aeo">
+  <div class="container">
+    <div class="section-label">01 · Foundations</div>
+    <h2>What Is Answer Engine Optimization?</h2>
+    <p class="section-desc">The game has changed. AI search engines don't use keywords — they use <strong>entities and citations</strong>. Traditional SEO is becoming irrelevant for AI-driven visibility.</p>
+
+    <div class="card-grid">
+      <div class="card accent-left">
+        <h3>🔍 Traditional SEO</h3>
+        <p>Keyword density, backlinks, meta tags, page rank. Optimizes for <strong>Google's 10 blue links</strong>. Measures success by SERP position for target keywords.</p>
+        <div class="badge-row">
+          <span class="badge-pill">Keywords</span>
+          <span class="badge-pill">Backlinks</span>
+          <span class="badge-pill">SERP Rank</span>
+        </div>
+      </div>
+      <div class="card green-left">
+        <h3>🤖 Answer Engine Optimization (AEO)</h3>
+        <p>Entity resolution, structured data, citation authority. Optimizes for <strong>AI-generated answers</strong> in ChatGPT, Perplexity, Gemini, and SearchGPT. Measures whether AI search engines <em>cite your business as the answer</em>.</p>
+        <div class="badge-row">
+          <span class="badge-pill">Entities</span>
+          <span class="badge-pill">JSON-LD</span>
+          <span class="badge-pill">Citations</span>
+          <span class="badge-pill">Knowledge Graph</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>💡 The Core Insight</h4>
+      <p style="margin-bottom:0;">When someone asks ChatGPT "Who's the best plumber in Merritt Island?", it doesn't crawl the web — it resolves entities from its training data + real-time search integrations. If your business isn't represented as a well-formed entity with verified citations, <strong>you don't exist to AI</strong>. AEO is the practice of ensuring your business is structured, cited, and entity-mapped so AI search engines recognize, trust, and recommend you.</p>
+    </div>
+
+    <div class="table-wrap" style="margin-top:24px;">
+      <table>
+        <thead>
+          <tr><th>Dimension</th><th>Traditional SEO</th><th>Answer Engine Optimization</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Optimizes for</strong></td><td>Search engines (Google, Bing)</td><td class="win">AI answer engines (ChatGPT, Perplexity, Gemini)</td></tr>
+          <tr><td><strong>Core signal</strong></td><td>Keywords + backlinks</td><td class="win">Entities + structured data + citations</td></tr>
+          <tr><td><strong>Success metric</strong></td><td>Rank #1 for "plumber near me"</td><td class="win">AI cites your business as the recommended answer</td></tr>
+          <tr><td><strong>Technical lever</strong></td><td>Meta tags, H1s, alt text</td><td class="win">JSON-LD schema, sameAs links, entity graphs</td></tr>
+          <tr><td><strong>Audit tool</strong></td><td>Semrush, Ahrefs, Screaming Frog</td><td class="win">AEO Audit Engine (this tool)</td></tr>
+          <tr><td><strong>Time horizon</strong></td><td>Weeks to months</td><td class="neutral">Days (fix schema → AI re-indexes → visible)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 02: 2-STAGE ARCHITECTURE ═══════════════ -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-label">02 · Architecture</div>
+    <h2>The 2-Stage Audit Architecture</h2>
+    <p class="section-desc">Two specialized models, two distinct jobs. Together they form a complete picture of AI search visibility.</p>
+
+    <div class="pipeline">
+      <!-- Stage A -->
+      <div class="pipeline-step">
+        <div class="pipeline-num stage-a">A</div>
+        <div class="pipeline-content">
+          <h4>Stage A · Citation Simulation</h4>
+          <div class="meta">Model: Qwen · Role: RAG Search Engine Simulator</div>
+          <p><strong>What it does:</strong> Qwen is prompted to act as an AI search engine (like ChatGPT with browsing). Given a business name, location, and industry, it outputs what an AI <em>would</em> recommend — listing cited businesses, their entity signals, and why they rank. This reveals your client's AI visibility gap before any technical work begins.</p>
+          <p><strong>Key question answered:</strong> "If someone asks ChatGPT for the best [business type] in [city], does our client appear?"</p>
+          <div class="badge-row">
+            <span class="badge-pill">Temperature 0.1</span>
+            <span class="badge-pill">Strict JSON</span>
+            <span class="badge-pill">Scraped Context</span>
+            <span class="badge-pill">Brand Detection</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage B -->
+      <div class="pipeline-step">
+        <div class="pipeline-num stage-b">B</div>
+        <div class="pipeline-content">
+          <h4>Stage B · Schema & Entity Audit</h4>
+          <div class="meta">Model: Gemma · Role: Technical Schema Auditor</div>
+          <p><strong>What it does:</strong> Gemma scans the client's website HTML for JSON-LD structured data. It checks for required schema types (LocalBusiness, Organization), verifies <code>sameAs</code> links to authoritative profiles, and detects missing entities that would strengthen the knowledge graph signal.</p>
+          <p><strong>Key question answered:</strong> "Is our client's website technically structured for AI entity resolution, or are they invisible?"</p>
+          <div class="badge-row">
+            <span class="badge-pill">JSON-LD Scan</span>
+            <span class="badge-pill">sameAs Verification</span>
+            <span class="badge-pill">Missing Entity Detection</span>
+            <span class="badge-pill">Fix Recommendations</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card amber-left" style="margin-top:24px;">
+      <h3>🔗 How They Connect</h3>
+      <p>The two stages feed each other. Stage A tells you <em>who AI search engines recommend now</em> (and whether your client shows up). Stage B tells you <em>why</em> — by exposing the technical schema gaps. Together they produce a ranked list of fixes: implement missing schema, add sameAs links, claim entity profiles, and re-run the audit to track improvement.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 03: STAGE A — CITATION SIMULATION ═══════════════ -->
+<section id="stage-a">
+  <div class="container">
+    <div class="section-label">03 · Stage A</div>
+    <h2>Citation Simulation — Full Qwen AEO Simulator Prompt</h2>
+    <p class="section-desc">The complete system prompt that turns Qwen into an AI search engine simulator. Outputs strict JSON for programmatic analysis.</p>
+
+    <div class="callout info">
+      <div class="icon">ℹ️</div>
+      <div><strong>How it works:</strong> Qwen is given scraped market context (Google Maps listings, Yelp data, GBP profiles) as input alongside the client's business info. It simulates what an AI search engine would output if asked for recommendations — detecting whether the client brand appears, and if not, which competitors do.</div>
+    </div>
+
+    <div class="code-label">▸ System Prompt — AEO Citation Simulator (Qwen)</div>
+    <div class="code-block"><span class="c1"># AEO Citation Simulator — System Prompt</span>
+<span class="c1"># Model: Qwen (any 7B+ variant) · Temperature: 0.1 · JSON-only output</span>
+
+<span class="c3">You are an AI Search Engine Simulator.</span> Your task is to simulate how 
+a modern AI search engine (like ChatGPT with browsing, Perplexity, or 
+Gemini) would answer a user query for local business recommendations.
+
+<span class="c4">## CONTEXT</span>
+You will receive:
+- A <span class="c2">user query</span> (e.g., "best HVAC company in Springfield, IL")
+- A <span class="c2">market context</span> (scraped data from Google Maps, Yelp, GBP listings)
+- A <span class="c2">target business</span> (name, website, address, industry)
+
+<span class="c4">## YOUR JOB</span>
+1. Simulate the AI search engine's answer to the query
+2. List the top 3-5 businesses the AI would recommend (ranked)
+3. For each recommended business, explain the <span class="c2">entity signals</span> that 
+   caused it to rank (GBP completeness, schema markup, review volume, 
+   sameAs links, Wikipedia presence, industry citations)
+4. Check if the <span class="c2">target business</span> appears in the results
+5. If not, explain <span class="c2">why</span> — which signals are missing
+
+<span class="c4">## OUTPUT FORMAT (STRICT JSON)</span>
+{
+  "query": "&lt;the simulated query&gt;",
+  "simulated_engine": "ChatGPT + Browsing",
+  "results": [
+    {
+      "rank": 1,
+      "business_name": "...",
+      "website": "...",
+      "entity_signals": ["GBP claimed &gt; 50 reviews", "LocalBusiness schema", ...],
+      "why_ranked": "..."
+    }
+  ],
+  "target_business_detected": true | false,
+  "target_business_rank": null | &lt;number&gt;,
+  "gap_analysis": {
+    "missing_signals": ["No JSON-LD schema on site", "GBP not claimed", ...],
+    "competitor_advantages": ["Competitor has 200+ reviews vs client's 12", ...],
+    "fix_priority": ["1. Add LocalBusiness schema", "2. Claim GBP", ...]
+  }
+}
+
+<span class="c4">## RULES</span>
+- <span class="c2">Temperature 0.1</span> — be deterministic, fact-based
+- Always check for brand detection: if the target business name appears 
+  in the scraped market context, it MUST appear in results
+- If the target business has zero entity signals, rank it last or not 
+  at all — explain honestly
+- JSON output ONLY — no markdown wrappers, no preamble</div>
+
+    <div class="insight-box">
+      <h4>🔑 Why This Prompt Architecture Works</h4>
+      <p style="margin-bottom:0;">The magic is in the <strong>brand detection check</strong>. Most AI audits tell clients "your SEO needs work." This prompt shows them <em>exactly</em> which competitors AI search engines would recommend instead of them — and why. That's the diagnostic that closes deals. When a roofer sees that ChatGPT recommends three competitors and never mentions them, they understand the problem at a visceral level.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 04: STAGE B — SCHEMA ENTITY AUDIT ═══════════════ -->
+<section id="stage-b">
+  <div class="container">
+    <div class="section-label">04 · Stage B</div>
+    <h2>Schema & Entity Audit — Full Gemma Auditor Prompt</h2>
+    <p class="section-desc">The technical counterpart. Gemma scans raw HTML for structured data gaps and produces an actionable entity audit.</p>
+
+    <div class="code-label">▸ System Prompt — Schema Entity Auditor (Gemma)</div>
+    <div class="code-block"><span class="c1"># Schema Entity Auditor — System Prompt</span>
+<span class="c1"># Model: Gemma (3B-12B) · Temperature: 0.05 · JSON-only output</span>
+
+<span class="c3">You are a Schema.org JSON-LD Auditor.</span> Your task is to scan a 
+website's HTML for structured data, identify gaps, and produce 
+a ranked remediation plan to improve Answer Engine Optimization.
+
+<span class="c4">## INPUT</span>
+You will receive:
+- <span class="c2">Raw HTML source</span> of the client's homepage (and key internal pages)
+- <span class="c2">Business information</span> (name, address, phone, category, social links)
+
+<span class="c4">## YOUR JOB</span>
+1. Extract all <span class="c2">JSON-LD blocks</span> from the HTML (<code>&lt;script type="application/ld+json"&gt;</code>)
+2. Identify which <span class="c2">Schema.org types</span> are present and which are missing
+3. Verify <span class="c2">sameAs</span> links — check if the schema links to authoritative 
+   profiles (Google Business Profile, Facebook, Yelp, BBB, LinkedIn)
+4. Detect <span class="c2">missing entities</span> that would strengthen the knowledge graph 
+   (Organization, LocalBusiness, WebSite, BreadcrumbList, FAQ, Review)
+5. Check for <span class="c2">schema validation errors</span> (malformed JSON, missing 
+   required fields, invalid enum values)
+
+<span class="c4">## REQUIRED CHECKS</span>
+<span class="c5">### LocalBusiness Schema (MANDATORY for local businesses)</span>
+- @type: LocalBusiness (or subtype: Plumber, Electrician, HVACBusiness...)
+- name, address (PostalAddress), telephone, openingHours
+- geo (latitude/longitude)
+- aggregateRating (if reviews exist)
+- priceRange
+
+<span class="c5">### Organization Schema</span>
+- name, url, logo, sameAs[]
+- sameAs MUST include: Google Business Profile URL, Facebook, Yelp, BBB
+- foundingDate, numberOfEmployees (optional but boosts entity confidence)
+
+<span class="c5">### sameAs Verification</span>
+For each sameAs URL, verify:
+- Does the profile exist? (check for 404 or redirect)
+- Is the business name consistent across all profiles? (NAP consistency)
+- Are any key profiles missing? (GBP is critical for local AEO)
+
+<span class="c4">## OUTPUT FORMAT (STRICT JSON)</span>
+{
+  "url_audited": "https://example.com",
+  "schema_found": {
+    "types_present": ["WebSite", "Organization"],
+    "types_missing": ["LocalBusiness", "FAQ", "Review"]
+  },
+  "sameAs_audit": {
+    "profiles_found": ["https://facebook.com/biz", "..."],
+    "profiles_missing": ["https://g.page/...", "https://yelp.com/..."],
+    "nap_consistency": {
+      "status": "consistent" | "inconsistent",
+      "issues": ["Phone mismatch: site says 555-0100, GBP says 555-0199"]
+    }
+  },
+  "schema_errors": [
+    {
+      "type": "missing_required_field",
+      "schema_type": "LocalBusiness",
+      "field": "address",
+      "severity": "critical"
+    }
+  ],
+  "entity_score": 0-100,
+  "recommendations": [
+    {
+      "priority": 1,
+      "action": "Add LocalBusiness JSON-LD with full NAP + geo",
+      "impact": "high",
+      "estimated_effort": "30 minutes"
+    }
+  ]
+}
+
+<span class="c4">## RULES</span>
+- <span class="c2">Temperature 0.05</span> — zero creativity, pure extraction and validation
+- If no JSON-LD found at all, entity_score = 0, flag as CRITICAL
+- sameAs profiles that 404 are worse than missing — businesses get 
+  penalized for broken entity links
+- JSON output ONLY — no commentary</div>
+
+    <div class="callout warn">
+      <div class="icon">⚠️</div>
+      <div><strong>Critical Finding Pattern:</strong> Most small business websites have <strong>zero JSON-LD</strong>. The most common entity_score output is 0. This is actually the best sales material — it means the fix is clear, mechanical, and immediately impactful. You're not selling "ambiguous SEO improvement," you're selling "turn on the entity switch that's currently off."</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 05: THE AEO PYTHON SKELETON ═══════════════ -->
+<section id="skeleton">
+  <div class="container">
+    <div class="section-label">05 · Implementation</div>
+    <h2>The AEO Python Skeleton</h2>
+    <p class="section-desc">Complete Python script that orchestrates both stages. Plug in your OpenRouter key and run against any business.</p>
+
+    <div class="code-label">▸ aeo_audit_engine.py</div>
+    <div class="code-block"><span class="c1">#!/usr/bin/env python3</span>
+<span class="c1">"""AEO Audit Engine — Dual-model AI Search Visibility Audit</span>
+<span class="c1">   Stage A: Citation Simulation (Qwen · temp 0.1)</span>
+<span class="c1">   Stage B: Schema Entity Audit (Gemma · temp 0.05)</span>
+<span class="c1">   Requires: openai, requests, beautifulsoup4, json</span>
+<span class="c1">"""</span>
+
+<span class="c4">import</span> json, os, requests, time
+<span class="c4">from</span> datetime <span class="c4">import</span> datetime
+<span class="c4">from</span> bs4 <span class="c4">import</span> BeautifulSoup
+<span class="c4">from</span> openai <span class="c4">import</span> OpenAI
+
+<span class="c1"># ── CONFIG ───────────────────────────────────</span>
+OPENROUTER_KEY = os.getenv(<span class="c2">"OPENROUTER_API_KEY"</span>)
+QWEN_MODEL = <span class="c2">"qwen/qwen-3-32b"</span>       <span class="c1"># Stage A: Citation Sim</span>
+GEMMA_MODEL = <span class="c2">"google/gemma-3-27b-it"</span> <span class="c1"># Stage B: Schema Audit</span>
+BASE_URL = <span class="c2">"https://openrouter.ai/api/v1"</span>
+
+client = OpenAI(base_url=BASE_URL, api_key=OPENROUTER_KEY)
+
+<span class="c1"># ── STAGE A: CITATION SIMULATION ─────────────</span>
+<span class="c4">def</span> <span class="c3">run_citation_simulation</span>(business_info, market_context):
+    <span class="c1">"""Simulate what an AI search engine would recommend."""</span>
+    
+    system_prompt = <span class="c2">"""You are an AI Search Engine Simulator..."""</span>
+    
+    user_prompt = <span class="c2">f"""</span>
+<span class="c2">    USER QUERY: best {business_info['industry']} in {business_info['city']}</span>
+<span class="c2">    </span>
+<span class="c2">    MARKET CONTEXT (scraped):</span>
+<span class="c2">    {json.dumps(market_context, indent=2)}</span>
+<span class="c2">    </span>
+<span class="c2">    TARGET BUSINESS:</span>
+<span class="c2">    Name: {business_info['name']}</span>
+<span class="c2">    Website: {business_info['website']}</span>
+<span class="c2">    City: {business_info['city']}</span>
+<span class="c2">    Industry: {business_info['industry']}</span>
+<span class="c2">    """</span>
+    
+    response = client.chat.completions.create(
+        model=QWEN_MODEL,
+        temperature=<span class="c5">0.1</span>,
+        messages=[
+            {<span class="c2">"role"</span>: <span class="c2">"system"</span>, <span class="c2">"content"</span>: system_prompt},
+            {<span class="c2">"role"</span>: <span class="c2">"user"</span>, <span class="c2">"content"</span>: user_prompt}
+        ]
+    )
+    
+    <span class="c4">return</span> json.loads(response.choices[<span class="c5">0</span>].message.content)
+
+
+<span class="c1"># ── STAGE B: SCHEMA ENTITY AUDIT ─────────────</span>
+<span class="c4">def</span> <span class="c3">run_schema_audit</span>(url, business_info):
+    <span class="c1">"""Scan website HTML for JSON-LD schema gaps."""</span>
+    
+    <span class="c1"># Scrape HTML</span>
+    resp = requests.get(url, timeout=<span class="c5">30</span>, headers={
+        <span class="c2">"User-Agent"</span>: <span class="c2">"AEO-Audit-Bot/1.0"</span>
+    })
+    soup = BeautifulSoup(resp.text, <span class="c2">"html.parser"</span>)
+    
+    <span class="c1"># Extract JSON-LD blocks</span>
+    jsonld_blocks = []
+    <span class="c4">for</span> script <span class="c4">in</span> soup.find_all(<span class="c2">"script"</span>, type=<span class="c2">"application/ld+json"</span>):
+        <span class="c4">try</span>:
+            jsonld_blocks.append(json.loads(script.string))
+        <span class="c4">except</span> json.JSONDecodeError:
+            jsonld_blocks.append({<span class="c2">"error"</span>: <span class="c2">"malformed JSON"</span>})
+    
+    system_prompt = <span class="c2">"""You are a Schema.org JSON-LD Auditor..."""</span>
+    
+    user_prompt = <span class="c2">f"""</span>
+<span class="c2">    AUDIT URL: {url}</span>
+<span class="c2">    </span>
+<span class="c2">    BUSINESS INFO:</span>
+<span class="c2">    {json.dumps(business_info, indent=2)}</span>
+<span class="c2">    </span>
+<span class="c2">    EXTRACTED JSON-LD BLOCKS:</span>
+<span class="c2">    {json.dumps(jsonld_blocks, indent=2)}</span>
+<span class="c2">    </span>
+<span class="c2">    RAW TEXT (first 5000 chars):</span>
+<span class="c2">    {soup.get_text()[:5000]}</span>
+<span class="c2">    """</span>
+    
+    response = client.chat.completions.create(
+        model=GEMMA_MODEL,
+        temperature=<span class="c5">0.05</span>,
+        messages=[
+            {<span class="c2">"role"</span>: <span class="c2">"system"</span>, <span class="c2">"content"</span>: system_prompt},
+            {<span class="c2">"role"</span>: <span class="c2">"user"</span>, <span class="c2">"content"</span>: user_prompt}
+        ]
+    )
+    
+    <span class="c4">return</span> json.loads(response.choices[<span class="c5">0</span>].message.content)
+
+
+<span class="c1"># ── ORCHESTRATOR ─────────────────────────────</span>
+<span class="c4">def</span> <span class="c3">run_aeo_audit</span>(business_name, website, city, industry,
+                     market_context=<span class="c4">None</span>, competitor_benchmark=<span class="c4">None</span>):
+    <span class="c1">"""</span>
+<span class="c1">    Run full 2-stage AEO audit.</span>
+<span class="c1">    </span>
+<span class="c1">    Args:</span>
+<span class="c1">        business_name: Name of the business to audit</span>
+<span class="c1">        website: URL of the business website</span>
+<span class="c1">        city: City/region for local search context</span>
+<span class="c1">        industry: Industry category (e.g., 'HVAC', 'Plumbing')</span>
+<span class="c1">        market_context: Pre-scraped market data (optional)</span>
+<span class="c1">        competitor_benchmark: Competitor name+website for comparison (optional)</span>
+<span class="c1">    </span>
+<span class="c1">    Returns:</span>
+<span class="c1">        Dict with citation_simulation, schema_audit, and merged insights</span>
+<span class="c1">    """</span>
+    
+    business_info = {
+        <span class="c2">"name"</span>: business_name,
+        <span class="c2">"website"</span>: website,
+        <span class="c2">"city"</span>: city,
+        <span class="c2">"industry"</span>: industry
+    }
+    
+    <span class="c2">print</span>(<span class="c2">f"🔍 AEO Audit: {business_name} ({city})"</span>)
+    <span class="c2">print</span>(<span class="c2">"="</span> * <span class="c5">60</span>)
+    
+    <span class="c1"># Stage A: Citation Simulation</span>
+    <span class="c2">print</span>(<span class="c2">"\n📡 Stage A: Running Citation Simulation..."</span>)
+    citation_result = run_citation_simulation(business_info, market_context)
+    
+    <span class="c1"># Stage B: Schema Audit</span>
+    <span class="c2">print</span>(<span class="c2">"\n🔬 Stage B: Running Schema Entity Audit..."</span>)
+    schema_result = run_schema_audit(website, business_info)
+    
+    <span class="c1"># Optional: Competitor Benchmark</span>
+    competitor_result = <span class="c4">None</span>
+    <span class="c4">if</span> competitor_benchmark:
+        <span class="c2">print</span>(<span class="c2">f"\n⚔️  Running competitor benchmark: {competitor_benchmark['name']}"</span>)
+        competitor_result = run_citation_simulation(competitor_benchmark, market_context)
+    
+    <span class="c1"># Merge & Return</span>
+    audit_report = {
+        <span class="c2">"audit_metadata"</span>: {
+            <span class="c2">"timestamp"</span>: datetime.now().isoformat(),
+            <span class="c2">"business"</span>: business_info,
+            <span class="c2">"models_used"</span>: {<span class="c2">"citation"</span>: QWEN_MODEL, <span class="c2">"schema"</span>: GEMMA_MODEL}
+        },
+        <span class="c2">"citation_simulation"</span>: citation_result,
+        <span class="c2">"schema_audit"</span>: schema_result,
+        <span class="c2">"competitor_benchmark"</span>: competitor_result,
+        <span class="c2">"merged_insights"</span>: {
+            <span class="c2">"ai_visible"</span>: citation_result.get(<span class="c2">"target_business_detected"</span>),
+            <span class="c2">"entity_score"</span>: schema_result.get(<span class="c2">"entity_score"</span>, <span class="c5">0</span>),
+            <span class="c2">"top_3_fixes"</span>: _generate_top_fixes(citation_result, schema_result),
+            <span class="c2">"closing_hook"</span>: _generate_closing_hook(citation_result, business_name)
+        }
+    }
+    
+    <span class="c2">print</span>(<span class="c2">"\n✅ Audit complete. JSON report saved."</span>)
+    <span class="c4">return</span> audit_report
+
+
+<span class="c4">def</span> <span class="c3">_generate_top_fixes</span>(citation, schema):
+    <span class="c1">"""Generate the Top 3 Immediate Fixes executive summary."""</span>
+    fixes = []
+    <span class="c4">if</span> <span class="c4">not</span> citation.get(<span class="c2">"target_business_detected"</span>):
+        fixes.append(<span class="c2">"Claim &amp; optimize Google Business Profile with 50+ photos"</span>)
+    <span class="c4">if</span> schema.get(<span class="c2">"entity_score"</span>, <span class="c5">100</span>) &lt; <span class="c5">30</span>:
+        fixes.append(<span class="c2">"Add LocalBusiness JSON-LD with full NAP + geo coordinates"</span>)
+    fixes.append(<span class="c2">"Build sameAs links: GBP, Facebook, Yelp, BBB, LinkedIn"</span>)
+    <span class="c4">return</span> fixes[:<span class="c5">3</span>]
+
+
+<span class="c4">def</span> <span class="c3">_generate_closing_hook</span>(citation, business_name):
+    <span class="c4">if</span> <span class="c4">not</span> citation.get(<span class="c2">"target_business_detected"</span>):
+        <span class="c4">return</span> <span class="c2">f"ChatGPT does NOT know {business_name} exists. We fix that."</span>
+    <span class="c4">return</span> <span class="c2">f"{business_name} is partially visible to AI — but losing to competitors."</span>
+
+
+<span class="c1"># ── MAIN ─────────────────────────────────────</span>
+<span class="c4">if</span> __name__ == <span class="c2">"__main__"</span>:
+    <span class="c1"># Example usage</span>
+    result = run_aeo_audit(
+        business_name=<span class="c2">"Space Coast Air Solutions"</span>,
+        website=<span class="c2">"https://spacecoastair.com"</span>,
+        city=<span class="c2">"Merritt Island, FL"</span>,
+        industry=<span class="c2">"HVAC"</span>,
+        competitor_benchmark={
+            <span class="c2">"name"</span>: <span class="c2">"Premier Climate Control"</span>,
+            <span class="c2">"website"</span>: <span class="c2">"https://premierclimate.com"</span>,
+            <span class="c2">"city"</span>: <span class="c2">"Merritt Island, FL"</span>,
+            <span class="c2">"industry"</span>: <span class="c2">"HVAC"</span>
+        }
+    )
+    
+    <span class="c1"># Save report</span>
+    <span class="c4">with</span> <span class="c2">open</span>(<span class="c2">"aeo_audit_report.json"</span>, <span class="c2">"w"</span>) <span class="c4">as</span> f:
+        json.dump(result, f, indent=<span class="c5">2</span>)
+    
+    <span class="c2">print</span>(<span class="c2">"\\n📊 EXECUTIVE SUMMARY:"</span>)
+    <span class="c2">print</span>(<span class="c2">f"   AI Visible: {result['merged_insights']['ai_visible']}"</span>)
+    <span class="c2">print</span>(<span class="c2">f"   Entity Score: {result['merged_insights']['entity_score']}"</span>)
+    <span class="c2">print</span>(<span class="c2">f"   Closing Hook: {result['merged_insights']['closing_hook']}"</span>)</div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 06: THE SALES APPLICATION ═══════════════ -->
+<section id="sales">
+  <div class="container">
+    <div class="section-label">06 · Sales Strategy</div>
+    <h2>The Sales Application — Audit as Diagnostic, Not Deliverable</h2>
+    <p class="section-desc">This is a <strong>sales tool disguised as an audit</strong>. The audit is free. The fix is what they pay for. Here's how to use it to close at 3-5× your normal pitch rate.</p>
+
+    <div class="card-grid" style="margin-bottom:24px;">
+      <div class="card accent-left">
+        <h3>🎯 The Moment</h3>
+        <p><strong>"ChatGPT doesn't know you exist."</strong></p>
+        <p>You show a prospect the JSON output. Their competitor ranks #1 in AI recommendations. They are not mentioned at all. This is the moment — not a scare tactic, but a concrete, verifiable gap. The JSON doesn't lie. They can verify it themselves: open ChatGPT, ask the same query, see the same result.</p>
+      </div>
+      <div class="card green-left">
+        <h3>💰 The Close</h3>
+        <p><strong>Diagnostic closes at 3-5× the normal pitch rate.</strong></p>
+        <p>You're not selling "SEO services." You're selling an entity fix. The gap is specific, the fix is mechanical (add JSON-LD, claim profiles, build citations), and the timeline is days — not months. Prospects who'd ignore "SEO help" will pay immediately for a fix they can understand.</p>
+      </div>
+    </div>
+
+    <div class="callout good">
+      <div class="icon">📹</div>
+      <div><strong>Prospecting Workflow: The Loom Video Approach</strong><br>
+      <ol style="margin:8px 0 0 18px; color:var(--text-muted); font-size:13px;">
+        <li>Run the AEO audit on a prospect's website (no permission needed — public data)</li>
+        <li>Record a 90-second Loom video walking through the JSON output</li>
+        <li>"Hi [Name], I ran an AI visibility audit on [Company]. Three competitors are showing up in ChatGPT for '[their industry] in [their city]' — and you're not. Here's the data. Want to see what it takes to fix it?"</li>
+        <li>Attach the audit JSON (or a formatted PDF summary) in the email</li>
+        <li>Follow up in 48 hours with competitor comparison table</li>
+      </ol>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:24px;">
+      <table>
+        <thead>
+          <tr><th>Sales Stage</th><th>Traditional Pitch</th><th>AEO Audit Approach</th><th>Conversion Effect</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cold Outreach</strong></td>
+            <td class="loss">"We do SEO — want to rank higher?"</td>
+            <td class="win">"Here's your AI visibility report — you're invisible to ChatGPT. We fix that."</td>
+            <td class="win">3× response rate</td>
+          </tr>
+          <tr>
+            <td><strong>Discovery Call</strong></td>
+            <td class="loss">"What are your marketing goals?"</td>
+            <td class="win">"Let me show you who ChatGPT recommends instead of you."</td>
+            <td class="win">Diagnostic = trust</td>
+          </tr>
+          <tr>
+            <td><strong>Proposal</strong></td>
+            <td class="loss">"We'll do keyword research and on-page SEO..."</td>
+            <td class="win">"Three specific fixes: LocalBusiness schema, sameAs links, GBP optimization. Timeline: 5 days."</td>
+            <td class="win">Specificity closes</td>
+          </tr>
+          <tr>
+            <td><strong>Follow-up</strong></td>
+            <td class="loss">"Just checking in..."</td>
+            <td class="win">"Re-ran your audit this month — your entity score went from 12 to 67. Competitor dropped to #4."</td>
+            <td class="win">Retention + upsell</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight-box">
+      <h4>🔥 The Psychological Hook</h4>
+      <p style="margin-bottom:0;">Most business owners have never asked ChatGPT who the best [their industry] is in their city. When you do it for them — and show them the results — it's not a sales pitch. It's a mirror. And the reflection says: <strong>"Your competitors are winning the AI search war, and you didn't even know it was happening."</strong> That's not marketing FUD. That's verifiable reality. And it sells.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 07: SOCRATIC TWEAKS ═══════════════ -->
+<section id="tweaks">
+  <div class="container">
+    <div class="section-label">07 · Enhancements</div>
+    <h2>Socratic Tweaks — Battle-Hardened Improvements</h2>
+    <p class="section-desc">Four additions that transform the base audit from a diagnostic into an ongoing intelligence platform.</p>
+
+    <!-- Tweak 1 -->
+    <div class="card accent-left" style="margin-bottom:20px;">
+      <h3>⚔️ 1. Competitor Benchmark — Side-by-Side Comparison</h3>
+      <p>Run the full audit on <strong>both the prospect AND their #1 competitor</strong>. Present the results side by side. This turns the "ChatGPT doesn't know you exist" moment into a direct comparison: "Here's what your competitor has that you don't." The proximity effect — seeing your rival's scores right next to your own — creates urgency that a standalone audit cannot.</p>
+      <div class="comparison-grid">
+        <div class="comparison-col loser">
+          <h4><span class="cross">✗</span> Your Business</h4>
+          <div class="item">Entity Score: <strong style="color:var(--red);">12/100</strong></div>
+          <div class="item">LocalBusiness Schema: <span class="cross">Missing</span></div>
+          <div class="item">GBP Claimed: <span class="cross">No</span></div>
+          <div class="item">sameAs Links: <span class="cross">0 verified</span></div>
+          <div class="item">AI Rank: <span class="cross">Not detected</span></div>
+          <div class="item">Review Volume: 12</div>
+        </div>
+        <div class="comparison-col winner">
+          <h4><span class="check">✓</span> #1 Competitor</h4>
+          <div class="item">Entity Score: <strong style="color:var(--green);">78/100</strong></div>
+          <div class="item">LocalBusiness Schema: <span class="check">Present + valid</span></div>
+          <div class="item">GBP Claimed: <span class="check">Yes (200+ reviews)</span></div>
+          <div class="item">sameAs Links: <span class="check">8 verified</span></div>
+          <div class="item">AI Rank: <span class="check">#1 in ChatGPT</span></div>
+          <div class="item">Review Volume: 247</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tweak 2 -->
+    <div class="card green-left" style="margin-bottom:20px;">
+      <h3>📍 2. GBP Entity Check — Google Business Profile Integration</h3>
+      <p>Add a dedicated GBP entity check to Stage B. A claimed, optimized Google Business Profile is one of the strongest entity signals for AI search engines. The check verifies: profile claimed status, review count, category accuracy, photo count, Q&A activity, and NAP consistency with the website. If the GBP is not claimed or incomplete, it's the single highest-impact fix — often worth 20-40 entity score points by itself.</p>
+      <div class="badge-row">
+        <span class="badge-pill">Claimed Status</span>
+        <span class="badge-pill">Review Count</span>
+        <span class="badge-pill">Category Accuracy</span>
+        <span class="badge-pill">Photo Count</span>
+        <span class="badge-pill">NAP Consistency</span>
+        <span class="badge-pill">Q&A Activity</span>
+      </div>
+    </div>
+
+    <!-- Tweak 3 -->
+    <div class="card amber-left" style="margin-bottom:20px;">
+      <h3>📋 3. Top 3 Immediate Fixes — Executive Summary</h3>
+      <p>Business owners don't read technical audits. They read executive summaries. After both stages run, the engine auto-generates the <strong>Top 3 Immediate Fixes</strong> — ranked by impact, with estimated effort. This is the slide you put in the proposal. It's also the answer to "so what do I actually do about this?"</p>
+      <ol class="num-list" style="margin-top:12px;">
+        <li><strong>Claim &amp; Optimize Google Business Profile</strong> — Add 50+ photos, respond to all reviews, set correct categories. Estimated effort: 2 hours. Impact: High.</li>
+        <li><strong>Add LocalBusiness JSON-LD Schema</strong> — Full NAP, geo coordinates, opening hours, price range. Estimated effort: 30 minutes. Impact: Critical.</li>
+        <li><strong>Build sameAs Entity Links</strong> — Link GBP, Facebook, Yelp, BBB, and LinkedIn profiles to website schema. Estimated effort: 1 hour. Impact: High.</li>
+      </ol>
+    </div>
+
+    <!-- Tweak 4 -->
+    <div class="card blue-left" style="margin-bottom:20px;">
+      <h3>📈 4. Tracking Over Time — Monthly Re-Audit Loop</h3>
+      <p>The audit isn't a one-shot. Schedule monthly re-audits to show progress. Store each audit as a timestamped JSON file. Generate a trend report: entity score over time, AI rank over time, competitor gap closing. This creates <strong>ongoing retainer value</strong> — the client sees their entity score climbing month over month, and they can't afford to stop the engine that's powering their AI visibility.</p>
+      <div class="table-wrap" style="margin-top:12px;">
+        <table>
+          <thead>
+            <tr><th>Month</th><th>Entity Score</th><th>AI Rank</th><th>Competitor Gap</th><th>Actions Taken</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>July 2026</td><td class="loss">12 → 34</td><td class="loss">Not detected → #5</td><td>66 pts behind</td><td>GBP claimed, JSON-LD added</td></tr>
+            <tr><td>August 2026</td><td class="neutral">34 → 52</td><td class="neutral">#5 → #3</td><td>45 pts behind</td><td>sameAs links built, reviews campaign</td></tr>
+            <tr><td>September 2026</td><td class="win">52 → 71</td><td class="win">#3 → #1</td><td>7 pts behind</td><td>Schema refined, Q&A populated</td></tr>
+            <tr><td>October 2026</td><td class="win">71 → 82</td><td class="win">#1 (maintained)</td><td class="win">AHEAD by 4 pts</td><td>Monthly audit, content updates</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small" style="margin-top:8px; color:var(--text-dim);">Each row is a retainer renewal conversation. The data sells itself.</p>
+    </div>
+
+    <div class="insight-box">
+      <h4>🧠 Strategic Rationale</h4>
+      <p style="margin-bottom:0;">These four tweaks transform the audit from a diagnostic into a <strong>full competitive intelligence platform</strong>. The competitor benchmark creates urgency. The GBP check identifies the highest-leverage fix. The Top 3 summary makes it actionable for non-technical buyers. And the tracking loop creates recurring revenue. Together, they make the AEO Audit Engine not just a tool — but the core of a retainer-based AEO service line.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ BACK LINK ═══════════════ -->
+<section style="text-align:center; padding:40px 0;">
+  <div class="container">
+    <a href="index.html" style="color:var(--orange); text-decoration:none; font-weight:600; font-size:14px;">← Back to Space Command Center Index</a>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <p>Space Coast Marketing · Merritt Island, FL · Socrates AI Chief of Staff</p>
+  <p style="margin-top:4px;">AEO Audit Engine v1.0 · Built on Qwen + Gemma · OpenRouter Infrastructure</p>
+</footer>
+
+</body>
+</html>

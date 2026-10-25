@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trust Signals Handbook · Space Command Center</title>
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+    --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+    --border: #1E293B; --border-accent: #2D3A5C;
+    --radius: 10px; --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-deep); color: var(--text); font-family: var(--font); line-height: 1.6; padding-bottom: 120px; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+  nav .inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav .back-link { font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+  nav .back-link:hover { color: var(--orange); text-decoration: none; }
+  nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .hero { padding: 80px 0 60px; text-align: center; background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%); }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 720px; margin: 0 auto 40px; }
+  .stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+  .stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .stat-pill .value.accent { color: var(--orange); }
+  .stat-pill .value.green { color: var(--green); }
+  .stat-pill .value.gold { color: var(--gold); }
+  .stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+  h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+  .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .card.accent-left { border-left: 3px solid var(--orange); }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.amber-left { border-left: 3px solid var(--amber); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+  .callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+  .callout.info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); }
+  .callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+  .callout .icon { font-size: 20px; flex-shrink: 0; }
+  .callout h4 { font-size: 15px; margin-bottom: 4px; }
+  .callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+  thead { background: var(--bg-surface); }
+  th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover { background: rgba(255,255,255,0.02); }
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .tag.win { background: var(--green-bg); color: var(--green); }
+  .tag.loss { background: var(--red-bg); color: var(--red); }
+  .win { color: var(--green); font-weight: 600; }
+  .loss { color: var(--red); font-weight: 600; }
+  .muted { color: var(--text-dim); }
+  .insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+  .insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .badge-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--text-muted); }
+  .code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0; }
+  footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+  h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  li { margin-bottom: 4px; }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* Trust signal type cards */
+  .trust-type-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px; position: relative; overflow: hidden;
+    border-top: 3px solid var(--orange);
+  }
+  .trust-type-card .type-num {
+    font-size: 48px; font-weight: 800; color: rgba(255,69,0,0.06);
+    position: absolute; top: 16px; right: 24px; line-height: 1;
+  }
+  .trust-type-card h4 { font-size: 18px; margin-bottom: 14px; }
+  .trust-type-card .format-box {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 18px; margin-top: 16px;
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .trust-type-card .format-box .label {
+    color: var(--orange); font-weight: 600; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;
+  }
+
+  /* Checklist items */
+  .checklist { list-style: none; margin-left: 0; }
+  .checklist li {
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+    color: var(--text-muted); font-size: 14px; display: flex; align-items: flex-start; gap: 12px;
+  }
+  .checklist li .check { color: var(--green); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Zone cards */
+  .zone-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px; position: relative;
+  }
+  .zone-card .zone-num {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 8px;
+  }
+
+  /* Process steps */
+  .process-flow { display: flex; gap: 0; align-items: stretch; flex-wrap: wrap; margin: 24px 0; }
+  .process-step {
+    flex: 1; min-width: 180px; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px; text-align: center; position: relative;
+  }
+  .process-step .step-num {
+    width: 36px; height: 36px; border-radius: 50%; background: rgba(255,69,0,0.12);
+    color: var(--orange); font-weight: 700; font-size: 14px; display: flex;
+    align-items: center; justify-content: center; margin: 0 auto 12px;
+  }
+  .process-step h5 { font-size: 14px; color: var(--text); margin-bottom: 4px; }
+  .process-step p { font-size: 12px; color: var(--text-dim); line-height: 1.5; margin-bottom: 0; }
+  .process-arrow {
+    display: flex; align-items: center; font-size: 20px; color: var(--orange);
+    padding: 0 8px; flex-shrink: 0;
+  }
+
+  /* Placement template */
+  .page-template {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; margin: 24px 0;
+  }
+  .page-template .zone { padding: 24px; border-bottom: 1px solid var(--border); }
+  .page-template .zone:last-child { border-bottom: none; }
+  .page-template .zone-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .page-template .zone-label .dot-marker {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .page-template .zone-label .dot-marker.hero-zone { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  .page-template .zone-label .dot-marker.mid-zone { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+  .page-template .zone-label .dot-marker.bottom-zone { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .page-template .zone-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .page-template .zone-item {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 16px; font-size: 13px; color: var(--text-muted);
+  }
+  .page-template .zone-item strong { display: block; color: var(--text); font-size: 14px; margin-bottom: 3px; }
+
+  /* Testimonial quote style */
+  .testimonial-quote {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-left: 3px solid var(--orange); border-radius: var(--radius);
+    padding: 24px; margin: 20px 0; position: relative;
+  }
+  .testimonial-quote .quote-mark {
+    font-size: 48px; color: rgba(255,69,0,0.15); position: absolute; top: 12px; left: 16px;
+    font-family: Georgia, serif; line-height: 1;
+  }
+  .testimonial-quote blockquote {
+    font-size: 15px; font-style: italic; color: var(--text); margin: 0 0 12px 0;
+    padding: 0; line-height: 1.7;
+  }
+  .testimonial-quote .attribution {
+    font-size: 13px; color: var(--text-muted);
+  }
+  .testimonial-quote .attribution .name { color: var(--text); font-weight: 600; }
+  .testimonial-quote .attribution .result { color: var(--green); font-weight: 600; display: block; margin-top: 4px; }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 28px; }
+    .stat-row { gap: 10px; }
+    .stat-pill { min-width: 120px; padding: 14px 16px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .process-flow { flex-direction: column; }
+    .process-arrow { transform: rotate(90deg); justify-content: center; padding: 4px 0; }
+    .page-template .zone-items { grid-template-columns: 1fr; }
+  }
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    nav { display: none; }
+    section { break-inside: avoid; border-color: #ddd; }
+    .card, .callout, .insight-box, .code-block, .trust-type-card, .zone-card { border-color: #ddd; }
+    .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+    h2, h3, h4 { color: #111; }
+    .stat-pill { border-color: #ddd; }
+    .stat-pill .value { color: #111; }
+    .section-label { color: #FF4500; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> Space Command Center · Master Operating System</div>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <a href="index.html" class="back-link">← Back to Index</a>
+      <div class="badge">SOP · Trust & Conversion</div>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Conversion Intelligence</div>
+    <h1>Trust Signals Handbook<br>Social Proof & Credibility Architecture</h1>
+    <p class="subtitle">Cold visitors don't trust you — and your copy alone won't change that. This handbook maps every trust signal you need, where to place them, and how to build credibility from zero.</p>
+    <div class="stat-row">
+      <div class="stat-pill"><div class="value accent">7</div><div class="label">Trust Signal Types</div></div>
+      <div class="stat-pill"><div class="value gold">3</div><div class="label">Placement Zones</div></div>
+      <div class="stat-pill"><div class="value green">0</div><div class="label">Anonymous Claims</div></div>
+      <div class="stat-pill"><div class="value">100<small style="font-size:16px">%</small></div><div class="label">Verifiable</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 01: WHY TRUST SIGNALS MATTER -->
+<section>
+  <div class="container">
+    <div class="section-label">01 · Foundation</div>
+    <h2>Why Trust Signals Matter More Than Copy</h2>
+    <p class="section-desc">The cold traffic problem — and why social proof is the bridge between "interesting" and "I'll give them my information."</p>
+
+    <p>Cold visitors land on your site with a single question: <strong>"Why should I trust you?"</strong> They've never met you. They don't know your work. They've been burned by marketing agencies before. Your copy — no matter how brilliant — is you talking about you. That's inherently low-trust.</p>
+
+    <p>Trust signals are <strong>third-party validation</strong>. They're evidence that other people — real businesses, real owners — have already bet on you and won. A well-placed testimonial can do more for conversion than rewriting your headline six times.</p>
+
+    <div class="insight-box">
+      <h4>🔑 The Trust Gap Equation</h4>
+      <p style="margin-bottom:0;">Visitor Interest → <span style="color:var(--orange);font-weight:600;">Trust Gap</span> → Conversion. Your copy generates interest. Trust signals close the gap. Without them, interest leaks away. With them, interest becomes action.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top:24px;">
+      <div class="card accent-left">
+        <h4>Without Trust Signals</h4>
+        <p style="margin-bottom:0;">"Who are these people? Anyone can say they're great at marketing. I don't know them. I'll keep looking." → <span class="loss">Bounce</span></p>
+      </div>
+      <div class="card green-left">
+        <h4>With Trust Signals</h4>
+        <p style="margin-bottom:0;">"Oh, they worked with Joe's Plumbing — I know Joe. And they're Chamber members. And they show exactly how their process works. Okay, let me request an audit." → <span class="win">Convert</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02: THE 7 TYPES OF TRUST SIGNALS -->
+<section>
+  <div class="container">
+    <div class="section-label">02 · The Arsenal</div>
+    <h2>The 7 Types of Trust Signals</h2>
+    <p class="section-desc">Each type serves a different psychological need. Deploy the right signal at the right moment.</p>
+
+    <!-- Type 1: Client Testimonials -->
+    <h3 style="color:var(--orange);margin-top:32px;">Type 1 — Client Testimonials</h3>
+    <div class="trust-type-card">
+      <div class="type-num">01</div>
+      <h4>Real quotes from real clients. Named. Specific. Verifiable.</h4>
+      <p>A testimonial without a full name and business name is worthless. "Great service! – John D." actually <em>hurts</em> your credibility — it looks made up. Every testimonial must include: <strong>full name, business name, photo (if possible), and a specific result metric</strong>.</p>
+      <p>Not this: "Space Coast Marketing did a great job."</p>
+      <p>This: "Our phone calls increased 40% in 3 months after Space Coast Marketing rebuilt our website and fixed our Google presence."</p>
+
+      <div class="testimonial-quote">
+        <div class="quote-mark">"</div>
+        <blockquote>Our calls went from ~15/week to 40+/week within 90 days of launch. Chris didn't just build a website — he built a lead generation machine. Every dollar we spent came back 5×.</blockquote>
+        <div class="attribution">
+          <span class="name">Mike Reynolds</span>, Owner, <span style="color:var(--text);">Reynolds HVAC — Merritt Island</span>
+          <span class="result">Result: 167% increase in weekly leads</span>
+        </div>
+      </div>
+
+      <div class="format-box">
+        <div class="label">Testimonial Format</div>
+        Quote + Full Name + Business Name + Specific Result Metric
+      </div>
+    </div>
+
+    <!-- Type 2: Case Studies / Before-After -->
+    <h3 style="color:var(--orange);margin-top:32px;">Type 2 — Case Studies / Before-After</h3>
+    <div class="trust-type-card">
+      <div class="type-num">02</div>
+      <h4>Show the transformation. Document the journey from broken to dominant.</h4>
+      <p>Case studies are your heaviest trust artillery. They show <em>transformation over time</em>, not just a happy quote. The format: <strong>Problem → Solution → Results</strong>. Before: outdated site, no Google presence, zero ChatGPT visibility. After: modern site, ranking #1 for local terms, ChatGPT recommends them by name.</p>
+      <p>Include specific metrics: rankings, traffic, calls, revenue. A case study without numbers is a story. A case study with numbers is <strong>proof</strong>.</p>
+
+      <div class="card-grid" style="margin-top:16px;">
+        <div class="card" style="border:1px solid rgba(239,68,68,0.2);background:rgba(239,68,68,0.03);">
+          <h4 style="color:var(--red);">Before</h4>
+          <ul style="color:var(--text-muted);">
+            <li>Wix site from 2018, not mobile-responsive</li>
+            <li>Not appearing on Google for "HVAC Merritt Island"</li>
+            <li>Zero ChatGPT/AEO visibility</li>
+            <li>~15 calls/week, mostly referrals</li>
+          </ul>
+        </div>
+        <div class="card" style="border:1px solid rgba(34,197,94,0.2);background:rgba(34,197,94,0.03);">
+          <h4 style="color:var(--green);">After</h4>
+          <ul style="color:var(--text-muted);">
+            <li>Custom WordPress site, 98 PageSpeed score</li>
+            <li>#1 ranking for "HVAC Merritt Island" and 12 related terms</li>
+            <li>ChatGPT recommends them when asked "best HVAC in Brevard"</li>
+            <li>40+ calls/week — a 167% increase</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="format-box">
+        <div class="label">Case Study Format</div>
+        Problem (before state) → Solution (what you did) → Results (specific metrics)
+      </div>
+    </div>
+
+    <!-- Type 3: Reviews & Ratings -->
+    <h3 style="color:var(--orange);margin-top:32px;">Type 3 — Reviews & Ratings</h3>
+    <div class="trust-type-card">
+      <div class="type-num">03</div>
+      <h4>Google reviews. Facebook reviews. Yelp. Third-party platforms carry weight.</h4>
+      <p>Even 5–10 genuine Google reviews build massive credibility — more than 50 testimonials on your own site. Why? Because Google reviews are <strong>third-party verified</strong>. Anyone can write a testimonial on their own website. Google reviews require a real account and are harder to fake.</p>
+      <p>Embed a Google review widget on your site. Link to your Google Business Profile. Encourage every client to leave a review — make it part of your offboarding process.</p>
+
+      <div class="callout success">
+        <div class="icon">⭐</div>
+        <div>
+          <h4>Pre-Launch Strategy</h4>
+          <p>Even before you have 10+ Google reviews, display the star rating widget. A 5.0 rating with 4 reviews still signals legitimacy. Then grow it with every client.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Type 4: Client Logos / As Seen In -->
+    <h3 style="color:var(--orange);margin-top:32px;">Type 4 — Client Logos / "As Seen In"</h3>
+    <div class="trust-type-card">
+      <div class="type-num">04</div>
+      <h4>Visual social proof. Logos of businesses you've worked with.</h4>
+      <p>Even local businesses carry weight. A row of logos — "Trusted by Brevard County businesses" — signals that real companies in your community have hired you. This works even if the businesses aren't household names. The visual pattern of multiple logos triggers the "social proof" heuristic in the visitor's brain.</p>
+      <p>Also display: <strong>Chamber of Commerce membership, BBB accreditation, industry certifications</strong>. These are institutional trust signals — third-party organizations vouching for your legitimacy.</p>
+
+      <div class="badge-row">
+        <span class="badge-pill">🏢 Cocoa Beach Chamber</span>
+        <span class="badge-pill">✅ BBB Accredited</span>
+        <span class="badge-pill">🎓 Google Certified</span>
+        <span class="badge-pill">📋 Brevard Licensed</span>
+      </div>
+    </div>
+
+    <!-- Type 5: Process Transparency -->
+    <h3 style="color:var(--orange);margin-top:32px;">Type 5 — Process Transparency</h3>
+    <div class="trust-type-card">
+      <div class="type-num">05</div>
+      <h4>Show exactly how you work. Transparency builds trust. Mystery builds suspicion.</h4>
+      <p>When a prospect doesn't know what happens after they click "Request Audit," their brain fills the gap with worst-case scenarios: "They'll spam me. They'll hard-sell me. It'll take weeks." Replace mystery with <strong>clarity</strong>. A 3–4 step visual process eliminates fear and builds confidence.</p>
+
+      <div class="process-flow">
+        <div class="process-step">
+          <div class="step-num">1</div>
+          <h5>Request Audit</h5>
+          <p>Fill out a 30-second form with your business name and website URL. No phone number required.</p>
+        </div>
+        <div class="process-arrow">→</div>
+        <div class="process-step">
+          <div class="step-num">2</div>
+          <h5>Get Report in 48 Hours</h5>
+          <p>We run a full scan — Google presence, ChatGPT visibility, website performance, competitor comparison.</p>
+        </div>
+        <div class="process-arrow">→</div>
+        <div class="process-step">
+          <div class="step-num">3</div>
+          <h5>Review Together</h5>
+          <p>15-minute Zoom walkthrough of your audit. See exactly what's broken and how we fix it. No pitch — just data.</p>
+        </div>
+        <div class="process-arrow">→</div>
+        <div class="process-step">
+          <div class="step-num">4</div>
+          <h5>We Fix It</h5>
+          <p>You decide what to implement. No contracts. 72-hour preview guarantee. You own everything.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Type 6: Guarantees & Risk Reversal -->
+    <h3 style="color:var(--orange);margin-top:32px;">Type 6 — Guarantees & Risk Reversal</h3>
+    <div class="trust-type-card">
+      <div class="type-num">06</div>
+      <h4>Remove the fear of a bad decision. Guarantees are trust signals, not just offer terms.</h4>
+      <p>A strong guarantee does two things: it signals confidence in your work, and it removes the prospect's downside risk. Display guarantees prominently — not buried in fine print. The 72-hour preview guarantee, no-contracts policy, and client-owns-everything terms are trust signals that differentiate you from the typical agency that locks clients into 12-month contracts.</p>
+
+      <div class="card-grid" style="margin-top:16px;">
+        <div class="card green-left">
+          <h4>🛡️ 72-Hour Preview Guarantee</h4>
+          <p style="margin-bottom:0;">We build your site. You preview it for 72 hours. If you don't love it, you don't pay. Zero risk.</p>
+        </div>
+        <div class="card green-left">
+          <h4>🔓 No Contracts. Ever.</h4>
+          <p style="margin-bottom:0;">Month-to-month. Cancel anytime. We earn your business every 30 days — we don't lock you in.</p>
+        </div>
+        <div class="card green-left">
+          <h4>📦 You Own Everything</h4>
+          <p style="margin-bottom:0;">Domain, hosting, content, site files — 100% yours. We're a service, not a landlord.</p>
+        </div>
+      </div>
+
+      <div class="callout info" style="margin-top:16px;">
+        <div class="icon">💡</div>
+        <div>
+          <h4>Placement Rule</h4>
+          <p>Guarantees should appear at least twice: once above the fold (as a badge or short line) and once near the final CTA (full detail). Repetition reinforces the safety signal.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Type 7: Personal Authority -->
+    <h3 style="color:var(--orange);margin-top:32px;">Type 7 — Personal Authority</h3>
+    <div class="trust-type-card">
+      <div class="type-num">07</div>
+      <h4>Personal brands build trust faster than corporate brands. Show the human.</h4>
+      <p>A faceless agency is a trust desert. Visitors need to see <strong>who</strong> they're working with. Chris's photo, his story (Thryv → ADP → Hayes → Allstate → Space Coast Marketing), his local Brevard presence, and his 850-member Facebook group — these are all trust signals. They answer: "Is this a real person? Do they know my market? Are they credible?"</p>
+
+      <div class="card-grid" style="margin-top:16px;">
+        <div class="card accent-left">
+          <h4>📸 Photo + Story</h4>
+          <p style="margin-bottom:0;">Chris's photo on the homepage with a 2-sentence bio. "Former Thryv business advisor. Brevard County local. I build marketing systems that run themselves."</p>
+        </div>
+        <div class="card accent-left">
+          <h4>👥 850-Member Facebook Group</h4>
+          <p style="margin-bottom:0;">"Join 850+ local business owners in our free marketing community." A community signals authority, generosity, and local presence all at once.</p>
+        </div>
+        <div class="card accent-left">
+          <h4>📍 Local Presence</h4>
+          <p style="margin-bottom:0;">Merritt Island address. Brevard County focus. Chamber membership. This isn't a faceless offshore operation — it's a local expert.</p>
+        </div>
+        <div class="card accent-left">
+          <h4>📋 Career Narrative</h4>
+          <p style="margin-bottom:0;">Thryv → ADP → Hayes → Allstate → Agency Owner. Every step adds credibility. This isn't a kid with a laptop — it's a professional with a track record.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03: WHERE TO PLACE TRUST SIGNALS -->
+<section>
+  <div class="container">
+    <div class="section-label">03 · Placement</div>
+    <h2>Where to Place Trust Signals — The 3 Zones</h2>
+    <p class="section-desc">Trust signals aren't decorations. They're strategic conversion assets placed at critical decision points.</p>
+
+    <div class="card-grid" style="margin-bottom:24px;">
+      <div class="zone-card">
+        <div class="zone-num">Zone 1</div>
+        <h4>Above the Fold — Hero Section</h4>
+        <p>The first impression trust signal. This is for visitors who land and decide in 3 seconds whether to stay or bounce. Mini social proof: "Trusted by Brevard service businesses" (once you have clients). Star rating if you have reviews. A short credibility line: "Former Thryv business advisor."</p>
+        <p style="color:var(--orange);font-weight:600;font-size:13px;">Goal: Stop the bounce. Signal legitimacy instantly.</p>
+      </div>
+
+      <div class="zone-card">
+        <div class="zone-num">Zone 2</div>
+        <h4>Mid-Page — Before the CTA</h4>
+        <p>This is where skeptical visitors go before committing. They scrolled past the hero — they're interested but not sold. Every objection they have should be answered by a trust signal in this zone. Case studies, testimonials, logos, process transparency.</p>
+        <p style="color:var(--gold);font-weight:600;font-size:13px;">Goal: Answer objections. Build depth of trust before the ask.</p>
+      </div>
+
+      <div class="zone-card">
+        <div class="zone-num">Zone 3</div>
+        <h4>Bottom of Page — Final CTA Area</h4>
+        <p>For visitors who scrolled the whole page — they're highly interested but need one last push. Deploy your strongest testimonial, the guarantee reminder, and a final credibility marker. This is the "last chance to convert" zone.</p>
+        <p style="color:var(--green);font-weight:600;font-size:13px;">Goal: Close the deal. Remove the final shred of doubt.</p>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <h4>⚡ The Scrolling Visitor Psychology</h4>
+      <p style="margin-bottom:0;">Hero viewers (100%) → Mid-page scrollers (~60%) → Bottom-of-page readers (~20%). Every scroll is a micro-commitment. Match the trust signal intensity to the commitment level: light social proof at top, heavy proof in the middle, strongest closer at the bottom.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04: HOW TO COLLECT TRUST SIGNALS (ZERO CLIENTS) -->
+<section>
+  <div class="container">
+    <div class="section-label">04 · Bootstrap</div>
+    <h2>How to Collect Trust Signals (When You Have Zero Clients)</h2>
+    <p class="section-desc">The pre-revenue trust signal strategy. You have more credibility than you think — you just haven't packaged it yet.</p>
+
+    <div class="card-grid">
+      <div class="card accent-left">
+        <h4>👥 Your Facebook Group (850 Members)</h4>
+        <p style="margin-bottom:0;">This IS a trust signal today. "Join 850+ local business owners in our free marketing community" signals authority, community, and generosity. Prominently feature this on your homepage.</p>
+      </div>
+
+      <div class="card accent-left">
+        <h4>💼 Your Sales Background</h4>
+        <p style="margin-bottom:0;">"Former Thryv business advisor, Brevard County." This is real credibility. You've consulted businesses before. You understand their problems. That's a trust signal.</p>
+      </div>
+
+      <div class="card accent-left">
+        <h4>🔨 Free Work for Testimonials</h4>
+        <p style="margin-bottom:0;">Build one website at cost for a known local business in exchange for a case study and testimonial. One real, specific, verifiable case study is worth more than 100 generic claims.</p>
+      </div>
+
+      <div class="card accent-left">
+        <h4>📋 Document Your Process</h4>
+        <p style="margin-bottom:0;">Even without clients, show HOW you work. Process transparency builds trust. Map your 4-step workflow and display it. Visitors respect clarity — even from a new business.</p>
+      </div>
+
+      <div class="card accent-left">
+        <h4>📖 Your Personal Story</h4>
+        <p style="margin-bottom:0;">Your journey from Thryv to ADP to Hayes to Allstate to agency owner is interesting, human, and credibility-building. Tell it. Personal stories connect in ways corporate "About Us" pages never will.</p>
+      </div>
+
+      <div class="card accent-left">
+        <h4>🔍 Audit Samples</h4>
+        <p style="margin-bottom:0;">Create 2–3 sample audits of well-known local businesses (anonymized). Show prospects the <em>quality</em> of your work before they hire you. A sample audit is a trust signal that says "this is the caliber of insight you'll receive."</p>
+      </div>
+    </div>
+
+    <div class="callout success" style="margin-top:24px;">
+      <div class="icon">✅</div>
+      <div>
+        <h4>You're not starting from zero.</h4>
+        <p>850 Facebook group members + Thryv sales background + local Brevard presence + documented process = more trust signals than most agencies have on day one. Package them. Display them. Let them work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05: TRUST SIGNAL PLACEMENT TEMPLATE -->
+<section>
+  <div class="container">
+    <div class="section-label">05 · Template</div>
+    <h2>Trust Signal Placement Template</h2>
+    <p class="section-desc">A visual mockup showing where each trust signal type should appear on a homepage. Use this as your design blueprint.</p>
+
+    <div class="page-template">
+      <!-- Hero Zone -->
+      <div class="zone" style="background:linear-gradient(180deg, rgba(255,69,0,0.03), transparent);">
+        <div class="zone-label"><span class="dot-marker hero-zone"></span> ABOVE THE FOLD — Hero Section</div>
+        <div class="zone-items">
+          <div class="zone-item">
+            <strong>📸 Personal Authority</strong>
+            Chris's photo + 2-sentence bio + "Former Thryv Business Advisor"
+          </div>
+          <div class="zone-item">
+            <strong>⭐ Mini Social Proof</strong>
+            "Trusted by Brevard businesses" (once you have clients) + star rating widget
+          </div>
+          <div class="zone-item">
+            <strong>🛡️ Guarantee Badge</strong>
+            "72-Hour Preview Guarantee — Love It or Don't Pay" badge near CTA button
+          </div>
+        </div>
+      </div>
+
+      <!-- Mid-Page Zone -->
+      <div class="zone" style="background:linear-gradient(180deg, rgba(240,160,48,0.03), transparent);">
+        <div class="zone-label"><span class="dot-marker mid-zone"></span> MID-PAGE — Trust Deep-Dive</div>
+        <div class="zone-items">
+          <div class="zone-item">
+            <strong>📊 Case Study (Left)</strong>
+            Before/after with specific metrics. Problem → Solution → Results format.
+          </div>
+          <div class="zone-item">
+            <strong>💬 Testimonials (Right)</strong>
+            Rotating testimonial carousel. Full name + business + specific result each.
+          </div>
+          <div class="zone-item">
+            <strong>⚙️ Process Transparency</strong>
+            4-step visual process: Request Audit → Get Report → Review Together → We Fix It
+          </div>
+          <div class="zone-item">
+            <strong>🏢 Client Logos Row</strong>
+            "Trusted by" + logos of businesses served + Chamber membership badge
+          </div>
+        </div>
+      </div>
+
+      <!-- Pre-CTA Zone -->
+      <div class="zone" style="background:linear-gradient(180deg, rgba(34,197,94,0.03), transparent);">
+        <div class="zone-label"><span class="dot-marker bottom-zone"></span> BOTTOM OF PAGE — Final CTA Area</div>
+        <div class="zone-items">
+          <div class="zone-item">
+            <strong>🛡️ Guarantee Reminder</strong>
+            "No contracts. 72-hour preview. You own everything." Full detail display.
+          </div>
+          <div class="zone-item">
+            <strong>⭐ Strongest Testimonial</strong>
+            Your single best client quote with photo, name, business, and metric.
+          </div>
+          <div class="zone-item">
+            <strong>📍 Final Credibility Markers</strong>
+            Chamber membership, BBB, industry certs, local address.
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Zone -->
+      <div class="zone" style="background:rgba(255,255,255,0.01);">
+        <div class="zone-label" style="color:var(--text-dim);"><span class="dot-marker" style="background:var(--text-dim);"></span> FOOTER — Persistent Trust</div>
+        <div class="zone-items">
+          <div class="zone-item">
+            <strong>🏢 Logos & Certifications</strong>
+            Chamber, BBB, Google Partner, industry badges — always visible.
+          </div>
+          <div class="zone-item">
+            <strong>👥 Community Link</strong>
+            "Join 850+ local business owners" — Facebook group CTA.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06: COMMON TRUST SIGNAL MISTAKES -->
+<section>
+  <div class="container">
+    <div class="section-label">06 · Anti-Patterns</div>
+    <h2>Common Trust Signal Mistakes</h2>
+    <p class="section-desc">The errors that erode credibility instead of building it. Avoid every single one.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:35%;">❌ The Mistake</th>
+          <th style="width:65%;">✅ The Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Anonymous testimonials</strong><br><span class="muted">"Great service! – John D."</span></td>
+          <td><strong>Use full name + business name.</strong><br><span class="win">"John Davison, Owner, Davison Electric — Cocoa Beach"</span></td>
+        </tr>
+        <tr>
+          <td><strong>Vague praise</strong><br><span class="muted">"They did a great job." — no impact, no proof.</span></td>
+          <td><strong>Include specific results/metrics.</strong><br><span class="win">"Our website traffic doubled and our Google ranking went from page 4 to #1 in 6 weeks."</span></td>
+        </tr>
+        <tr>
+          <td><strong>All testimonials, no case studies</strong><br><span class="muted">Surface-level proof. Anyone can collect 3 quotes.</span></td>
+          <td><strong>Mix testimonials + case studies.</strong><br><span class="win">Testimonials for social proof. Case studies for deep proof. Serve both visitor types.</span></td>
+        </tr>
+        <tr>
+          <td><strong>Trust signals hidden below the fold</strong><br><span class="muted">Invisible to 60% of visitors who never scroll.</span></td>
+          <td><strong>At least one trust signal above the fold.</strong><br><span class="win">Mini social proof or star rating in the hero section catches all visitors.</span></td>
+        </tr>
+        <tr>
+          <td><strong>Stock photos pretending to be clients</strong><br><span class="muted">Trust killer if discovered — and they're always discovered.</span></td>
+          <td><strong>Real photos or no photos.</strong><br><span class="win">A testimonial with no photo is better than a fake one. Authenticity over aesthetics.</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fake reviews</strong><br><span class="muted">Illegal, unethical, destroys reputation permanently.</span></td>
+          <td><strong>Earn real reviews.</strong><br><span class="win">Make review collection part of your offboarding. 5 real reviews > 50 fake ones.</span></td>
+        </tr>
+        <tr>
+          <td><strong>No personal presence</strong><br><span class="muted">Faceless agency. Could be anyone, anywhere.</span></td>
+          <td><strong>Include Chris's photo and story.</strong><br><span class="win">A real face + real story = instant trust multiplier. Personal brands win.</span></td>
+        </tr>
+        <tr>
+          <td><strong>Guarantee buried in fine print</strong><br><span class="muted">Invisible to virtually every visitor. Wasted asset.</span></td>
+          <td><strong>Display guarantee prominently.</strong><br><span class="win">Above-the-fold badge + pre-CTA full detail. Your guarantee is a trust weapon — deploy it.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 07: PRE-LAUNCH TRUST SIGNAL CHECKLIST -->
+<section>
+  <div class="container">
+    <div class="section-label">07 · Action</div>
+    <h2>The Pre-Launch Trust Signal Checklist</h2>
+    <p class="section-desc">What you can implement TODAY — no clients required. Every checked item is a trust signal live on your site.</p>
+
+    <ul class="checklist">
+      <li>
+        <span class="check">☐</span>
+        <span><strong>Chris's photo + 2-sentence bio on homepage.</strong> <span class="muted">A real face with a real story. "Former Thryv business advisor. Brevard County local. I build marketing systems that run themselves."</span></span>
+      </li>
+      <li>
+        <span class="check">☐</span>
+        <span><strong>"Former Thryv business advisor, Brevard County" credibility line.</strong> <span class="muted">One line. Hero section. Instant authority signal.</span></span>
+      </li>
+      <li>
+        <span class="check">☐</span>
+        <span><strong>Facebook group mention.</strong> <span class="muted">"Join 850+ local business owners in our free marketing community." Social proof + community building in one signal.</span></span>
+      </li>
+      <li>
+        <span class="check">☐</span>
+        <span><strong>72-hour preview guarantee displayed prominently.</strong> <span class="muted">Above-the-fold badge + footer detail. Risk reversal as a trust signal.</span></span>
+      </li>
+      <li>
+        <span class="check">☐</span>
+        <span><strong>Process transparency visible.</strong> <span class="muted">1) Request audit → 2) Get report in 48hrs → 3) Review together → 4) We fix it. Every step mapped.</span></span>
+      </li>
+      <li>
+        <span class="check">☐</span>
+        <span><strong>Chamber of Commerce membership.</strong> <span class="muted">Join if not already. Display the logo. Institutional trust carries weight.</span></span>
+      </li>
+      <li>
+        <span class="check">☐</span>
+        <span><strong>One free/discounted build in progress for case study.</strong> <span class="muted">This is your single most important pre-launch action. One real case study changes everything.</span></span>
+      </li>
+      <li>
+        <span class="check">☐</span>
+        <span><strong>2–3 sample audits ready to show prospects.</strong> <span class="muted">Anonymized audits of local businesses. Show the caliber of your work before they commit.</span></span>
+      </li>
+    </ul>
+
+    <div class="callout info" style="margin-top:24px;">
+      <div class="icon">🎯</div>
+      <div>
+        <h4>Priority Order</h4>
+        <p>If you only implement 3 items today: (1) Chris's photo + bio, (2) process transparency section, (3) guarantee banner. These three alone will put you ahead of 80% of agency websites. Then build the case study — that's your conversion weapon.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Space Coast Marketing · Merritt Island, FL · Socrates AI Chief of Staff<br>
+  <span style="color:var(--text-dim);font-size:11px;">Space Command Center · Master Operating System</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Objection Handling Manual · Sales Conversation Frameworks</title>
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+    --blue: #3B82F6; --blue-bg: rgba(59,130,246,0.1);
+    --purple: #A855F7; --purple-bg: rgba(168,85,247,0.12);
+    --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+    --border: #1E293B; --border-accent: #2D3A5C;
+    --radius: 10px; --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg-deep); color: var(--text); font-family: var(--font); line-height: 1.6; padding-bottom: 120px; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+  nav .inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  nav a { color: var(--text-muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+  nav a:hover { color: var(--orange); text-decoration: none; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .hero { padding: 80px 0 60px; text-align: center; background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%); }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 720px; margin: 0 auto 40px; }
+  .stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+  .stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .stat-pill .value.accent { color: var(--orange); }
+  .stat-pill .value.green { color: var(--green); }
+  .stat-pill .value.gold { color: var(--gold); }
+  .stat-pill .value.purple { color: var(--purple); }
+  .stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+  h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+  h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  li { margin-bottom: 4px; }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* Cards */
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .card.accent-left { border-left: 3px solid var(--orange); }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.amber-left { border-left: 3px solid var(--amber); }
+  .card.blue-left { border-left: 3px solid var(--blue); }
+  .card.purple-left { border-left: 3px solid var(--purple); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+  /* Callouts */
+  .callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+  .callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+  .callout.info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); }
+  .callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+  .callout .icon { font-size: 20px; flex-shrink: 0; }
+  .callout h4 { font-size: 15px; margin-bottom: 4px; }
+  .callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead { background: var(--bg-surface); }
+  th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover { background: rgba(255,255,255,0.02); }
+
+  /* Tags */
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .tag.win { background: var(--green-bg); color: var(--green); }
+  .tag.loss { background: var(--red-bg); color: var(--red); }
+  .tag.neutral { background: var(--amber-bg); color: var(--amber); }
+
+  /* Insight Box */
+  .insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+  .insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+  .insight-box p { margin-bottom: 8px; }
+
+  /* Code Block */
+  .code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0; }
+
+  /* Objection cards */
+  .objection-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; transition: border-color 0.2s; }
+  .objection-card:hover { border-color: var(--border-accent); }
+  .objection-card .obj-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .objection-card .obj-num { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,69,0,0.15); color: var(--orange); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .objection-card .obj-quote { font-size: 16px; font-weight: 700; color: #fff; }
+  .objection-card .obj-mean { font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .objection-card .obj-mean .label-text { color: var(--text-dim); font-weight: 400; }
+  .objection-card .obj-response { font-size: 13px; color: var(--text-muted); line-height: 1.7; background: var(--bg-surface); border-radius: var(--radius-sm); padding: 16px; border-left: 2px solid var(--orange); }
+  .objection-card .obj-response .response-prefix { color: var(--green); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+
+  /* Framework cards */
+  .framework-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: border-color 0.2s, box-shadow 0.2s; }
+  .framework-card:hover { border-color: var(--orange); box-shadow: 0 0 30px rgba(255,69,0,0.08); }
+  .framework-card .fw-num { font-size: 48px; font-weight: 800; color: rgba(255,69,0,0.08); margin-bottom: 8px; }
+  .framework-card h4 { font-size: 18px; color: #fff; margin-bottom: 12px; }
+  .framework-card p { font-size: 13px; margin-bottom: 8px; }
+
+  /* Checklist */
+  .checklist { list-style: none; margin: 0; padding: 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--text); padding: 8px 0; border-bottom: 1px solid rgba(30,41,59,0.5); }
+  .checklist li .check { color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  /* Golden rule banner */
+  .golden-rule { background: linear-gradient(135deg, rgba(240,160,48,0.1), rgba(255,69,0,0.08)); border: 1px solid rgba(240,160,48,0.3); border-radius: var(--radius); padding: 32px; text-align: center; margin: 24px 0; }
+  .golden-rule h3 { color: var(--gold); font-size: 24px; margin-bottom: 12px; }
+  .golden-rule p { font-size: 16px; max-width: 720px; margin: 0 auto; }
+
+  .highlight { color: var(--orange); font-weight: 600; }
+  .win { color: var(--green); font-weight: 600; }
+  .loss { color: var(--red); font-weight: 600; }
+  .muted { color: var(--text-dim); }
+
+  footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 28px; }
+    .stat-row { gap: 10px; }
+    .stat-pill { min-width: 120px; padding: 14px 16px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    nav { display: none; }
+    section { break-inside: avoid; border-color: #ddd; }
+    .card, .callout, .insight-box, .code-block, .objection-card, .framework-card, .golden-rule { border-color: #ddd; }
+    .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+    h2, h3, h4 { color: #111; }
+    .stat-pill { border-color: #ddd; }
+    .stat-pill .value { color: #111; }
+    .section-label { color: #FF4500; }
+    .objection-card .obj-quote { color: #111; }
+    .objection-card .obj-response { background: #f5f5f5; border-left-color: #FF4500; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> Space Command Center · Master Operating System</div>
+    <div><a href="index.html">← Back to Index</a>&nbsp;&nbsp;<span class="badge">SALES</span></div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Sales Intelligence</div>
+    <h1>Objection Handling Manual</h1>
+    <p class="subtitle">Every objection is a request for more information. This manual gives you the frameworks, verbatim responses, and pre-call preparation to handle any pushback with confidence — and close more deals.</p>
+    <div class="stat-row">
+      <div class="stat-pill"><div class="value accent">15</div><div class="label">Common Objections</div></div>
+      <div class="stat-pill"><div class="value green">3</div><div class="label">Response Frameworks</div></div>
+      <div class="stat-pill"><div class="value gold">1</div><div class="label">Golden Rule</div></div>
+      <div class="stat-pill"><div class="value purple">0</div><div class="label">Defensive Reactions</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 01: The Objection Handling Philosophy -->
+<section>
+  <div class="container">
+    <div class="section-label">01 · The Philosophy</div>
+    <h2>The Objection Handling Philosophy</h2>
+    <p class="section-desc">Objections are not rejections. They are requests for more information.</p>
+
+    <div class="card accent-left" style="margin-bottom: 24px;">
+      <p style="font-size: 15px; color: var(--text);">When a prospect says <strong>"it's too expensive,"</strong> they're really saying <strong>"I don't yet understand the value."</strong> Your job is to diagnose the real concern, not defend the price.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card green-left">
+        <h4>Rule #1: Never Get Defensive</h4>
+        <p>The moment you defend your pricing, your experience, or your offer, you've lost the power position. Stay curious. Let the prospect discover their own pain points.</p>
+      </div>
+      <div class="card amber-left">
+        <h4>Rule #2: Validate Before You Answer</h4>
+        <p>Always lead with acknowledgment: <strong>"That's a fair question."</strong> / <strong>"I hear that a lot."</strong> / <strong>"I understand where you're coming from."</strong> Validation disarms resistance before you address it.</p>
+      </div>
+      <div class="card blue-left">
+        <h4>Rule #3: Answer the Concern Behind the Words</h4>
+        <p>Don't respond to the surface-level objection. Diagnose the real fear — is it risk? Is it ROI uncertainty? Is it switching cost? Respond to the deeper concern, not just the words spoken.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 02: The Three Response Frameworks -->
+<section>
+  <div class="container">
+    <div class="section-label">02 · Response Frameworks</div>
+    <h2>The Three Response Frameworks</h2>
+    <p class="section-desc">Memorize these three patterns. They handle 90% of objections without breaking a sweat.</p>
+
+    <div class="card-grid" style="margin-bottom: 24px;">
+      <div class="framework-card">
+        <div class="fw-num">01</div>
+        <h4>Feel / Felt / Found</h4>
+        <p><strong>"I understand how you feel. Other [industry] business owners have felt the same way. What they found was [result]."</strong></p>
+        <p style="margin-top: 12px;"><span class="highlight">Works for:</span> Price concerns, skepticism, "I already have someone."</p>
+        <p><span class="highlight">Why it works:</span> It validates their emotion, normalizes their concern through social proof, and pivots to a positive outcome — all without sounding rehearsed.</p>
+      </div>
+      <div class="framework-card">
+        <div class="fw-num">02</div>
+        <h4>Question-Behind-the-Question</h4>
+        <p><strong>When they say [X], they're really asking [Y]. Respond to [Y], not [X].</strong></p>
+        <p style="margin-top: 12px;"><span class="highlight">Example:</span> "It's expensive" → really asking "Will this actually pay for itself?"</p>
+        <p><span class="highlight">Your move:</span> Respond with ROI data, not price justification. Show them the math. Let the numbers do the convincing.</p>
+      </div>
+      <div class="framework-card">
+        <div class="fw-num">03</div>
+        <h4>Third-Party Validation</h4>
+        <p><strong>"Don't take my word for it. Here's what [similar business] experienced."</strong></p>
+        <p style="margin-top: 12px;"><span class="highlight">Works for:</span> Credibility concerns, results skepticism, "prove it" objections.</p>
+        <p><span class="highlight">Requires:</span> Case studies and testimonials ready to deploy. Always have 2–3 relevant stories in your back pocket.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="icon">💡</div>
+      <div>
+        <h4>Pro Tip: Stack the Frameworks</h4>
+        <p>You can combine them. Start with Feel/Felt/Found to validate, pivot to Question-Behind-the-Question to diagnose, then close with Third-Party Validation. Three layers of persuasion in under 90 seconds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 03: Price Objections -->
+<section>
+  <div class="container">
+    <div class="section-label">03 · Price Objections</div>
+    <h2>Price Objections (The Most Common)</h2>
+    <p class="section-desc">Price is rarely about the money. It's about perceived value. Here's how to handle the four most frequent price objections.</p>
+
+    <!-- Objection 1 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">1</div>
+        <div class="obj-quote">"That's expensive."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "I don't see the value yet" or "I don't have the budget"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "That's fair. Most of our clients initially felt the same way. What they found was that the website paid for itself within the first 2–3 jobs it generated. Let me show you what I mean — here's what happened with <strong>[similar business]</strong>."
+      </div>
+    </div>
+
+    <!-- Objection 2 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">2</div>
+        <div class="obj-quote">"I can get a website cheaper."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "Why are you worth more than Wix / Fiverr / my nephew?"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "You absolutely can get a cheaper website. But here's what usually happens — it looks fine but doesn't generate calls, doesn't rank on Google, and doesn't show up on ChatGPT when people search for your service. What we build is a <strong>lead generation system</strong>, not just a website. Want me to show you the difference?"
+      </div>
+    </div>
+
+    <!-- Objection 3 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">3</div>
+        <div class="obj-quote">"$1,500 a month is a lot."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "This is a significant expense and I need to justify it"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "It is a significant investment. Let me ask you — what's one new customer worth to your business? <em>[Let them answer.]</em> Our CMO clients typically see <strong>[X]</strong> new customers per month. At <strong>[their number]</strong> per customer, the math works out pretty clearly. But it only works if we deliver — and that's why we have the 72-hour preview guarantee."
+      </div>
+    </div>
+
+    <!-- Objection 4 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">4</div>
+        <div class="obj-quote">"Let me think about it."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "I'm not convinced" or "I'm avoiding saying no"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "Of course. What specific questions do you still have that I can help answer?" <em>[Wait for response. If vague:]</em> "Is it the price, the timeline, or something else giving you pause? I'd rather address it now than have you wondering."
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 04: Competition Objections -->
+<section>
+  <div class="container">
+    <div class="section-label">04 · Competition Objections</div>
+    <h2>Competition Objections</h2>
+    <p class="section-desc">Competition objections are rarely about the competitor. They're about risk of switching, loyalty anxiety, and fear of making a mistake.</p>
+
+    <!-- Objection 5 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">5</div>
+        <div class="obj-quote">"I already have a website guy."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "Switching feels risky" or "I have loyalty"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "That's great — having someone who knows your business is valuable. What do they currently handle for you? <em>[Listen.]</em> A lot of our clients actually keep their existing relationships and use us for the things their current person doesn't cover — like AI visibility, Google Business Profile optimization, and ChatGPT rankings."
+      </div>
+    </div>
+
+    <!-- Objection 6 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">6</div>
+        <div class="obj-quote">"I use Thryv / Scorpion / Wix / Square."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "I'm already paying for marketing"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "How's that working for you? <em>[Listen to their answer.]</em> The reason I ask is that I actually used to sell Thryv here in Brevard. I know exactly what it does well and what it doesn't. The biggest gap I consistently saw was <strong>[specific gap based on their industry]</strong>. Is that something you've run into?"
+      </div>
+    </div>
+
+    <!-- Objection 7 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">7</div>
+        <div class="obj-quote">"My nephew / cousin / friend does my marketing."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "I have a personal relationship I don't want to damage"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "That's totally fair. Personal relationships matter. What I'd suggest — let me run a free visibility audit for you. If everything looks great, you've got confirmation your nephew is doing excellent work. If there are gaps, you've got data to have a productive conversation with him. Either way, you win."
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 05: Trust & Credibility Objections -->
+<section>
+  <div class="container">
+    <div class="section-label">05 · Trust &amp; Credibility</div>
+    <h2>Trust &amp; Credibility Objections</h2>
+    <p class="section-desc">Credibility objections are the hardest to overcome — because they're usually earned. Here's how to rebuild trust in real time.</p>
+
+    <!-- Objection 8 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">8</div>
+        <div class="obj-quote">"How do I know this AI stuff actually works?"</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "This sounds like buzzwords"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "Great question. Let me show you something." <em>[Pull up ChatGPT on screen.]</em> "Watch this — I'm going to ask ChatGPT 'who's the best <strong>[their industry]</strong> in Brevard County?'" <em>[Show results.]</em> "Notice who shows up and who doesn't. That's what your customers see too. Our audit shows you exactly where you're visible and where you're invisible across Google, ChatGPT, and local search."
+      </div>
+    </div>
+
+    <!-- Objection 9 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">9</div>
+        <div class="obj-quote">"I've been burned by marketing agencies before."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "I don't trust agencies"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "I hear that a lot, and honestly, I get it. The agency model is broken — long contracts, vague results, no accountability. That's exactly why we don't do contracts, we deliver a preview in 72 hours, and if you don't love it, you don't pay. You're never locked in. If we don't perform, you walk away. No penalties, no hard feelings."
+      </div>
+    </div>
+
+    <!-- Objection 10 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">10</div>
+        <div class="obj-quote">"You're new — do you have experience?"</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "Prove you can deliver"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "Fair question. Yes, the agency is new. But I've spent the last <strong>[X]</strong> years advising Brevard businesses on exactly these problems — I was a business advisor at Thryv, sold ADP to local companies, and worked with dental practices at Hayes Handpiece. I know this market inside and out. And here's the thing about being new — you get my full attention. I'm not juggling 50 clients. You're one of my first, which means you get executive-level focus."
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 06: Timing Objections -->
+<section>
+  <div class="container">
+    <div class="section-label">06 · Timing Objections</div>
+    <h2>Timing Objections</h2>
+    <p class="section-desc">"Not now" is almost never about the calendar. It's about urgency and priority. Your job is to create urgency without being pushy.</p>
+
+    <!-- Objection 11 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">11</div>
+        <div class="obj-quote">"Call me back in 3–6 months."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "This isn't a priority right now"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "I'm happy to follow up then. But let me ask — what changes between now and then? <em>[Listen.]</em> The reason I ask is that every month you wait, your competitors who ARE visible keep getting the calls you're missing. Even if we just start with a free audit now so you have the data when you're ready, you'll know exactly what needs attention."
+      </div>
+    </div>
+
+    <!-- Objection 12 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">12</div>
+        <div class="obj-quote">"I'm too busy right now."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "This feels like more work for me"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "That's exactly why our model works for busy owners. You don't do anything — we handle everything. The only time commitment from you is this 15-minute call and reviewing the preview when it's ready. Everything else is on us."
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 07: Dental-Specific Objections -->
+<section>
+  <div class="container">
+    <div class="section-label">07 · Dental-Specific · Socratic Addition</div>
+    <h2>The Dental-Specific Objection Section</h2>
+    <p class="section-desc">Dental practices have unique objections rooted in referral culture and front-desk delegation. These responses were built specifically for the Brevard dental market.</p>
+
+    <!-- Objection 13 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">13</div>
+        <div class="obj-quote">"I already get plenty of patients from referrals."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "Referrals are working, so why change?"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "That's actually a great position to be in — it means you've built a strong reputation. Here's the thing about referrals though — they're capped. There are only so many people your existing patients know. Meanwhile, thousands of people in Brevard are searching for a dentist right now on Google and ChatGPT. If you're not showing up, they're going to your competitor. Referrals are great. Visibility makes referrals your floor, not your ceiling."
+      </div>
+    </div>
+
+    <!-- Objection 14 -->
+    <div class="objection-card">
+      <div class="obj-header">
+        <div class="obj-num">14</div>
+        <div class="obj-quote">"My front desk handles marketing."</div>
+      </div>
+      <div class="obj-mean"><span class="label-text">What they really mean:</span> "I already have someone on this"</div>
+      <div class="obj-response">
+        <div class="response-prefix">Your Response</div>
+        "That's really common in dental practices. The challenge is that marketing has changed dramatically in the last 2 years — AI search, ChatGPT, local visibility algorithms. What worked even a year ago doesn't work the same way now. Our audit will show you exactly where you stand compared to competitors who ARE investing in this."
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 08: The Golden Rule -->
+<section>
+  <div class="container">
+    <div class="section-label">08 · The Golden Rule</div>
+    <h2>The Golden Rule of Objection Handling</h2>
+
+    <div class="golden-rule">
+      <h3>Never Argue With an Objection.</h3>
+      <p>Validate, diagnose, redirect to value. The moment you get defensive about your pricing or your experience, you've lost. Stay curious. Ask questions. Let the prospect talk themselves into the sale by discovering their own pain points.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top: 24px;">
+      <div class="card green-left">
+        <h4>✅ Do This</h4>
+        <ul style="margin-bottom: 0;">
+          <li>Pause before responding. Silence is a tool.</li>
+          <li>Acknowledge with "That's fair" or "I understand."</li>
+          <li>Ask clarifying questions to diagnose the real concern.</li>
+          <li>Pivot to value — ROI, case studies, social proof.</li>
+          <li>Let them talk. The person asking questions controls the conversation.</li>
+        </ul>
+      </div>
+      <div class="card accent-left" style="border-left-color: var(--red); background: var(--red-bg);">
+        <h4 style="color: var(--red);">❌ Never Do This</h4>
+        <ul style="margin-bottom: 0;">
+          <li>Get defensive about your price or experience.</li>
+          <li>Interrupt or talk over their objection.</li>
+          <li>Badmouth competitors or their nephew's work.</li>
+          <li>Discount on the spot — it signals your price was inflated.</li>
+          <li>Accept "let me think about it" without diagnosing the real hesitation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top: 24px;">
+      <div class="icon">🧠</div>
+      <div>
+        <h4>The Psychology Behind the Golden Rule</h4>
+        <p>Objections are emotional before they're logical. When you argue with an objection, you're arguing with their feelings — and nobody wins an argument about feelings. Validate the emotion first, then use logic to redirect to value. This is the difference between a salesperson and a trusted advisor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 09: Pre-Call Preparation Checklist -->
+<section>
+  <div class="container">
+    <div class="section-label">09 · Pre-Call Preparation</div>
+    <h2>The Pre-Call Preparation Checklist</h2>
+    <p class="section-desc">Before every discovery call, run through this checklist. Preparation is the best objection handler — many objections never arise when you've done your homework.</p>
+
+    <div class="card accent-left">
+      <ul class="checklist">
+        <li><span class="check">☐</span> Run visibility audit on prospect's website</li>
+        <li><span class="check">☐</span> Run visibility audit on their top competitor</li>
+        <li><span class="check">☐</span> Note 3 specific things their competitor is doing better</li>
+        <li><span class="check">☐</span> Have ChatGPT open and ready to demonstrate</li>
+        <li><span class="check">☐</span> Know their industry-specific pain points</li>
+        <li><span class="check">☐</span> Have pricing ready — state it as fact, don't hedge</li>
+        <li><span class="check">☐</span> Have Calendly open for scheduling follow-up</li>
+      </ul>
+    </div>
+
+    <div class="code-block" style="margin-top: 24px;">
+<span style="color: var(--text-dim);"># Pre-Call Mental Model</span>
+<span style="color: var(--orange);">1.</span> Prospect says objection
+<span style="color: var(--text-dim);">    ↓</span>
+<span style="color: var(--orange);">2.</span> You pause (1-2 seconds — use the silence)
+<span style="color: var(--text-dim);">    ↓</span>
+<span style="color: var(--orange);">3.</span> Validate: "That's fair" / "I understand"
+<span style="color: var(--text-dim);">    ↓</span>
+<span style="color: var(--orange);">4.</span> Diagnose: Ask a clarifying question
+<span style="color: var(--text-dim);">    ↓</span>
+<span style="color: var(--orange);">5.</span> Respond: Use the right framework (Feel/Felt/Found, QBQ, or Third-Party)
+<span style="color: var(--text-dim);">    ↓</span>
+<span style="color: var(--orange);">6.</span> Redirect to value: ROI data, case study, or live demo
+<span style="color: var(--text-dim);">    ↓</span>
+<span style="color: var(--green);">7.</span> Check: "Does that address your concern?"
+    </div>
+
+    <div class="callout success" style="margin-top: 16px;">
+      <div class="icon">✅</div>
+      <div>
+        <h4>Remember: You're Not Selling a Website</h4>
+        <p>You're selling visibility, leads, and revenue. Every objection response should circle back to the outcome — not the deliverable. Websites are the vehicle. New customers are the destination.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Space Coast Marketing · Merritt Island, FL · Socrates AI Chief of Staff<br>
+  Space Command Center · Master Operating System · June 26, 2026<br>
+  <span style="color:var(--text-dim);font-size:11px">Not financial, legal, or tax advice. All strategies should be reviewed by qualified professionals.</span>
+</footer>
+
+</body>
+</html>

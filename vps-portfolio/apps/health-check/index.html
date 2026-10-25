@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Business Health Check | Space Coast Marketing Agency</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">&#9733;</span>
+                <span class="logo-text">Space Coast</span>
+                <span class="logo-accent">Marketing</span>
+                <span class="logo-ver">v3.0</span>
+            </div>
+            <nav class="header-nav">
+                <span class="header-tagline">Local Business Health Check</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="hc-main">
+        <!-- ===== FORM SECTION ===== -->
+        <section class="hc-section" id="hcFormSection">
+            <div class="hc-card hc-hero-card">
+                <div class="star-divider">&#9733; &nbsp; &#9733; &nbsp; &#9733;</div>
+                <div class="hc-hero-badge">&#127807; Free Instant Audit</div>
+                <h1 class="hc-hero-title">LOCAL BUSINESS <span class="accent-text">HEALTH CHECK</span></h1>
+                <p class="hc-hero-subtitle">
+                    A Free Instant Audit For Your Local Business.<br>
+                    Enter your business name and city below. We'll scan your online presence
+                    and show you exactly where you're falling behind &mdash; in under 15 seconds.
+                </p>
+
+                <form class="hc-form" id="hcAuditForm">
+                    <div class="hc-form-grid">
+                        <div class="hc-field">
+                            <label class="hc-field-label" for="hcBusinessName">&#127807; Business Name *</label>
+                            <input type="text" id="hcBusinessName" class="hc-input"
+                                   placeholder="e.g. Mike's Roofing &amp; Repairs" required autocomplete="organization">
+                        </div>
+                        <div class="hc-field">
+                            <label class="hc-field-label" for="hcCity">&#127968; City *</label>
+                            <input type="text" id="hcCity" class="hc-input"
+                                   placeholder="e.g. Melbourne, FL" required autocomplete="address-level2">
+                        </div>
+                        <div class="hc-field hc-field-full">
+                            <label class="hc-field-label" for="hcWebsite">&#127760; Website <span class="hc-optional">(optional)</span></label>
+                            <input type="url" id="hcWebsite" class="hc-input"
+                                   placeholder="e.g. https://mikesroofing.com" autocomplete="url">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary hc-btn-run" id="hcBtnRun">
+                        &#9733; RUN DIAGNOSTIC &#9733;
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ===== LOADING SECTION ===== -->
+        <section class="hc-section" id="hcLoadingSection" style="display:none;">
+            <div class="hc-card hc-loading-card">
+                <div class="hc-loading-animation">
+                    <div class="hc-pulse-ring"></div>
+                    <div class="hc-pulse-icon">&#128269;</div>
+                </div>
+                <h2 class="hc-loading-title">Scanning Your Online Presence...</h2>
+                <p class="hc-loading-subtitle" id="hcLoadingStage">CHECKING WEBSITE...</p>
+                <div class="hc-progress-bar">
+                    <div class="hc-progress-fill" id="hcProgressFill"></div>
+                </div>
+                <div class="hc-loading-checklist" id="hcLoadingChecklist">
+                    <div class="hc-check-item" data-stage="places">
+                        <span class="hc-check-icon">&#9203;</span>
+                        <span>Google Business Profile</span>
+                    </div>
+                    <div class="hc-check-item" data-stage="website">
+                        <span class="hc-check-icon">&#9203;</span>
+                        <span>Website Performance</span>
+                    </div>
+                    <div class="hc-check-item" data-stage="citations">
+                        <span class="hc-check-icon">&#9203;</span>
+                        <span>Citation Consistency</span>
+                    </div>
+                    <div class="hc-check-item" data-stage="social">
+                        <span class="hc-check-icon">&#9203;</span>
+                        <span>Social Media Presence</span>
+                    </div>
+                    <div class="hc-check-item" data-stage="score">
+                        <span class="hc-check-icon">&#9203;</span>
+                        <span>Calculating Score</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== REPORT SECTION ===== -->
+        <section class="hc-section" id="hcReportSection" style="display:none;">
+            <!-- Overall Score -->
+            <div class="hc-card hc-score-card" id="hcScoreCard">
+                <div class="hc-score-layout">
+                    <div class="hc-score-gauge-wrap">
+                        <svg class="hc-score-gauge" viewBox="0 0 200 200" id="hcScoreGauge">
+                            <circle class="gauge-bg" cx="100" cy="100" r="88"></circle>
+                            <circle class="gauge-fill" cx="100" cy="100" r="88" id="gaugeFill"></circle>
+                            <text class="gauge-value" x="100" y="95" id="gaugeValue">0</text>
+                            <text class="gauge-label" x="100" y="120">out of 100</text>
+                        </svg>
+                    </div>
+                    <div class="hc-score-info">
+                        <h2 class="hc-score-title">&#127807; Online Health Score</h2>
+                        <p class="hc-score-grade" id="hcScoreGrade">&mdash;</p>
+                        <p class="hc-score-desc" id="hcScoreDesc">&mdash;</p>
+                        <div class="hc-score-meta" id="hcScoreMeta"></div>
+                        <div class="hc-score-note" id="hcMockNote" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Cards -->
+            <div class="hc-category-grid" id="hcCategoryGrid">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Recommendations -->
+            <div class="hc-card hc-recommendations-card" id="hcRecommendationsCard">
+                <h2 class="hc-section-title">&#127807; Priority Fixes</h2>
+                <p class="hc-section-subtitle">Here's what to fix first to stop losing customers</p>
+                <div class="hc-recommendations-list" id="hcRecommendationsList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Lead Capture -->
+            <div class="hc-card hc-lead-card" id="hcLeadCard">
+                <div class="hc-lead-badge">&#9200; Limited Time</div>
+                <h2 class="hc-lead-title">Want Us to Fix These Issues?</h2>
+                <p class="hc-lead-subtitle">
+                    Space Coast Marketing Agency will fix all of this.
+                    Websites from <strong>$599</strong>.
+                </p>
+                <ul class="hc-lead-features">
+                    <li>&#127807; Full Google Business Profile optimization</li>
+                    <li>&#127807; Citation cleanup across 50+ directories</li>
+                    <li>&#127807; Review generation system setup</li>
+                    <li>&#127807; Social media profile creation &amp; branding</li>
+                    <li>&#127807; Website performance tune-up</li>
+                    <li>&#127807; 30-day follow-up re-audit to prove results</li>
+                </ul>
+                <form class="hc-lead-form" id="hcLeadForm">
+                    <h3 class="hc-lead-form-title">&#9733; Get Started &mdash; Free Consultation</h3>
+                    <div class="hc-form-grid">
+                        <div class="hc-field">
+                            <label class="hc-field-label" for="hcLeadName">Your Name *</label>
+                            <input type="text" id="hcLeadName" class="hc-input"
+                                   placeholder="John Smith" required autocomplete="name">
+                        </div>
+                        <div class="hc-field">
+                            <label class="hc-field-label" for="hcLeadEmail">Email *</label>
+                            <input type="email" id="hcLeadEmail" class="hc-input"
+                                   placeholder="john@example.com" required autocomplete="email">
+                        </div>
+                        <div class="hc-field">
+                            <label class="hc-field-label" for="hcLeadPhone">Phone</label>
+                            <input type="tel" id="hcLeadPhone" class="hc-input"
+                                   placeholder="(321) 555-0123" autocomplete="tel">
+                        </div>
+                        <div class="hc-field">
+                            <label class="hc-field-label">&nbsp;</label>
+                            <button type="submit" class="btn btn-primary hc-btn-full">
+                                &#9733; Claim My Free Consultation
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <p class="hc-lead-disclaimer">No obligation. We'll review your report and reach out with a custom plan.</p>
+            </div>
+
+            <!-- Print-only header -->
+            <div class="hc-print-header">
+                <h1>Local Business Health Check Report</h1>
+                <p id="hcPrintBusiness">&mdash;</p>
+                <p>Generated by Space Coast Marketing Agency | spacecoastmarketing.com</p>
+            </div>
+
+            <!-- Run Another -->
+            <div class="hc-actions">
+                <button class="btn btn-tactical" id="btnNewAudit">&#9664; RUN NEW AUDIT</button>
+            </div>
+        </section>
+
+        <!-- ===== ERROR SECTION ===== -->
+        <section class="hc-section" id="hcErrorSection" style="display:none;">
+            <div class="hc-card hc-error-card">
+                <div class="hc-error-icon">&#9888;</div>
+                <h2>Something went wrong</h2>
+                <p id="hcErrorText">Unable to complete the audit. Please try again.</p>
+                <button class="btn btn-primary" id="hcBtnRetry">&#9733; Try Again</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="hc-footer">
+        <div class="hc-footer-inner">
+            <div class="hc-footer-brand">
+                <span class="logo-icon">&#9733;</span>
+                <span>Space Coast Marketing Agency</span>
+                <span class="logo-icon">&#9733;</span>
+            </div>
+            <p class="hc-footer-tagline">Websites, SEO, and Local Domination &mdash; Space Coast, Florida</p>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

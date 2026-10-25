@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offer Creation Framework · Pricing &amp; Packaging Psychology</title>
+<style>
+/* === SPACE COMMAND CENTER DARK THEME === */
+:root {
+  --bg-deep: #0A0A14;
+  --bg-card: #0F0F1E;
+  --bg-card-hover: #141428;
+  --bg-nav: rgba(10,10,20,0.92);
+  --orange: #FF4500;
+  --orange-glow: rgba(255,69,0,0.25);
+  --orange-dim: rgba(255,69,0,0.12);
+  --text-primary: #E8E8F0;
+  --text-secondary: #A0A0B8;
+  --text-muted: #6B6B80;
+  --border-subtle: rgba(255,255,255,0.06);
+  --border-card: rgba(255,255,255,0.08);
+  --accent-blue: #4A9EFF;
+  --accent-green: #2ECC71;
+  --accent-amber: #F39C12;
+  --accent-purple: #9B59B6;
+  --stat-bg: rgba(255,69,0,0.08);
+  --stat-border: rgba(255,69,0,0.2);
+  --code-bg: rgba(0,0,0,0.4);
+  --font-mono: 'SF Mono','Fira Code','Cascadia Code',monospace;
+  --font-sans: 'Inter','SF Pro Display',system-ui,-apple-system,sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 2px 12px rgba(0,0,0,0.4);
+  --shadow-glow: 0 0 30px var(--orange-glow);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:var(--font-sans);
+  background:var(--bg-deep);
+  color:var(--text-primary);
+  line-height:1.7;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+/* Sticky Nav */
+nav.sticky-nav{
+  position:sticky;top:0;z-index:100;
+  background:var(--bg-nav);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border-subtle);
+  padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;
+}
+nav.sticky-nav .nav-brand{
+  font-weight:700;font-size:0.95rem;letter-spacing:0.04em;
+  color:var(--orange);text-transform:uppercase;
+}
+nav.sticky-nav a{
+  color:var(--text-secondary);text-decoration:none;
+  font-size:0.85rem;transition:color 0.2s;
+}
+nav.sticky-nav a:hover{color:var(--orange)}
+/* Container */
+.container{max-width:960px;margin:0 auto;padding:0 2rem}
+/* Hero */
+.hero{padding:3.5rem 0 2.5rem;text-align:center;border-bottom:1px solid var(--border-subtle)}
+.hero .kicker{
+  font-size:0.8rem;text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--orange);margin-bottom:0.5rem;
+}
+.hero h1{
+  font-size:2.6rem;font-weight:800;line-height:1.2;margin-bottom:1.5rem;
+  letter-spacing:-0.02em;
+}
+.hero h1 span{color:var(--orange)}
+.hero-stats{
+  display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;
+  margin-top:1.5rem;
+}
+.hero-stats .stat-pill{
+  background:var(--stat-bg);border:1px solid var(--stat-border);
+  border-radius:var(--radius-lg);padding:0.8rem 1.5rem;
+  text-align:center;min-width:130px;
+}
+.stat-pill .stat-value{
+  display:block;font-size:1.5rem;font-weight:800;color:var(--orange);
+}
+.stat-pill .stat-label{
+  display:block;font-size:0.72rem;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:0.06em;margin-top:0.15rem;
+}
+/* Section headings */
+section{padding:2.8rem 0}
+section:not(:last-of-type){border-bottom:1px solid var(--border-subtle)}
+h2{
+  font-size:1.8rem;font-weight:700;margin-bottom:1.3rem;
+  letter-spacing:-0.01em;color:var(--text-primary);
+  display:flex;align-items:center;gap:0.5rem;
+}
+h2 .section-num{
+  color:var(--orange);font-size:0.9rem;font-family:var(--font-mono);
+  background:var(--stat-bg);border-radius:var(--radius-sm);
+  padding:0.2rem 0.6rem;font-weight:600;
+}
+h3{
+  font-size:1.2rem;font-weight:700;margin:1.6rem 0 0.7rem;
+  color:var(--text-primary);
+}
+h4{
+  font-size:1rem;font-weight:700;margin:1.2rem 0 0.4rem;
+  color:var(--orange);
+}
+/* Cards */
+.card-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.2rem;margin:1.2rem 0;
+}
+.card{
+  background:var(--bg-card);border:1px solid var(--border-card);
+  border-radius:var(--radius-lg);padding:1.5rem;
+  transition:border-color 0.25s,box-shadow 0.25s;
+}
+.card:hover{
+  border-color:var(--orange-dim);
+  box-shadow:var(--shadow-glow);
+}
+.card h4{margin-top:0;margin-bottom:0.5rem}
+.card .price{
+  font-size:1.5rem;font-weight:800;color:var(--orange);
+  margin-bottom:0.6rem;
+}
+.card .card-subtitle{
+  font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;
+  letter-spacing:0.05em;margin-bottom:0.8rem;
+}
+.card ul{list-style:none;padding:0}
+.card ul li{
+  padding:0.35rem 0;color:var(--text-secondary);font-size:0.9rem;
+  border-bottom:1px solid var(--border-subtle);
+}
+.card ul li:last-child{border-bottom:none}
+.card ul li::before{content:'▸ ';color:var(--orange);font-size:0.8rem}
+/* Insight boxes */
+.insight-box{
+  background:var(--stat-bg);border-left:3px solid var(--orange);
+  border-radius:0 var(--radius-md) var(--radius-md) 0;
+  padding:1.2rem 1.5rem;margin:1.2rem 0;
+}
+.insight-box .insight-label{
+  font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--orange);margin-bottom:0.3rem;font-weight:700;
+}
+.insight-box p{color:var(--text-secondary);font-size:0.95rem}
+/* Callout boxes */
+.callout{
+  border-radius:var(--radius-md);padding:1.2rem 1.5rem;margin:1.2rem 0;
+  font-size:0.93rem;
+}
+.callout-info{background:rgba(74,158,255,0.08);border:1px solid rgba(74,158,255,0.2);color:var(--accent-blue)}
+.callout-warn{background:rgba(243,156,18,0.08);border:1px solid rgba(243,156,18,0.2);color:var(--accent-amber)}
+.callout-success{background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.2);color:var(--accent-green)}
+.callout strong{color:var(--text-primary)}
+/* Code blocks */
+code{
+  font-family:var(--font-mono);font-size:0.85rem;
+  background:var(--code-bg);padding:0.15rem 0.45rem;
+  border-radius:var(--radius-sm);color:var(--orange);
+}
+pre{
+  background:var(--code-bg);border:1px solid var(--border-subtle);
+  border-radius:var(--radius-md);padding:1.2rem 1.5rem;
+  overflow-x:auto;font-family:var(--font-mono);font-size:0.85rem;
+  line-height:1.6;color:var(--text-secondary);margin:1rem 0;
+}
+/* Tables */
+table{
+  width:100%;border-collapse:collapse;margin:1.2rem 0;
+  font-size:0.9rem;
+}
+th{
+  text-align:left;padding:0.75rem 1rem;
+  background:rgba(255,69,0,0.08);color:var(--orange);
+  font-weight:700;text-transform:uppercase;font-size:0.75rem;
+  letter-spacing:0.06em;border-bottom:2px solid var(--border-card);
+}
+td{
+  padding:0.75rem 1rem;border-bottom:1px solid var(--border-subtle);
+  color:var(--text-secondary);
+}
+tr:hover td{background:rgba(255,255,255,0.02)}
+/* Guarantee box */
+.guarantee-box{
+  background:var(--bg-card);border:2px solid var(--orange);
+  border-radius:var(--radius-lg);padding:2rem;text-align:center;
+  margin:1.5rem 0;position:relative;
+}
+.guarantee-box::before{
+  content:'🛡️';font-size:2rem;display:block;margin-bottom:0.5rem;
+}
+.guarantee-box .guarantee-text{
+  font-size:1.25rem;font-weight:700;color:var(--orange);
+  letter-spacing:-0.01em;margin-bottom:0.5rem;
+}
+.guarantee-box .guarantee-sub{
+  color:var(--text-secondary);font-size:0.9rem;
+}
+/* Sales script */
+.script-block{
+  background:var(--bg-card);border:1px solid var(--border-card);
+  border-radius:var(--radius-md);padding:1.2rem 1.5rem;margin:0.8rem 0;
+}
+.script-block .script-label{
+  font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--orange);margin-bottom:0.4rem;font-weight:700;
+}
+.script-block p{
+  color:var(--text-secondary);font-style:italic;font-size:0.93rem;
+}
+/* Ordered list */
+ol.styled{
+  padding-left:1.5rem;counter-reset:item;
+}
+ol.styled li{
+  counter-increment:item;padding:0.6rem 0;color:var(--text-secondary);
+  position:relative;padding-left:1.5rem;
+}
+ol.styled li::marker{
+  color:var(--orange);font-weight:700;font-family:var(--font-mono);
+}
+/* Footer */
+footer{
+  text-align:center;padding:2.5rem 1rem;border-top:1px solid var(--border-subtle);
+  color:var(--text-muted);font-size:0.8rem;
+}
+footer strong{color:var(--orange)}
+/* Responsive */
+@media(max-width:640px){
+  .container{padding:0 1rem}
+  .hero h1{font-size:1.8rem}
+  .hero-stats{gap:1rem}
+  .card-grid{grid-template-columns:1fr}
+  nav.sticky-nav{padding:0 1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <span class="nav-brand">🚀 Space Command Center</span>
+  <a href="index.html">← Back to Index</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Revenue Architecture</div>
+    <h1>Offer Creation Framework<br><span>Pricing &amp; Packaging Psychology</span></h1>
+    <div class="hero-stats">
+      <div class="stat-pill"><span class="stat-value">3</span><span class="stat-label">Core Tiers</span></div>
+      <div class="stat-pill"><span class="stat-value">1</span><span class="stat-label">Add-On</span></div>
+      <div class="stat-pill"><span class="stat-value">$599–$1,500</span><span class="stat-label">Range</span></div>
+      <div class="stat-pill"><span class="stat-value">0%</span><span class="stat-label">Contracts</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+<!-- 01: THE OFFER DESIGN PHILOSOPHY -->
+<section id="philosophy">
+<h2><span class="section-num">01</span> The Offer Design Philosophy</h2>
+<p>Three laws govern every high-converting offer architecture:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Law #1: Three Tiers Max</h4>
+    <p>Choice paralysis kills conversion beyond three options. Science backs this — Hick's Law states decision time grows logarithmically with choices. Every tier beyond three dilutes attention and delays action.</p>
+  </div>
+  <div class="card">
+    <h4>Law #2: The Middle Must Be Obvious</h4>
+    <p>The pricing anchor effect positions the middle tier as the no-brainer. When prospects compare, the middle tier's value-to-price ratio should dominate — making it feel like the smart choice, not the compromise.</p>
+  </div>
+  <div class="card">
+    <h4>Law #3: Name the Customer</h4>
+    <p>Every tier must have a clear "who this is for." If you can't picture the exact customer standing in front of you when you describe a tier, the tier doesn't work. Vague tiers attract no one.</p>
+  </div>
+</div>
+
+<div class="insight-box">
+  <div class="insight-label">The Golden Rule</div>
+  <p>A confused mind never buys. Clarity is the highest-converting sales tool you own. If a prospect reads your tiers and asks "which one is right for me?" — you've already lost them.</p>
+</div>
+</section>
+
+<!-- 02: TIER BREAKDOWN & PSYCHOLOGY -->
+<section id="tiers">
+<h2><span class="section-num">02</span> Tier Breakdown &amp; Psychology</h2>
+<p>Each tier serves a specific psychological function in the sales funnel.</p>
+
+<!-- Website Tier -->
+<h3>🌐 Website Tier — <code>$599 one-time</code></h3>
+<div class="card-grid">
+  <div class="card">
+    <div class="price">$599</div>
+    <div class="card-subtitle">One-Time · Foot in the Door</div>
+    <ul>
+      <li>Professional 5-page website</li>
+      <li>72-hour preview guarantee</li>
+      <li>Free hosting (first year)</li>
+      <li>Mobile-responsive design</li>
+      <li>Client owns everything</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Positioning</h4>
+    <p>"You need a professional site. We build it fast. No strings."</p>
+    <h4 style="margin-top:1rem">Who It's For</h4>
+    <p>Service businesses with outdated or no website — contractors, salons, local shops, independent professionals.</p>
+    <h4 style="margin-top:1rem">Psychological Job</h4>
+    <p>Remove every reason to say no. Low risk, fast delivery, full ownership. This tier exists to start relationships, not maximize margin.</p>
+  </div>
+</div>
+
+<!-- Growth Tier -->
+<h3>📈 Growth Tier — <code>$599 + $149/mo</code></h3>
+<div class="card-grid">
+  <div class="card">
+    <div class="price">$599 + $149<span style="font-size:0.8rem;color:var(--text-muted)">/mo</span></div>
+    <div class="card-subtitle">MRR Engine · The Obvious Choice</div>
+    <ul>
+      <li>Everything in Website Tier</li>
+      <li>Up to 10 pages</li>
+      <li>Social media management</li>
+      <li>Monthly blog content</li>
+      <li>Review generation &amp; management</li>
+      <li>Monthly performance report</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Positioning</h4>
+    <p>"You're already spending $599. For $149/mo, we handle your entire online presence."</p>
+    <h4 style="margin-top:1rem">Who It's For</h4>
+    <p>Businesses that want consistent leads but don't want to manage marketing — growing service companies, multi-location businesses, professional practices.</p>
+    <h4 style="margin-top:1rem">Psychological Job</h4>
+    <p>Make it feel like the obvious upgrade. The setup cost is identical to Website — framing the monthly as a marginal add for exponential value.</p>
+  </div>
+</div>
+
+<div class="insight-box">
+  <div class="insight-label">The Decoy in Action</div>
+  <p>Growth tier is intentionally priced at the same $599 setup as Website. The prospect's brain asks: <em>"Why wouldn't I add the monthly?"</em> That moment of internal negotiation is where MRR is born.</p>
+</div>
+
+<!-- CMO Tier -->
+<h3>🚀 CMO Tier — <code>$1,500/mo</code></h3>
+<div class="card-grid">
+  <div class="card">
+    <div class="price">$1,500<span style="font-size:0.8rem;color:var(--text-muted)">/mo</span></div>
+    <div class="card-subtitle">High-Ticket · Full Marketing Department</div>
+    <ul>
+      <li>Everything in Growth Tier</li>
+      <li>Paid ads management (Google + Social)</li>
+      <li>Weekly white-glove strategy calls</li>
+      <li>AI visibility optimization</li>
+      <li>Email marketing &amp; automation</li>
+      <li>Dedicated account strategist</li>
+      <li>Priority support &amp; turnaround</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Positioning</h4>
+    <p>"Your marketing department, on retainer. We handle everything — you get weekly white-glove strategy calls."</p>
+    <h4 style="margin-top:1rem">Who It's For</h4>
+    <p>Established businesses ready to scale — $500K+ revenue, 5+ employees, service-based companies with growth capital.</p>
+    <h4 style="margin-top:1rem">Psychological Job</h4>
+    <p>Premium positioning. Never discount this tier. The $1,500 price point signals serious partnership, not commodity services. The jump from $149 to $1,500 communicates the leap in strategic depth.</p>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <strong>⚠️ Never discount the CMO tier.</strong> Discounting your premium tier trains the market that your highest-value offering is negotiable. Hold firm. The clients who push for discounts here will be your most difficult — they don't value strategy.
+</div>
+
+<!-- Site Care Add-On -->
+<h3>🔧 Site Care Add-On — <code>$49/mo</code></h3>
+<div class="card-grid">
+  <div class="card">
+    <div class="price">$49<span style="font-size:0.8rem;color:var(--text-muted)">/mo</span></div>
+    <div class="card-subtitle">Catch-All · For Existing Sites</div>
+    <ul>
+      <li>Hosting &amp; SSL management</li>
+      <li>WordPress/core updates</li>
+      <li>2 content changes per month</li>
+      <li>Uptime monitoring</li>
+      <li>Monthly backup &amp; security scan</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Positioning</h4>
+    <p>"Already have a site? We'll keep it running and optimized."</p>
+    <h4 style="margin-top:1rem">Who It's For</h4>
+    <p>Businesses with existing websites that need maintenance but aren't ready for a rebuild. Also serves as a low-commitment entry point.</p>
+  </div>
+</div>
+
+<div class="callout callout-success">
+  <strong>💡 The Site Care ladder:</strong> Many Site Care clients upgrade to a full Website rebuild within 6 months. It's a relationship-builder disguised as a maintenance plan.
+</div>
+</section>
+
+<!-- 03: THE PRICING PSYCHOLOGY -->
+<section id="pricing-psych">
+<h2><span class="section-num">03</span> The Pricing Psychology</h2>
+<p>Your prices aren't just numbers — they're signals that shape perception before a prospect reads a single feature.</p>
+
+<h3>Why This Price Architecture Works</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>⚓ Anchoring</h4>
+    <p>Growth tier at <code>$149/mo</code> makes CMO at <code>$1,500</code> feel premium and Website at <code>$599</code> feel accessible. The middle sets the frame — everything else is measured against it.</p>
+  </div>
+  <div class="card">
+    <h4>🎯 Decoy Effect</h4>
+    <p>Growth is intentionally close to Website in setup cost (<code>$599</code> vs <code>$599</code>) but adds <code>$149/mo</code>. The prospect's brain asks: "why wouldn't I add the monthly?"</p>
+  </div>
+  <div class="card">
+    <h4>🛡️ Risk Reversal</h4>
+    <p>72-hour preview guarantee + no contracts + client owns everything — removes the top three fears: <em>will it look good? am I locked in? do I lose my site if I leave?</em></p>
+  </div>
+  <div class="card">
+    <h4>🔍 Price Transparency</h4>
+    <p>Never hide prices. Visible pricing builds trust. Hidden pricing builds suspicion. Prospects who need to "call for pricing" assume they can't afford you — and leave.</p>
+  </div>
+</div>
+
+<div class="callout callout-info">
+  <strong>🧠 The psychology of visible pricing:</strong> When you hide prices, you're telling prospects "you probably can't afford this." When you show them, you're saying "we're confident in our value and we respect your time." The second message converts.
+</div>
+</section>
+
+<!-- 04: THE DO-WHAT-WE-SAID GUARANTEE -->
+<section id="guarantee">
+<h2><span class="section-num">04</span> The "Do-What-We-Said" Guarantee</h2>
+
+<div class="guarantee-box">
+  <div class="guarantee-text">"72-hour preview. Full delivery within 14 days. Or you don't pay."</div>
+  <div class="guarantee-sub">No fine print. No exceptions. No awkward conversations.</div>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Why This Works</h4>
+    <ul>
+      <li><strong>Specific timeline:</strong> "72 hours" and "14 days" leave no room for ambiguity</li>
+      <li><strong>Specific deliverable:</strong> "Preview" then "full delivery" — concrete milestones</li>
+      <li><strong>Specific consequence:</strong> "Or you don't pay" — the risk is entirely ours</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Why Vague Guarantees Fail</h4>
+    <ul>
+      <li>"Satisfaction guaranteed" — satisfaction of whom? By what standard?</li>
+      <li>"We'll make it right" — how? When? Define the mechanism</li>
+      <li>"100% money back" — of what? After what trigger?</li>
+    </ul>
+  </div>
+</div>
+
+<div class="insight-box">
+  <div class="insight-label">The Trust Accelerator</div>
+  <p>A specific guarantee doesn't just reduce risk — it communicates competence. The precision of "72-hour preview" signals that you've done this many times before and know exactly how long it takes. That's more powerful than any testimonial.</p>
+</div>
+</section>
+
+<!-- 05: MILITARY & NONPROFIT POSITIONING -->
+<section id="military-nonprofit">
+<h2><span class="section-num">05</span> Military &amp; Nonprofit Positioning</h2>
+<p>These aren't discounts — they're market positioning calibrated for the Space Coast demographic.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>🎖️ Military Discount</h4>
+    <div class="price" style="font-size:1.2rem">$50 off any site build</div>
+    <ul>
+      <li>Active duty, veterans, police, fire, EMS</li>
+      <li>Applies to Website and Growth tiers</li>
+      <li>Honor-system verification</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Why This Isn't Charity</h4>
+    <p>Space Coast = heavy military presence (Patrick SFB, Cape Canaveral SFS). This discount aligns your brand with the community's identity. Military families talk — a $50 discount generates word-of-mouth worth 10x the cost. It's local market positioning, not philanthropy.</p>
+  </div>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>🤝 Nonprofit Partnership</h4>
+    <div class="price" style="font-size:1.2rem;color:var(--accent-green)">Free website</div>
+    <ul>
+      <li>501(c)(3) organizations only</li>
+      <li>5-page professional site</li>
+      <li>Generates portfolio pieces</li>
+      <li>Board members become referral sources</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>Why This Pays for Itself</h4>
+    <p>Nonprofit board members are typically business owners, executives, and community leaders. A free website for their organization introduces you to the exact people who can hire you — or refer you. Plus, every nonprofit site is a portfolio piece you can showcase.</p>
+  </div>
+</div>
+
+<div class="callout callout-success">
+  <strong>💡 Strategic generosity:</strong> One nonprofit website typically generates 2-3 paid referrals within 12 months. At $599+ per referral, the ROI on "free" is extraordinary.
+</div>
+</section>
+
+<!-- 06: HOW TO PRESENT TIERS IN SALES CONVERSATIONS -->
+<section id="sales-conversations">
+<h2><span class="section-num">06</span> How to Present Tiers in Sales Conversations</h2>
+<p>The way you talk about pricing is as important as the pricing itself. Here's the script.</p>
+
+<div class="script-block">
+  <div class="script-label">🔑 Rule #1 — Lead With the Outcome, Not the Price</div>
+  <p>"Based on what you told me, I'd recommend our Growth tier — you get the full website plus ongoing social media and blog content that keeps your phone ringing."</p>
+</div>
+
+<div class="script-block">
+  <div class="script-label">🔑 Rule #2 — State the Price as a Fact, Then Pause</div>
+  <p>"The investment is $599 to build the site and $149 a month for the ongoing marketing."</p>
+  <p style="margin-top:0.5rem;color:var(--text-muted);font-style:normal">→ Then stop talking. Let them respond first. The first person to speak after the price is stated loses negotiating leverage.</p>
+</div>
+
+<div class="script-block">
+  <div class="script-label">🔑 Rule #3 — The Growth Upsell from Website</div>
+  <p>"You're already investing $599 in the site. For $149 more per month, we handle everything — social media, blog posts, reviews. You focus on your business, we handle your presence."</p>
+</div>
+
+<div class="script-block">
+  <div class="script-label">🔑 Rule #4 — The CMO Upsell from Growth</div>
+  <p>"At $149/month, we're handling your online presence. For businesses ready to scale, our CMO retainer at $1,500 adds paid ads management, weekly strategy calls, and AI visibility optimization — essentially a full marketing department."</p>
+</div>
+
+<div class="insight-box">
+  <div class="insight-label">The Pause Is Your Secret Weapon</div>
+  <p>After stating the price, the silence feels uncomfortable — to <em>them</em>. They'll fill it with either an objection (which you can handle) or an acceptance. If you keep talking, you talk yourself out of the sale.</p>
+</div>
+</section>
+
+<!-- 07: COMMON PRICING MISTAKES -->
+<section id="pricing-mistakes">
+<h2><span class="section-num">07</span> Common Pricing Mistakes</h2>
+<p>These are the seven pricing sins that kill conversion. Avoid them at all costs.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Mistake</th>
+      <th>Why It Fails</th>
+      <th>The Fix</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="color:var(--orange);font-weight:700">1</td>
+      <td>Too many tiers</td>
+      <td>Analysis paralysis — prospects can't choose so they choose nothing</td>
+      <td><strong>Max 3 tiers.</strong> Kill any tier you can't articulate in one sentence.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--orange);font-weight:700">2</td>
+      <td>Hiding prices</td>
+      <td>Destroys trust before the conversation starts. "Call for pricing" = "you can't afford us"</td>
+      <td><strong>Show every price.</strong> Transparency signals confidence.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--orange);font-weight:700">3</td>
+      <td>Discounting the premium tier</td>
+      <td>Devalues the brand — if your best work is negotiable, none of your work is premium</td>
+      <td><strong>Hold firm on CMO pricing.</strong> The clients who demand discounts are the ones who don't value strategy.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--orange);font-weight:700">4</td>
+      <td>No clear differentiation</td>
+      <td>If prospects can't tell tiers apart, they default to the cheapest — or leave</td>
+      <td><strong>Each tier must have a distinct customer profile.</strong> If you can't name them, kill the tier.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--orange);font-weight:700">5</td>
+      <td>Free hosting for life</td>
+      <td>Long-term liability at scale — 100 clients × hosting costs = margin erosion</td>
+      <td><strong>Revisit at 20+ clients.</strong> Transition to "first year free" or bundle into maintenance plans.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--orange);font-weight:700">6</td>
+      <td>No guarantee</td>
+      <td>Fear of wasting money is the #1 unspoken objection. No guarantee = no safety net.</td>
+      <td><strong>72-hour preview guarantee.</strong> Concrete, specific, risk-free.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--orange);font-weight:700">7</td>
+      <td>Charging for the audit</td>
+      <td>Kills top of funnel — every dollar you charge at discovery costs you 10x in lost pipeline</td>
+      <td><strong>Free audit, monetize the fix.</strong> The audit proves you can deliver. The implementation is what they pay for.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout callout-warn">
+  <strong>⚠️ Mistake #5 escalates fast:</strong> "Free hosting for life" sounds generous at 5 clients. At 50 clients, it's a $5,000+/year liability. At 200 clients, it's a line item that can sink your agency. Build expiration into your terms from day one.
+</div>
+</section>
+
+<!-- 08: THE AUDIT AS OFFER ACCELERANT -->
+<section id="audit-accelerant">
+<h2><span class="section-num">08</span> The Audit as Offer Accelerant</h2>
+<p>Your free visibility audit isn't an add-on — it's the engine that makes all three tiers convert.</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>🔬 Step 1: Demonstrate Expertise First</h4>
+    <p>Before asking for money, prove you see things they don't. The audit reveals blind spots — missing Google Business Profile optimization, zero AI visibility, competitor ranking above them. Expertise demonstrated is more powerful than expertise claimed.</p>
+  </div>
+  <div class="card">
+    <h4>⚡ Step 2: Create Undeniable Urgency</h4>
+    <p>"Your competitor ranks above you on ChatGPT when someone asks for your service in your city." That's not a sales pitch — it's a fact you just handed them. Specific, verifiable, and impossible to ignore.</p>
+  </div>
+  <div class="card">
+    <h4>🔄 Step 3: Natural Transition to the Offer</h4>
+    <p>"Want us to fix this?" — four words that follow the audit. No pitch needed. The audit did the pitching. You're simply asking if they want the problem solved by the people who found it.</p>
+  </div>
+</div>
+
+<div class="insight-box">
+  <div class="insight-label">The Audit Funnel Math</div>
+  <p>Free audit → 40-60% of recipients schedule a call → 30-50% of calls convert to a paid tier. The audit doesn't cost you leads — it creates them. Every minute spent on a free audit returns 5-10x in closed revenue.</p>
+</div>
+
+<div class="callout callout-info">
+  <strong>🔗 The audit ties the entire framework together:</strong> Three tiers give prospects choice. The audit gives them <em>reason</em>. The guarantee removes <em>risk</em>. Together, they form a conversion system — not just a pricing page.
+</div>
+</section>
+
+</main>
+
+<footer>
+  <strong>Space Coast Marketing</strong> · Merritt Island, FL · <strong>Socrates</strong> AI Chief of Staff<br>
+  <span style="color:var(--text-muted)">Offer Creation Framework · Revenue Architecture · June 2026</span>
+</footer>
+
+</body>
+</html>

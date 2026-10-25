@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CC Prompt: New Pages + Contact Fix · Space Command Center</title>
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --text: #E2E8F0; --text-muted: #94A3B8; --border: #1E293B;
+    --radius: 10px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-deep); color: var(--text); font-family: var(--font); line-height: 1.6; padding-bottom: 80px; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+  nav .inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; }
+  nav a:hover { color: var(--text); }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  .hero { padding: 48px 0 32px; border-bottom: 1px solid var(--border); }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .hero .subtitle { color: var(--text-muted); font-size: 16px; }
+  .code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: 8px; padding: 28px; font-family: var(--font-mono); font-size: 13px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 24px 0; white-space: pre-wrap; }
+  footer { max-width: 900px; margin: 0 auto; padding: 32px 24px; text-align: center; color: var(--text-dim); font-size: 12px; }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .callout { display: flex; gap: 12px; padding: 16px 20px; border-radius: 8px; margin: 16px 0; align-items: flex-start; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); }
+  .callout .icon { font-size: 18px; flex-shrink: 0; }
+  .callout p { font-size: 13px; color: var(--text-muted); margin: 0; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span>Space Command Center</div>
+    <a href="/deliverables/">← Back to Deliverables</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<div class="hero">
+  <div class="kicker">CLAUDE CODE PROMPT · SITE BUILD · 2026-06-27</div>
+  <h1>Batch 1 Pages + Contact Form Fix</h1>
+  <p class="subtitle">Paste into Claude Code on Mac Mini. Creates /audit, /contact, /about. Fixes contact form to send branded PDF.</p>
+</div>
+
+<div class="code-block">
+You're working on spacecoastmarketingagency.com — a Next.js site deployed on Vercel, proxied through Cloudflare.
+
+## TASK 1: Create First Batch of New Pages
+
+Create these three new pages using the App Router. Keep the existing
+design system, colors, and typography — match the homepage's visual 
+language exactly.
+
+### Page 1: /audit
+- H1: "Free Website Audit for Brevard County Businesses"
+- Meta title: "Free Website Audit — Space Coast Marketing"
+- Meta description: "Get a free website audit for your Brevard County
+  business. See exactly why competitors are ranking above you on Google
+  and AI search."
+- Move the existing audit/revenue-leak-estimator component from the
+  homepage to this page (but DO NOT remove it from the homepage — 
+  render it in both places)
+- Below the audit tool, add a CTA: "Want us to fix what we find?" 
+  linking to /contact
+- Add to sitemap with priority 0.9
+
+### Page 2: /contact (REAL PAGE — not a redirect)
+- Currently /contact just redirects to /#contact on the homepage
+- Build a dedicated contact page with:
+  - H1: "Let's Get You Found."
+  - Meta title: "Contact Space Coast Marketing — Merritt Island, FL"
+  - Meta description: "Ready to get more customers? Contact Space Coast
+    Marketing in Merritt Island, FL. Free 15-minute strategy call."
+  - The same contact form from the homepage (keep homepage form too)
+  - Business info below: phone (321) 328-5307, Merritt Island, FL,
+    serving Brevard County
+  - LocalBusiness schema markup
+- Add to sitemap with priority 0.7
+- Update nav link for /contact to point to this page instead of /#contact
+
+### Page 3: /about
+- H1: "Built on the Space Coast. Built for the Space Coast."
+- Content:
+  1. Who: Chris Vega, Merritt Island based. Background in Thryv, ADP,
+     Hayes Handpiece. Diverse business ops experience.
+  2. Why local: live in Brevard, know the market
+  3. Latino owned. Se habla español.
+  4. Tech edge: AI-powered fulfillment with local inference
+  5. Guarantee: 72-hour preview, 14-day delivery or free
+- Meta title: "About Space Coast Marketing — Merritt Island, FL"
+- Meta description: "Merritt Island-based marketing agency serving
+  Brevard County businesses. Latino owned. AI-powered. Local first."
+- Add to sitemap with priority 0.7
+
+### Navigation Updates
+- Add /about and /audit to main navigation
+- Update /contact nav link to point to /contact instead of /#contact
+
+---
+
+## TASK 2: Fix Contact Form — Branded PDF Delivery
+
+### The Bug
+Contact form returns: "Something went wrong — try again or call us
+at (321) 328-5307."
+
+### The Fix
+1. Find the API route handling form submissions (likely /api/contact)
+2. Fix whatever is breaking (missing env var, email auth, unhandled
+   promise). Add error logging.
+3. After successful submission, generate a branded PDF:
+   - Use @react-pdf/renderer or pdf-lib
+   - Single page: thank you, what happens next, contact info, their
+     submitted details
+   - Email the PDF to the address they entered
+4. Existing notification email to owner should still fire
+
+### Constraints
+- No new paid services. Use free tiers (Resend free, or nodemailer
+  with existing SMTP)
+- PDF must be server-side (API route), not client-side — user might
+  close tab after submitting
+
+### Sitemap
+Update sitemap to include /audit (0.9), /about (0.7), /contact (0.7).
+Deploy to Vercel when done.
+</div>
+
+<div class="callout">
+  <div class="icon">💡</div>
+  <p><strong>Usage:</strong> Copy the entire code block. Paste into Claude Code on the Mac Mini in the project directory. CC will build all three pages and fix the contact form in one shot.</p>
+</div>
+
+<footer>
+  Space Command Center · Space Coast Marketing · <a href="/deliverables/">← Back to Deliverables</a>
+</footer>
+
+</div>
+</body>
+</html>

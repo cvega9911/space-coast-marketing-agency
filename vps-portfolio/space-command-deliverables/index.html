@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space Command Center · Agency Master Operating System</title>
+<style>
+  :root {
+    --bg-deep: #0A0A14; --bg-card: #111122; --bg-surface: #161630;
+    --navy: #1B2B4B; --orange: #FF4500; --orange-glow: #FF6B35;
+    --gold: #F0A030; --green: #22C55E; --green-bg: rgba(34,197,94,0.12);
+    --red: #EF4444; --red-bg: rgba(239,68,68,0.12);
+    --amber: #F59E0B; --amber-bg: rgba(245,158,11,0.12);
+    --text: #E2E8F0; --text-muted: #94A3B8; --text-dim: #64748B;
+    --border: #1E293B; --border-accent: #2D3A5C;
+    --radius: 10px; --radius-sm: 6px;
+    --font: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-deep); color: var(--text); font-family: var(--font); line-height: 1.6; padding-bottom: 120px; }
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+  nav .inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  nav .logo { font-weight: 700; font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  nav .badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .hero { padding: 80px 0 60px; text-align: center; background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255,69,0,0.08), transparent 60%); }
+  .hero .kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #E2E8F0 60%, var(--orange-glow) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero .subtitle { font-size: 18px; color: var(--text-muted); max-width: 720px; margin: 0 auto 40px; }
+  .stat-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 28px; min-width: 160px; text-align: center; }
+  .stat-pill .value { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+  .stat-pill .value.accent { color: var(--orange); }
+  .stat-pill .value.green { color: var(--green); }
+  .stat-pill .value.gold { color: var(--gold); }
+  .stat-pill .label { font-size: 12px; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+  section { padding: 60px 0; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+  h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; color: #fff; }
+  .section-desc { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; max-width: 640px; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .card.accent-left { border-left: 3px solid var(--orange); }
+  .card.green-left { border-left: 3px solid var(--green); }
+  .card.amber-left { border-left: 3px solid var(--amber); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .callout { display: flex; gap: 16px; padding: 20px 24px; border-radius: var(--radius); margin: 16px 0; align-items: flex-start; }
+  .callout.warn { background: var(--amber-bg); border: 1px solid rgba(245,158,11,0.3); }
+  .callout.info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); }
+  .callout.success { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); }
+  .callout .icon { font-size: 20px; flex-shrink: 0; }
+  .callout h4 { font-size: 15px; margin-bottom: 4px; }
+  .callout p { font-size: 13px; color: var(--text-muted); margin-bottom: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead { background: var(--bg-surface); }
+  th { text-align: left; padding: 12px 16px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:hover { background: rgba(255,255,255,0.02); }
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .tag.win { background: var(--green-bg); color: var(--green); }
+  .tag.loss { background: var(--red-bg); color: var(--red); }
+  .win { color: var(--green); font-weight: 600; }
+  .loss { color: var(--red); font-weight: 600; }
+  .muted { color: var(--text-dim); }
+  .insight-box { background: linear-gradient(135deg, rgba(255,69,0,0.08), rgba(240,160,48,0.05)); border: 1px solid rgba(255,69,0,0.2); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+  .insight-box h4 { color: var(--orange); margin-bottom: 6px; }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .badge-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--text-muted); }
+  .code-block { background: #0d0d1a; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; overflow-x: auto; color: #E2E8F0; margin: 16px 0; }
+  .split-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--border); margin-bottom: 8px; }
+  .split-bar .seg { height: 100%; }
+  footer { max-width: 1100px; margin: 0 auto; padding: 32px 24px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 12px; }
+  h3 { font-size: 20px; font-weight: 700; color: #fff; margin: 24px 0 12px; }
+  h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  ul, ol { margin: 0 0 16px 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  li { margin-bottom: 4px; }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* Deliverable cards */
+  .deliverable-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px; transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .deliverable-card:hover { border-color: var(--orange); box-shadow: 0 0 30px rgba(255,69,0,0.08); }
+  .deliverable-card .num { font-size: 56px; font-weight: 800; color: rgba(255,69,0,0.08); position: absolute; top: 16px; right: 24px; }
+  .deliverable-card h3 { margin-top: 0; font-size: 20px; }
+  .deliverable-card .desc { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; }
+  .deliverable-card .meta { display: flex; gap: 16px; font-size: 12px; color: var(--text-dim); margin-bottom: 16px; }
+  .deliverable-card .cta { display: inline-block; background: var(--orange); color: #fff; padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+  .deliverable-card .cta:hover { background: var(--orange-glow); text-decoration: none; }
+
+  /* Architecture diagram */
+  .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0; margin: 32px 0; }
+  .arch-node { border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; position: relative; }
+  .arch-node h4 { font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .arch-node .icon-node { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+  .arch-node .icon-node.orange { background: rgba(255,69,0,0.15); color: var(--orange); }
+  .arch-node .icon-node.green { background: var(--green-bg); color: var(--green); }
+  .arch-node .icon-node.blue { background: rgba(59,130,246,0.15); color: #3B82F6; }
+  .arch-node .icon-node.amber { background: var(--amber-bg); color: var(--amber); }
+  .arch-node p { font-size: 12px; margin-bottom: 0; }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 28px; }
+    .stat-row { gap: 10px; }
+    .stat-pill { min-width: 120px; padding: 14px 16px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    nav { display: none; }
+    section { break-inside: avoid; border-color: #ddd; }
+    .card, .callout, .insight-box, .code-block, .deliverable-card { border-color: #ddd; }
+    .hero h1 { color: #111; -webkit-text-fill-color: #111; }
+    h2, h3, h4 { color: #111; }
+    .stat-pill { border-color: #ddd; }
+    .stat-pill .value { color: #111; }
+    .section-label { color: #FF4500; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> Space Command Center · Master Operating System</div>
+    <div class="badge">LIVE · June 26, 2026</div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <div class="kicker">Space Coast Marketing Agency · Autonomous AI Operations</div>
+    <h1>The Agency That Runs Itself.<br>You Just Close the Deals.</h1>
+    <p class="subtitle">A complete operating system for a fully autonomous marketing agency — powered by a Mac Mini M4 Pro running local frontier AI models, orchestrated through n8n workflows, and overseen by Socrates as AI Chief of Staff.</p>
+    <div class="stat-row">
+      <div class="stat-pill"><div class="value accent">$599–$1,500</div><div class="label">Per Client / Month</div></div>
+      <div class="stat-pill"><div class="value green">$10K</div><div class="label">MRR Target</div></div>
+      <div class="stat-pill"><div class="value gold">80%</div><div class="label">30-Day Client Probability</div></div>
+      <div class="stat-pill"><div class="value">90<small style="font-size:16px">%</small></div><div class="label">Local Inference</div></div>
+      <div class="stat-pill"><div class="value green">$0.00</div><div class="label">Per-Million-Token Cost</div></div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="section-label">00 · System Architecture</div>
+    <h2>How the Machine Works</h2>
+    <p class="section-desc">Four interconnected engines running on local hardware, orchestrated through n8n, with a human-in-the-loop approval gate before any client communication.</p>
+
+    <div class="card-grid" style="margin-bottom:24px">
+      <div class="arch-node">
+        <h4><span class="icon-node orange">01</span> Sales & Prospecting</h4>
+        <p>Socrates + n8n pull local business leads. Dual-track: $599 web builds (volume) and $1,500 CMO retainers (margin). AEO audits generate undeniable diagnostic sales moments.</p>
+      </div>
+      <div class="arch-node">
+        <h4><span class="icon-node green">02</span> Backlink Outreach Engine</h4>
+        <p>5-stage pipeline: Serper prospecting → Gemma QC gate → Qwen value-hook drafting → Gemma fact-checking → Human approval → Instantly.ai sending.</p>
+      </div>
+      <div class="arch-node">
+        <h4><span class="icon-node blue">03</span> AEO Audit Engine</h4>
+        <p>Citation simulation + schema entity auditing. Shows prospects exactly what ChatGPT and Perplexity see — and why they're invisible. Converts at 3-5× standard pitch rates.</p>
+      </div>
+      <div class="arch-node">
+        <h4><span class="icon-node amber">04</span> Content Fulfillment</h4>
+        <p>Qwen drafts blog posts + social content. Gemma fact-checks. Socrates schedules. 2-5 blog posts/month, 30 social posts/month, automated newsletter campaigns — all hands-free.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">01 · Deliverables Index</div>
+    <h2>Space Command Center — Complete SOP Library</h2>
+    <p class="section-desc">Every document, process, and playbook needed to launch and operate Space Coast Marketing Agency. 15 documents + 1 deployable tool — every playbook, process, and asset to launch and scale.</p>
+
+    <h3 style="margin-top:32px;color:var(--orange)">📊 Strategy & Revenue</h3>
+    <div class="card-grid">
+      <div class="deliverable-card">
+        <div class="num">01</div>
+        <h3>Money Model v11</h3>
+        <p class="desc">LOCKED pricing architecture — $599 Website, $599+$149 Growth, $1,500 Fractional CMO, $49 Site Care. Revenue engine math, tier strategy, military/nonprofit discounts, Claude Code deployment prompt.</p>
+        <div class="meta"><span>💰 Pricing</span><span>📊 Revenue</span><span>🔒 LOCKED</span></div>
+        <a href="money-model-v11.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">02</div>
+        <h3>14-Day Revenue Protocol</h3>
+        <p class="desc">Complete launch playbook — dual-track outreach, email templates, Socratic probability recalibration (80% in 30 days), day-by-day timeline, domain warm-up requirements, follow-up sequences.</p>
+        <div class="meta"><span>📊 Strategy</span><span>📧 Outreach</span><span>🎯 Revenue</span></div>
+        <a href="14-day-revenue-protocol.html" class="cta">Open →</a>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px;color:var(--orange)">🤖 Automation & Infrastructure</h3>
+    <div class="card-grid">
+      <div class="deliverable-card">
+        <div class="num">03</div>
+        <h3>Backlink Outreach Engine</h3>
+        <p class="desc">5-stage white-hat pipeline: Prospecting → Gemma QC Gate → Qwen Drafting → Gemma Fact-Check → Human Approval. Full prompts, Python code, Socratic rate-limiting + audit trail additions.</p>
+        <div class="meta"><span>🔗 Backlinks</span><span>🤖 Multi-LLM</span><span>🐍 Python</span></div>
+        <a href="backlink-outreach-engine.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">04</div>
+        <h3>n8n Orchestration Blueprint</h3>
+        <p class="desc">10-node workflow: Airtable → Serper → Batch Split → Local LLM → Human Gate → Instantly. Error handling, VRAM management, Airtable schema, Socratic deliverability monitor + follow-up scheduler.</p>
+        <div class="meta"><span>⚡ n8n</span><span>🔄 Automation</span><span>📋 Workflow</span></div>
+        <a href="n8n-orchestration-blueprint.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">05</div>
+        <h3>AEO Audit Engine</h3>
+        <p class="desc">Answer Engine Optimization simulator. Qwen RAG search simulation + Gemma schema entity audit. Your #1 sales differentiator — diagnostics close at 3-5× pitch rate. Competitor benchmarking included.</p>
+        <div class="meta"><span>🔍 AEO</span><span>🧠 AI Search</span><span>📊 Schema</span></div>
+        <a href="aeo-audit-engine.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">06</div>
+        <h3>Hardware Configuration</h3>
+        <p class="desc">Mac Mini M4 Pro setup — GPU memory allocation, Ollama parallel loading, Tailscale networking, healthcheck scripts, macOS auto-update hardening, model specifications.</p>
+        <div class="meta"><span>🖥️ Mac Mini</span><span>⚙️ Config</span><span>🔧 DevOps</span></div>
+        <a href="hardware-configuration.html" class="cta">Open →</a>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px;color:var(--orange)">📞 Sales & Client Operations</h3>
+    <div class="card-grid">
+      <div class="deliverable-card">
+        <div class="num">07</div>
+        <h3>Discovery Call Script</h3>
+        <p class="desc">15-minute consultation framework — verbatim scripts for Track 1 ($599) and Track 2 ($1,500 CMO), dental niche warm-call script, price conversation handling, 10 objection responses.</p>
+        <div class="meta"><span>📞 Sales</span><span>🗣️ Scripts</span><span>🦷 Dental</span></div>
+        <a href="discovery-call-script.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">08</div>
+        <h3>Competitive Battle Cards</h3>
+        <p class="desc">Brevard competitive intelligence — Thryv, Scorpion, freelancers, DIY platforms. Your 5 unfair advantages, positioning statement, and diagnostic framing scripts for sales conversations.</p>
+        <div class="meta"><span>⚔️ Competition</span><span>🎯 Positioning</span><span>📊 Intel</span></div>
+        <a href="competitive-battle-cards.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">09</div>
+        <h3>Client Onboarding SOP</h3>
+        <p class="desc">Post-close operations — 4-phase process (Intake → Build → Preview → Launch), QC checklist, Growth/CMO tier additions, and the Socrates automation handoff. 85% agent-driven.</p>
+        <div class="meta"><span>📋 Onboarding</span><span>🤖 Automated</span><span>✅ QC</span></div>
+        <a href="client-onboarding-sop.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">10</div>
+        <h3>Lead Generation SOP</h3>
+        <p class="desc">Brevard County prospecting — 5 lead sources (Google Maps, Yelp, Chambers, Facebook Group, competitor lists), scoring rubric, Airtable template, Socrates automation roadmap.</p>
+        <div class="meta"><span>🎯 Prospecting</span><span>📍 Brevard</span><span>📊 Scoring</span></div>
+        <a href="lead-generation-sop.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">11</div>
+        <h3>Website CRO Guide</h3>
+        <p class="desc">Complete Conversion Rate Optimization playbook — CTA psychology, hero section anatomy, cold vs warm traffic strategy, micro-copy frameworks, Hormozi principles correctly applied for local service businesses.</p>
+        <div class="meta"><span>🧪 CRO</span><span>🎨 UX</span><span>📈 Conversion</span></div>
+        <a href="website-cro-guide.html" class="cta">Open →</a>
+      </div>
+    </div>
+
+    <h3 style="margin-top:32px;color:var(--orange)">📚 Advanced Playbooks</h3>
+    <div class="card-grid">
+      <div class="deliverable-card" style="border-color: rgba(255,69,0,0.4);">
+        <div class="num">⭐</div>
+        <h3>Hormozi Frameworks Applied <span class="tag win" style="font-size:10px;vertical-align:middle">NEW</span></h3>
+        <p class="desc">Complete synthesis of all three Hormozi books mapped directly to Space Coast Marketing. Value Equation, Core Four, Rule of 100, Grand Slam Offers, Money Models — every framework with specific SCM application and priority order.</p>
+        <div class="meta"><span>📚 3 Books</span><span>🎯 Applied</span><span>⚡ Action Plan</span></div>
+        <a href="hormozi-frameworks-applied.html" class="cta" style="background:var(--orange);">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">12</div>
+        <h3>Offer Creation Framework</h3>
+        <p class="desc">Pricing psychology and tier architecture — anchoring, decoy effect, risk reversal, and the \"Do-What-We-Said\" guarantee. How to present $599/$149/$1,500 tiers for maximum conversion in sales conversations.</p>
+        <div class="meta"><span>💰 Pricing</span><span>🎯 Packaging</span><span>📐 Architecture</span></div>
+        <a href="offer-creation-framework.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">13</div>
+        <h3>Trust Signals Handbook</h3>
+        <p class="desc">Social proof and credibility architecture — 7 trust signal types, 3 placement zones, pre-revenue trust-building strategies, and the exact signals to deploy before your first client.</p>
+        <div class="meta"><span>🛡️ Trust</span><span>⭐ Social Proof</span><span>🏗️ Pre-Launch</span></div>
+        <a href="trust-signals-handbook.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card">
+        <div class="num">14</div>
+        <h3>Objection Handling Manual</h3>
+        <p class="desc">15 common objections with Feel/Felt/Found and Question-Behind-the-Question frameworks. Includes price, competition, trust, timing, and dental-specific objection responses with verbatim scripts.</p>
+        <div class="meta"><span>🛑 Objections</span><span>🗣️ Scripts</span><span>🦷 Dental</span></div>
+        <a href="objection-handling-manual.html" class="cta">Open →</a>
+      </div>
+      <div class="deliverable-card" style="border-color: rgba(255,69,0,0.3);">
+        <div class="num">🔧</div>
+        <h3>Audit Form Page <span class="tag win" style="font-size:10px;vertical-align:middle">TOOL</span></h3>
+        <p class="desc">Standalone audit request form — ready to deploy to spacecoastmarketingagency.com. AEO-integrated, mobile-responsive, with success state. Feed this to Claude Code to add as /audit or /free-visibility-audit.</p>
+        <div class="meta"><span>🔧 Tool</span><span>📋 Form</span><span>🚀 Deploy-Ready</span></div>
+        <a href="audit-form-page.html" class="cta" style="background:var(--orange);">Open Tool →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">02 · Socratic Assessment</div>
+    <h2>Gemini's Blueprint: What's Right & What's Missing</h2>
+    <p class="section-desc">An honest, adversarial evaluation of the Gemini-generated agency framework — what the model nailed, where it's overly optimistic, and the critical fixes needed before launch.</p>
+
+    <div class="card-grid">
+      <div class="card green-left">
+        <h4>✅ What Gemini Nailed</h4>
+        <p>Dual-track strategy ($599 volume + $1,500 margin). AEO audit as differentiator. Hallucination mitigation pipeline (Gemma→Qwen→Gemma). Dental niche as warm entry. Binomial probability math is <strong>formula-correct</strong>.</p>
+      </div>
+      <div class="card amber-left">
+        <h4>⚠️ What's Optimistic</h4>
+        <p>94.1% probability assumes warm domain + perfect deliverability. Realistic: <strong>75-80% in 30 days</strong>. 2% cold conversion is aggressive for a new brand with no case studies. Timeline must start from Mac Mini arrival, not today.</p>
+      </div>
+      <div class="card accent-left">
+        <h4>🔴 Critical Gaps Found</h4>
+        <p><strong>Domain warming</strong> — sending 35/day from a new domain = instant spam. Need 2-3 week Instantly.ai warm-up. <strong>No follow-up sequences</strong> — single email at 2% vs 4-touch sequence at 5-8%. <strong>Vercel SaaS distraction</strong> — shelve until $5K MRR.</p>
+      </div>
+      <div class="card green-left">
+        <h4>➕ Socratic Additions</h4>
+        <p>Follow-up cadence automation. Facebook group (850 members) as warm lead source. One free case study build for social proof. Google Business Profile setup before outreach. Pricing revision: add $49/mo hosting to $599 builds. Dental contacts as Day 1 warm calls.</p>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top:24px">
+      <h4>🔑 The Only Variable That Matters</h4>
+      <p>The entire stack — Gemini's protocols, my architecture, the Mac Mini, the agents — is worthless without <strong>consistent outbound sales activity</strong>. 35 emails a day, 20 calls a day, walking into businesses, posting in the Facebook group. The tech handles fulfillment. You handle acquisition. That's the only division of labor that matters right now.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">03 · Revised Probability Matrix</div>
+    <h2>Honest Numbers, Not Hype</h2>
+    <p class="section-desc">Binomial probability recalibrated for real-world conditions: new domain, no case studies, but strong local sales background.</p>
+
+    <div class="table-wrap" style="margin-bottom:24px">
+      <table>
+        <thead>
+          <tr><th>Milestone</th><th>Gemini Estimate</th><th>Socratic Estimate</th><th>Key Assumption Difference</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>First Client (Any)</strong></td>
+            <td class="win">94.1% in 14 days</td>
+            <td class="win">80% in 30 days</td>
+            <td>Domain warm-up, targeting refinement, warm dental contacts</td>
+          </tr>
+          <tr>
+            <td><strong>First CMO Client</strong></td>
+            <td class="muted">Included above</td>
+            <td class="win">60% in 30 days</td>
+            <td>If leading with dental warm calls; lower if pure cold outreach</td>
+          </tr>
+          <tr>
+            <td><strong>$5K MRR</strong></td>
+            <td class="win">60-70% in 90 days</td>
+            <td class="win">55-65% in 90 days</td>
+            <td>Dependent on 2-3 CMO closes + Growth tier fill</td>
+          </tr>
+          <tr>
+            <td><strong>$10K MRR</strong></td>
+            <td class="muted">50-60% in 6 months</td>
+            <td class="muted">40-50% in 6 months</td>
+            <td>Fulfillment quality + client retention are unproven variables</td>
+          </tr>
+          <tr style="background: rgba(255,69,0,0.03)">
+            <td><strong>Multi-Six-Figure Year 2</strong></td>
+            <td class="muted">40-50%</td>
+            <td class="muted">40-50%</td>
+            <td>Agreement — dependent on systemization + not burning out</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">04 · Quick Reference</div>
+    <h2>Key Numbers at a Glance</h2>
+    <div class="card-grid">
+      <div class="card accent-left">
+        <h4>Revenue Targets</h4>
+        <table style="margin-top:12px">
+          <tr><td>Web Build (one-time)</td><td class="win">$599</td></tr>
+          <tr><td>Growth Tier (monthly)</td><td class="win">$149/mo</td></tr>
+          <tr><td>CMO Retainer (monthly)</td><td class="win">$1,500/mo</td></tr>
+          <tr><td>$10K MRR Mix</td><td class="muted">5× CMO + 17× Growth</td></tr>
+        </table>
+      </div>
+      <div class="card green-left">
+        <h4>Hardware Stack</h4>
+        <table style="margin-top:12px">
+          <tr><td>Mac Mini M4 Pro</td><td class="win">$3,000</td></tr>
+          <tr><td>Qwen3.5-35B-A3B</td><td class="win">24GB Q4 · 172 tok/s</td></tr>
+          <tr><td>Gemma 4 31B</td><td class="win">19GB Q4 · 98 tok/s</td></tr>
+          <tr><td>OpenRouter (cloud)</td><td class="muted">$20-50/mo (10% of inference)</td></tr>
+        </table>
+      </div>
+      <div class="card amber-left">
+        <h4>Your Unfair Advantages</h4>
+        <table style="margin-top:12px">
+          <tr><td>Thryv Brevard sales</td><td><span class="tag win">Very High</span></td></tr>
+          <tr><td>Hayes dental network</td><td><span class="tag win">High</span></td></tr>
+          <tr><td>ADP recurring sales exp</td><td><span class="tag win">High</span></td></tr>
+          <tr><td>850 FB group members</td><td><span class="tag neutral">Medium</span></td></tr>
+          <tr><td>Local AI stack (unique)</td><td><span class="tag win">High</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Space Coast Marketing · Merritt Island, FL 32952 · 321-328-5307<br>
+  Socrates AI Chief of Staff · Built on Hermes Agent Framework · June 26, 2026<br>
+  <span style="color:var(--text-dim);font-size:11px">Not financial, legal, or tax advice. All strategies should be reviewed by qualified professionals.</span>
+</footer>
+
+</body>
+</html>
