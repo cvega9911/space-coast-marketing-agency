@@ -1,71 +1,66 @@
-# Chris Vega — Portfolio Backup (Open-sourced from VPS)
+# VPS Portfolio: Four Flask Apps on an Ubuntu Server
 
-Built by Chris Vega (Merritt Island, FL) during 2025-2026, served by Socrates,
-co-foreman of the OpenClaw AI Dojo. 
+From 2025 into 2026 I ran four Python web apps for my marketing agency on one DigitalOcean Ubuntu server, which I managed over SSH. This folder has the code and the configs I used to deploy them. I've since shut the server down and moved everything to my own hardware at home, so think of this as a reference copy.
 
-All four businesses are now shut down. This repo is the surviving codebase —
-preserved for reference, portfolio, and potential future revival.
+## The apps
 
-## Apps (`apps/`)
+| App | Lines of Python | What it did | Built with |
+| --- | --- | --- | --- |
+| `apps/leadgen/` | ~2,800 | Found local businesses, scored how good a fit they were, filled in details from their website and search results, and drafted outreach | Flask, SQLite, SendGrid |
+| `apps/photo-estimate/` | ~1,300 | A customer uploads a photo of the job and gets a rough estimate for one of 8 trades | Flask, SQLite, AI vision model |
+| `apps/command-center/` | ~1,150 | My private dashboard for keeping track of leads, follow-ups, and the sales pipeline | Flask, SQLite, vanilla JS |
+| `apps/health-check/` | ~650 | A free check of a local business's website and Google listing | Flask, Google Places API, PageSpeed Insights API |
 
-| App | Lines | What it does | Tech |
-|---|---|---|---|
-| `command-center/` | 1,163 | ISS-themed CRM: lead tracking, cadence, pipeline | Flask + SQLite + vanilla JS SPA |
-| `leadgen/` | 2,811 | Lead scraping → scoring → enrichment → outreach v3 | Flask + SQLite + Apollo API + SendGrid |
-| `photo-estimate/` | 1,326 | Photo-to-estimate tool (8 trades) + health check v1 | Flask + Ollama vision + SQLite |
-| `health-check/` | 436 | Local business SEO health check (standalone) | Flask + Google Places/PageSpeed APIs |
+That's ~6,000 lines of Python in total, plus the HTML and JavaScript for the front ends.
 
-**Total:** ~5,700 lines of Python (core), plus frontend HTML/JS SPAs.
+## How it ran
 
-## OpenClaw Dojo Dashboard (`openclaw-dashboard/`)
+```
+Internet
+   |  HTTPS (443)
+   v
+nginx (reverse proxy, one server block per subdomain)
+   |  proxy_pass to 127.0.0.1:<port>
+   v
+Flask app (systemd service, one per app)
+   |
+   v
+SQLite database (one per app)
+```
 
-- `dashboard.html` (138KB) — the main dojo UI, went through ~5 design versions
-  (Naruto Pagoda, Pokémon redesign, tactical HUD, space command)
-- `dojo_server.py` (438 lines) — HTTP server with HMAC task intake for 8 sub-agents
-- `agent_status.json/js` — 8-agent status engine: Musashi, Kage, Kiri, Mugen,
-  Karasu, Oni, Amaterasu, Tengu + Socrates
-- 12 backup files showing design iterations
-- `regen_status.js` — status regeneration script
+- Each app only listened on localhost, each on its own port (8090, 8890, 8891, and 8897). The only thing facing the internet was nginx, so the only way to reach an app was through it.
+- nginx sent each subdomain to the right app (configs are in [`deploy-configs/`](deploy-configs/)). The command center and lead gen had Let's Encrypt certificates, with plain HTTP redirected to HTTPS. The configs for the two public tools are HTTP only, and if I set them up again I'd put certificates on those too. The health check lives on now as a tool on my agency's website, [spacecoastmarketingagency.com](https://spacecoastmarketingagency.com).
+- systemd ran each app as a service ([`deploy-configs/*.service`](deploy-configs/)). They started on boot, restarted themselves if they crashed, and logged to the journal, so `journalctl -u <service>` showed what each one was doing.
+- Most secrets lived in a `.env` file per app that systemd loaded with `EnvironmentFile=`. A few were hardcoded at first, which I cleaned up before publishing (see below).
+- The private apps used a PIN login (also from an environment variable) with signed session cookies.
+- Emails went out through the SendGrid API.
 
-## Space Command Deliverables (`space-command-deliverables/`)
+## Cleaning it up before making it public
 
-19 HTML documents — the full agency playbook:
-SEO audit engine, CRO guide, outreach engine, backlink engine,
-discovery call scripts, objection handling, onboarding SOP,
-offer frameworks, Hormozi frameworks, n8n orchestration,
-company battle cards, and more.
+Before I flipped this repo to public I went back through the code and the git history:
 
-## Deploy Configs (`deploy-configs/`)
+- Moved the tokens and the PIN hash that were hardcoded into environment variables.
+- Deleted every `.env` file, database, and backup file.
+- Took out all the real lead data. `apps/leadgen/lead_data.py` is empty on purpose, since the original had contact info for real businesses.
+- Squashed the history so the old secrets don't show up in any commit.
+- Rotated the chat bot token. The SendGrid, OpenRouter, and Google API keys were only ever in the `.env` files, which never got committed, and they've all been shut off since.
 
-- nginx reverse proxy configs for all 4 apps
-- systemd service files
-- `openclaw.json` — the full dojo agent configuration
-  (8 agents, model providers, subagent chains, routing)
+## Running one yourself
 
-## Security
+1. Make a virtual environment and install Flask: `python3 -m venv venv && . venv/bin/activate && pip install flask requests`
+2. Set whatever environment variables the app reads with `os.environ`. The command center, for example, needs `DOJO_PIN`.
+3. Run `python app.py`. It starts on `127.0.0.1` on the port from the list above.
+4. To put it online, set up nginx in front of it with a config like the ones in [`deploy-configs/`](deploy-configs/), and add a systemd unit.
 
-- NO `.env` files, no API keys, no `.db` databases (removed before export).
-  Secrets stored separately in a private migration bundle.
-- The PIN hardcode in `command-center/app.py` (hardcoded fallback value) has been
-  replaced with `os.environ["DOJO_PIN"]` — env-only, no default.
-- All lead data excluded (73 real contacts = PII).
+## What I'd do differently
 
-## Restore
+Looking back, there are a few things I'd change:
 
-These apps originally ran on a DigitalOcean VPS (Ubuntu, Flask on Python 3.11,
-nginx reverse proxy, SQLite databases, SendGrid relay). To revive:
+- Run each app under its own service account, and use a real WSGI server like gunicorn instead of Flask's built-in one.
+- Back up the SQLite databases on a schedule instead of hoping nothing went wrong.
+- Script the whole setup, or use Docker Compose like I did later in my [Pi-hole lab](https://github.com/cvega9911/pihole-unbound-dns-lab), so the whole server could be rebuilt from a few files.
 
-1. Create Python 3.11+ venv, `pip install flask`
-2. Create a SQLite database (schema in each `app.py`)
-3. Set env vars: `DOJO_PIN`, `DOJO_PIN_HASH`, `TASK_AUTH_TOKEN`, `GOOGLE_API_KEY`, `OPENROUTER_API_KEY`, etc.
-   (list in each app's original `.env` on the private migration bundle)
-4. `python app.py` — binds to 127.0.0.1:<port>
-5. nginx reverse proxy from a domain to the local port
+## Other folders
 
-## Migration reference
-
-This code was part of a larger agent migration (VPS → Mac Mini M4 Pro / Qwen 3.8 27B).
-The agent identity, memory, skills, and session history moved via a separate
-`hermes-agent-migration` skill. This repo is the *code* half; the *agent* half
-lives in `~/.hermes/` on the Mac.
-
+- `openclaw-dashboard/`: a status dashboard and a small Python HTTP server for an automation project that ran on the same server.
+- `space-command-deliverables/`: HTML playbooks I wrote for the agency. These are sales and marketing documents, not code.
